@@ -1,0 +1,15 @@
+{
+  "name": "deduction-web",
+  "version": "0.1.0",
+  "description": "The deduction web game repository",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "Samuel Renshaw-Panting",
+  "license": "",
+  "dependencies": {
+    "react-redux": "^7.2.1",
+    "redux": "^4.0.5"
+  }
+}
