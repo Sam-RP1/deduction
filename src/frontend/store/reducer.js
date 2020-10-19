@@ -1,6 +1,4 @@
 const initialState =  {
-  num: 1,
-  results: []
 }
 
 const reducer = (state = initialState, action) => {
