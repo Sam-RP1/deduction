@@ -1,0 +1,38 @@
+@import '../../../styles/partials/color-themes';
+@import '../../../styles/mixins/transition';
+
+.btn {
+  height: 50px;
+  min-width: 250px;
+  width: 100%;
+  max-width: 300px;
+  text-align: center;
+  background-color: transparent;
+  box-sizing: border-box;
+  border: 3px solid;
+  @include themed() {
+    color: t($text);
+    border-color: t($border);
+  }
+  @include transition(all 0.4s ease);
+
+  &:hover {
+    @include themed() {
+      color: t($text-secondary);
+      background-color: t($hover);
+    }
+  }
+
+  a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+  }
+
+  p {
+    font-size: 2em;
+    margin: 0;
+  }
+}
