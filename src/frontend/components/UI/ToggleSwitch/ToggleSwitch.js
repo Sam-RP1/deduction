@@ -22,7 +22,7 @@ ToggleSwitch.propTypes = {
 }
 
 ToggleSwitch.defaultProps = {
-  function: () => console.log("[TOGGLE SWITCH] undefined function, using default props.")
+  function: () => console.log("[TOGGLE SWITCH] undefined toggle switch function")
 };
 
 export default ToggleSwitch;
