@@ -1,0 +1,25 @@
+@import './partials/color-themes';
+
+body {
+  font-family: 'Share Tech', sans-serif;
+  height: auto;
+  width: 100%;
+  margin: 0;
+}
+
+main {
+  min-height: 100vh;
+}
+
+.theme {
+  min-height: inherit;
+  min-width: 100%;
+}
+
+.test {
+  height: 30px;
+  width: 30px;
+  @include themed() {
+    background-color: t($bg);
+  }
+}
