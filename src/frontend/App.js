@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 
+import ContentContainer from './components/UI/ContentContainer/ContentContainer'
+import MainMenu from './components/MainMenu/MainMenu';
 import Footer from './components/Footer/Footer';
 
 const App = () => {
@@ -12,8 +14,12 @@ const App = () => {
 
   return (
     <div className={"theme " + (isDarkTheme ? "theme--dark" : "theme--default")}>
-    <section className="test"></section>
+    <div className="base">
+    <ContentContainer opClasses={"content-container__center content-container__column"}>
+    <MainMenu />
+    </ContentContainer>
     <Footer themeToggle={() => toggleTheme()} />
+    </div>
     </div>
   );
 }
