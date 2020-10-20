@@ -1,0 +1,59 @@
+@use '../../styles/base';
+@import '../../styles/mixins/transition';
+@import '../../styles/mixins/transform';
+
+.footer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 80px;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px 16px;
+  background-color: base.$secondary-black;
+
+  &__row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    p {
+      font-size: 1.1em;
+      margin: 0;
+    }
+  }
+
+  &__settings {
+    color: #fff;
+
+    &__toggle-switch-wrapper {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+
+      p {
+        margin-right: 10px;
+      }
+    }
+
+    .fa-cog {
+      font-size: 1.5em;
+      cursor: pointer;
+      @include transition(0.3s);
+
+      &:hover {
+        @include transform(rotate(120deg))
+      }
+    }
+  }
+
+  &__info {
+    color: base.$dark-grey;
+  }
+}
