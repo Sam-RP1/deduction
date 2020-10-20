@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 
 import ToggleSwitch from '../UI/ToggleSwitch/ToggleSwitch';
 
-import '../../styles/root.scss';
 import './Footer.scss';
 
 const Footer = (props) => {
