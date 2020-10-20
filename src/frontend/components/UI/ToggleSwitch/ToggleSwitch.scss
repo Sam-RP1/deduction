@@ -1,0 +1,46 @@
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  height: 30px;
+  width: 65px;
+
+  span {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    box-sizing: border-box;
+    border: 2px solid #fff;
+    border-radius: 15px;
+    background-color: #c7c7c7;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+
+  span:before {
+    position: absolute;
+    content: "";
+    height: 24px;
+    width: 24px;
+    top: 1px;
+    left: 2px;
+    border-radius: 50%;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+
+  &.active {
+    span {
+      background-color: #2eb423;
+    }
+
+    span:before {
+      -webkit-transform: translateX(33px);
+      -ms-transform: translateX(33px);
+      transform: translateX(33px);
+    }
+  }
+}
