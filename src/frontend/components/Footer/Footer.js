@@ -8,7 +8,7 @@ import './Footer.scss';
 
 const Footer = (props) => {
   return (
-    <section className="footer">
+    <footer className="footer">
       <div className="footer__row footer__settings">
         <div className="footer__settings__toggle-switch-wrapper">
           <p>Toggle Dark Mode</p>
@@ -21,7 +21,7 @@ const Footer = (props) => {
         <p>Developed by <a href="http://srenshawpanting.co.uk/"><u>SRP Designs</u></a></p>
         <p><a href=""><u>Donate here</u></a></p>
       </div>
-    </section>
+    </footer>
   )
 }
 
