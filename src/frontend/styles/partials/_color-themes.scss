@@ -6,6 +6,7 @@ $text-secondary: 'text-secondary';
 $text-red: 'text-red';
 $text-blue: 'text-blue';
 $hover: 'hover';
+$selected: 'selected';
 $border: 'border';
 
 $themes: (
@@ -16,6 +17,7 @@ $themes: (
     text-red: base.$text--red--light,
     text-blue: base.$text--blue--light,
     hover: base.$hover--light,
+    selected: base.$selected,
     border: base.$border--light
   ),
   dark: (
@@ -25,6 +27,7 @@ $themes: (
     text-red: base.$text--red--dark,
     text-blue: base.$text--blue--dark,
     hover: base.$hover--dark,
+    selected: base.$selected,
     border: base.$border--dark
   ),
 );
