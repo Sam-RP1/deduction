@@ -6,7 +6,7 @@ import NavButton from '../UI/Buttons/NavButton/NavButton';
 import '../../styles/root.scss';
 import './MainMenu.scss';
 
-const MainMenu = () => {
+const MainMenu = React.memo(() => {
   const menuButtons = [
     { title: "Start Game", route: "/startgame", function: () => console.log("TEMP BTN FUNC") },
     { title: "Join Game", route: "/joingame", function: () => console.log("TEMP BTN FUNC") },
@@ -38,6 +38,6 @@ const MainMenu = () => {
     </div>
     </section>
   )
-}
+})
 
 export default MainMenu;
