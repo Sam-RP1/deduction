@@ -4,3 +4,10 @@
   -o-transition: $property;
   transition: $property;
 }
+
+@mixin transition-theme($properties...) {
+  -webkit-transition: $properties;
+  -ms-transition: $properties;
+  -o-transition: $properties;
+  transition: $properties;
+}
