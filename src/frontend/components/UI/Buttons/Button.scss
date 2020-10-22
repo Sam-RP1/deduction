@@ -2,8 +2,12 @@
 @import '../../../styles/mixins/transition';
 
 .btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
   height: 50px;
-  min-width: 250px;
+  min-width: 230px;
   width: 100%;
   max-width: 300px;
   text-align: center;
@@ -34,5 +38,27 @@
   p {
     font-size: 2em;
     margin: 0;
+  }
+
+  &__red {
+    @include themed() {
+      color: t($text-red);
+    }
+    &:hover {
+      @include themed() {
+        background-color: t($text-red);
+      }
+    }
+  }
+
+  &__blue {
+    @include themed() {
+      color: t($text-blue);
+    }
+    &:hover {
+      @include themed() {
+        background-color: t($text-blue);
+      }
+    }
   }
 }
