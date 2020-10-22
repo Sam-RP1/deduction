@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import ToggleSwitch from '../UI/ToggleSwitch/ToggleSwitch';
 import NavButton from '../UI/Buttons/NavButton/NavButton';
@@ -7,10 +7,26 @@ import '../../styles/root.scss';
 import './SetupMenu.scss';
 
 const SetupMenu = () => {
+  const [selectedWordGroup, setSelectedWordGroup] = useState(null);
+
   const wordGroups = [
     { id: "eng-standard", title: "english" },
     { id: "tbd", title: "tbd" }
   ];
+
+  const wordGroupHandler = (id) => {
+    if (id !== selectedWordGroup && selectedWordGroup !== null) {
+      const prevSelected = document.getElementById(selectedWordGroup);
+      const curSelected = document.getElementById(id);
+      prevSelected.setAttribute('aria-checked', "false");
+      curSelected.setAttribute('aria-checked', "true");
+      setSelectedWordGroup(id);
+    } else if (id !== selectedWordGroup && selectedWordGroup === null) {
+      const curSelected = document.getElementById(id);
+      curSelected.setAttribute('aria-checked', "true");
+      setSelectedWordGroup(id);
+    }
+  }
 
   return (
     <section className="setup-menu">
@@ -37,7 +53,7 @@ const SetupMenu = () => {
     <div className="setup-menu__option__word-select__container">
     {wordGroups.map(item => {
       return (
-        <div key={item.id} role="checkbox" className="setup-menu__option__word-select__word-brick">
+        <div key={item.id} id={item.id} role="checkbox" aria-checked="false" onClick={() => {wordGroupHandler(item.id);}} className="setup-menu__option__word-select__word-brick">
         <p>{item.title}</p>
         </div>
       )
