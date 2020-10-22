@@ -1,0 +1,88 @@
+@import '../../styles/partials/color-themes';
+@import '../../styles/mixins/transition';
+
+%flex-center-column {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.deduction {
+  @extend %flex-center-column;
+  min-height: calc(100vh - 32px - 80px);;
+  width: 100%;
+
+  &__title {
+    height: 90px;
+    margin: 0;
+    font-size: 5em;
+    font-weight: 400;
+    @include themed() {
+      color: t($text);
+    }
+    @include transition-theme(color 0.4s ease);
+
+    @media screen and (max-width: 350px) {
+      font-size: 4.5em;
+    }
+  }
+
+  &__gameboard-container {
+    @extend %flex-center-column;
+    height: auto;
+    width: 100%;
+    margin-bottom: 25px;
+
+    &__information {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      height: auto;
+      width: 100%;
+      margin-bottom: 5px;
+      @include themed() {
+        color: t($text);
+      }
+      @include transition(color 0.4s ease);
+
+      p {
+        margin: 0;
+        font-size: 1.5em;
+
+        &:nth-child(1) {
+          text-align: left;
+        }
+        &:nth-child(2) {
+          text-align: center;
+        }
+        &:nth-child(3) {
+          text-align: right;
+        }
+      }
+
+      .blue-txt {
+        @include themed() {
+          color: t($text-blue);
+        }
+      }
+
+      .red-txt {
+        @include themed() {
+          color: t($text-red);
+        }
+      }
+    }
+
+    @media screen and (min-width: 768px) {
+      width: 65%;
+    }
+  }
+  @media screen and (min-width: 768px) {
+    flex-direction: row-reverse;
+
+    .game-controls {
+      width: 35%;
+    }
+  }
+}
