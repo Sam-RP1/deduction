@@ -1,3 +1,4 @@
+@use '../../styles/base';
 @import '../../styles/partials/color-themes';
 @import '../../styles/mixins/transition';
 
@@ -16,13 +17,17 @@
   @include themed() {
     color: t($text);
   }
-  @include transition-theme(color 0.4s ease, border-color 0.4s ease);
 
   &__title {
     margin: 0;
     font-size: 5em;
     font-weight: 400;
     margin-bottom: 25px;
+    @include transition-theme(color 0.4s ease);
+
+    @media screen and (max-width: 350px) {
+      font-size: 4.5em;
+    }
   }
 
   &__option {
@@ -30,11 +35,12 @@
     flex-direction: column;
     height: auto;
     width: 100%;
-    max-width: 900px;
+    max-width: 600px;
     margin-bottom: 25px;
-
+    
     h3, p {
       margin: 0;
+      @include transition-theme(color 0.4s ease);
     }
 
     h3 {
@@ -66,12 +72,9 @@
         @extend %flex-center-column;
         cursor: pointer;
         position: relative;
-        min-height: 40px;
-        height: auto;
-        max-height: 60px;
+        height: 50px;
         min-width: 90px;
         width: auto;
-        max-width: 100%;
         margin-right: 10px;
         box-sizing: border-box;
         padding: 5px;
@@ -80,6 +83,13 @@
           border-color: t($border);
         }
         @include transition-theme(border-color 0.4s ease, background-color 0.3s ease);
+
+        &[aria-checked="true"] {
+          @include themed() {
+            color: t($text-secondary);
+          }
+          background-color: base.$selected;
+        }
 
         p {
           text-transform: uppercase;
