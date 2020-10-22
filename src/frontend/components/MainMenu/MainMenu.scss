@@ -14,18 +14,24 @@
   width: 100%;
 
   &__title {
+    height: 90px;
     margin: 0;
     font-size: 5em;
     font-weight: 400;
     @include themed() {
       color: t($text);
     }
-    @include transition(color 0.4s ease);
+    @include transition-theme(color 0.4s ease);
+
+    @media screen and (max-width: 350px) {
+      font-size: 4.5em;
+    }
   }
 
   &__nav-btns-container {
     @extend %flex-center-column;
     margin-top: 30px;
+    width: 100%;
 
     div {
       &:nth-of-type(n) {
