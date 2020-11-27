@@ -5,6 +5,6 @@ const main = express.Router();
 
 module.exports = main;
 
-main.get(['/', '/startgame', '/joingame', '/rules'], (req, res) => {
+main.get(['/', '/creategame', '/joingame', '/rules', '/settings', '/game'], (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
