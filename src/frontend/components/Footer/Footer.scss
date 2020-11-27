@@ -3,53 +3,87 @@
 @import '../../styles/mixins/transform';
 
 .footer {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: 80px;
-  width: 100%;
-  box-sizing: border-box;
-  padding: 10px 16px;
-  background-color: base.$secondary-black;
-
-  &__row {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: space-between;
-    align-items: center;
-
-    p {
-      font-size: 1.1em;
-      margin: 0;
-    }
-  }
-
-  &__settings {
-    color: #fff;
-
-    &__toggle-switch-wrapper {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: center;
-
-      p {
-        margin-right: 10px;
-      }
+    height: 80px;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px 16px;
+    background-color: base.$secondary-black;
+    @media screen and (min-width: 768px) {
+        flex-direction: row-reverse;
+        height: 50px;
     }
 
-    .fa-cog {
-      font-size: 1.5em;
-      cursor: pointer;
-      @include transition(0.3s);
+    &__settings,
+    &__info {
+        &--row {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
 
-      &:hover {
-        @include transform(rotate(120deg))
-      }
+            p {
+                font-size: 1.1em;
+                margin: 0;
+            }
+
+            @media screen and (min-width: 768px) {
+                div,
+                p {
+                    &:nth-of-type(1) {
+                        margin-right: 60px;
+                    }
+                }
+
+                div p {
+                    &:nth-of-type(1) {
+                        margin-right: 10px;
+                    }
+                }
+
+                .toggle-switch {
+                    margin-right: 0 !important;
+                }
+            }
+        }
     }
-  }
 
-  &__info {
-    color: base.$dark-grey;
-  }
+    &__settings {
+        color: #fff;
+
+        &__toggle-switch-wrapper {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+
+            p {
+                margin-right: 10px;
+            }
+        }
+
+        .fa-cog {
+            font-size: 1.5em;
+            cursor: pointer;
+            @include transition(0.3s);
+
+            &:hover {
+                @include transform(rotate(120deg));
+            }
+        }
+    }
+
+    &__info {
+        color: base.$dark-grey;
+
+        a {
+            @include transition(0.3s);
+
+            &:hover {
+                color: base.$text--dark;
+            }
+        }
+    }
 }

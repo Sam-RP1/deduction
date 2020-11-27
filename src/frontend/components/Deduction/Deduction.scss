@@ -10,22 +10,14 @@
 
 .deduction {
   @extend %flex-center-column;
-  min-height: calc(100vh - 32px - 80px);;
+  height: 100%;
   width: 100%;
 
-  &__title {
-    height: 90px;
-    margin: 0;
-    font-size: 5em;
-    font-weight: 400;
-    @include themed() {
-      color: t($text);
-    }
-    @include transition-theme(color 0.4s ease);
-
-    @media screen and (max-width: 350px) {
-      font-size: 4.5em;
-    }
+  &__gameboard {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    width: 100%;
   }
 
   &__gameboard-container {
@@ -76,10 +68,18 @@
 
     @media screen and (min-width: 768px) {
       width: 65%;
+      margin-bottom: 0;
+    }
+
+    @media screen and (min-width: 1300px) {
+      width: 50%;
     }
   }
+
   @media screen and (min-width: 768px) {
-    flex-direction: row-reverse;
+    &__gameboard {
+      flex-direction: row-reverse;
+    }
 
     .game-controls {
       width: 35%;

@@ -1,7 +1,7 @@
 .toggle-switch {
   position: relative;
   display: inline-block;
-  height: 30px;
+  height: 28px;
   width: 65px;
 
   span {
@@ -13,7 +13,7 @@
     bottom: 0;
     box-sizing: border-box;
     border: 2px solid #fff;
-    border-radius: 15px;
+    border-radius: 14px;
     background-color: #c7c7c7;
     -webkit-transition: .4s;
     transition: .4s;
@@ -22,10 +22,10 @@
   span:before {
     position: absolute;
     content: "";
-    height: 24px;
-    width: 24px;
+    height: 22px;
+    width: 22px;
     top: 1px;
-    left: 2px;
+    left: 1px;
     border-radius: 50%;
     background-color: white;
     -webkit-transition: .4s;
@@ -38,9 +38,9 @@
     }
 
     span:before {
-      -webkit-transform: translateX(33px);
-      -ms-transform: translateX(33px);
-      transform: translateX(33px);
+      -webkit-transform: translateX(36px);
+      -ms-transform: translateX(36px);
+      transform: translateX(36px);
     }
   }
 }
