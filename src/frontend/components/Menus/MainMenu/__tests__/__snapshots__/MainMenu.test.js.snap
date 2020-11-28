@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<MainMenu /> | Component should render correctly 1`] = `
+<section
+  className="main-menu"
+>
+  <Title
+    title="Deduction"
+  />
+  <div
+    className="main-menu__content"
+  >
+    <NavButton
+      function={[Function]}
+      key="0"
+      opClasses=""
+      route="/creategame"
+      title="Create Game"
+    />
+    <NavButton
+      function={[Function]}
+      key="1"
+      opClasses=""
+      route="/joingame"
+      title="Join Game"
+    />
+    <NavButton
+      function={[Function]}
+      key="2"
+      opClasses=""
+      route="/rules"
+      title="Rules"
+    />
+  </div>
+</section>
+`;
