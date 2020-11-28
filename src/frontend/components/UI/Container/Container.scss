@@ -1,0 +1,29 @@
+@import '../../../styles/partials/color-themes';
+@import '../../../styles/mixins/transition';
+
+.container {
+    display: flex;
+    min-height: calc(100vh - 80px);
+    width: 100%;
+    box-sizing: border-box;
+    padding: 30px 24px;
+    overflow: hidden;
+    @include transition(all 0.4s ease);
+
+    @include themed() {
+        background-color: t($bg);
+    }
+
+    &--center {
+        justify-content: center;
+        align-items: center;
+    }
+
+    &--column {
+        flex-direction: column;
+    }
+
+    @media screen and (min-width: 768px) {
+        min-height: calc(100vh - 50px);
+    }
+}
