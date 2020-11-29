@@ -1,27 +1,17 @@
 import React, { useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 
 import * as actionTypes from '../../store/actions';
 
 import PresSetupMenu from '../../components/Menus/SetupMenu/SetupMenu';
 
 const CreateGameMenu = () => {
-    const history = useHistory();
-    const wordGroups = [
-        { id: 'eng-standard', title: 'english' },
-        { id: 'tbd', title: 'tbd' },
-    ];
-
     // Selectors
     const turnTimer = useSelector((state) => state.createGameMenu.turnTimer);
     const quickGame = useSelector((state) => state.createGameMenu.quickGame);
     const wordGroup = useSelector((state) => state.createGameMenu.wordGroup);
-    const customWords = useSelector((state) => state.createGameMenu.customWords);
-    console.log('Turn Timer: ' + turnTimer);
-    console.log('Quick game: ' + quickGame);
-    console.log('Word Group: ' + wordGroup);
-    console.log('Custom Words: ' + customWords);
+    const customWords = useSelector((state) => state.createGameMenu.customWords, shallowEqual);
 
     // Actions
     const dispatch = useDispatch();
@@ -34,6 +24,14 @@ const CreateGameMenu = () => {
     const updateCustomWords = useCallback((words) =>
         dispatch({ type: actionTypes.UPDATE_CUSTOM_WORDS, payload: { words: words } })
     );
+    const resetState = useCallback(() => dispatch({ type: actionTypes.RESET_STATE }), [dispatch]);
+
+    // Vars
+    const history = useHistory();
+    const wordGroups = [
+        { id: 'eng-standard', title: 'english' },
+        { id: 'tbd', title: 'tbd' },
+    ];
 
     // Functions
     const wordGroupHandler = (id) => {
@@ -61,11 +59,18 @@ const CreateGameMenu = () => {
 
     const submitHandler = () => {
         console.log('SUBMITTED');
-        if (true) {
-            history, push('/game');
-        }
+        history.push('/game');
+        const gameSettings = {
+            turnTimer: turnTimer,
+            quickGame: quickGame,
+            wordGroup: wordGroup,
+            customWords: customWords,
+        };
+        resetState();
+        console.log(gameSettings);
     };
 
+    // Render
     return (
         <PresSetupMenu
             toggleTurnTimer={toggleTurnTimer}
@@ -73,6 +78,7 @@ const CreateGameMenu = () => {
             wordGroups={wordGroups}
             wordGroupHandler={wordGroupHandler}
             customWordsHandler={customWordsHandler}
+            numCustomWords={customWords.length}
             submitHandler={submitHandler}
         />
     );
