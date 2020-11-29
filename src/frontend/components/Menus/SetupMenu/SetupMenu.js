@@ -18,7 +18,7 @@ const SetupMenu = (props) => {
             <div className='setup-menu__option'>
                 <div className='setup-menu__option__row'>
                     <h3>Turn Timer:</h3>
-                    <ToggleSwitch function={props.toggleTurnTimer} />
+                    <ToggleSwitch function={() => console.log('[TURN TIMER] placeholder function')} />
                 </div>
                 <p>If enabled teams have one minute to complete their turn.</p>
             </div>
@@ -26,7 +26,7 @@ const SetupMenu = (props) => {
             <div className='setup-menu__option'>
                 <div className='setup-menu__option__row'>
                     <h3>Quick Game:</h3>
-                    <ToggleSwitch function={props.toggleQuickGame} />
+                    <ToggleSwitch function={() => console.log('[TURN TIMER] placeholder function')} />
                 </div>
                 <p>
                     If enabled games will last upto six minutes before ending & teams have 30 seconds to complete each
@@ -60,7 +60,7 @@ const SetupMenu = (props) => {
                 <h3>OR</h3>
                 <h3>Enter Custom Words...</h3>
                 <p>Enter 25 words with a , (comma) seperating each word.</p>
-                <textarea onChange={props.customWordsHandler} />
+                <textarea />
             </div>
 
             <NavButton title={'Go!'} route={'/game'} />
@@ -69,30 +69,14 @@ const SetupMenu = (props) => {
 };
 
 SetupMenu.propTypes = {
-    toggleTurnTimer: PropTypes.func.isRequired,
-    toggleQuickGame: PropTypes.func.isRequired,
     wordGroups: PropTypes.array.isRequired,
     wordGroupHandler: PropTypes.func.isRequired,
-    customWordsHandler: PropTypes.func.isRequired,
-    submitHandler: PropTypes.func.isRequired,
 };
 
 SetupMenu.defaultProps = {
-    toggleTurnTimer: () => {
-        console.log('[TURN TIMER] toggleTurnTimer err');
-    },
-    toggleQuickGame: () => {
-        console.log('[QUICK GAME] toggleQuickGame err');
-    },
     wordGroups: [{ id: 'err', title: 'ERROR :(' }],
     wordGroupHandler: () => {
-        console.log('[WORD GROUP] wordGroupHandler err');
-    },
-    customWordsHandler: () => {
-        console.log('[CUSTOM WORDS] customWordsHandler err');
-    },
-    submitHandler: () => {
-        console.log('[SUBMIT BTN] submitHandler err');
+        console.log('[CREATE GAME MENU] wordGroupHandler error');
     },
 };
 

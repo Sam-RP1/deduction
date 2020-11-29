@@ -24,20 +24,20 @@ const App = () => {
     return (
         <div className={'theme ' + (isDarkTheme ? 'theme--dark' : 'theme--default')}>
             <BrowserRouter>
+                <Route
+                    render={({ location }) => {
+                        return location.pathname !== '/' ? <BackButton /> : null;
+                    }}
+                />
                 <div className='base'>
-                    <Route
-                        render={({ location }) => {
-                            return location.pathname !== '/' ? <BackButton /> : null;
-                        }}
-                    />
                     <Container opClasses={'container--center container--column'}>
                         <Route path='/game' component={Deduction} />
+                        <Route path='/settings' component={Settings} />
                         <Route path='/rules' component={Rules} />
                         <Route path='/joingame' component={JoinGameMenu} />
                         <Route path='/creategame' component={CreateGameMenu} />
                         <Route path='/' exact component={MainMenu} />
                     </Container>
-                    <Settings />
                     <Footer themeToggle={() => toggleTheme()} />
                 </div>
             </BrowserRouter>
