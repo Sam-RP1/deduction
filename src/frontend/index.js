@@ -1,27 +1,30 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
+import { createStore, combineReducers } from 'redux';
+
+// Imports
+import App from './App';
+import createGameMenu from './store/reducers/createGameMenu';
+import reducer from './store/reducers/reducer.js';
 
 // Styles
 import './styles/root.scss';
 
-// Imports
-import App from './App';
-import reducer from './store/reducer.js';
+const rootReducer = combineReducers({
+    createGameMenu: createGameMenu,
+    reducer: reducer,
+});
 
 // Redux Store
-const store = createStore(reducer);
+const store = createStore(rootReducer);
 
 // Construct App
 const app = (
-  <Provider store={store}>
-  <BrowserRouter>
-  <App />
-  </BrowserRouter>
-  </Provider>
-)
+    <Provider store={store}>
+        <App />
+    </Provider>
+);
 
 // Render
 ReactDOM.render(app, document.getElementById('root'));
