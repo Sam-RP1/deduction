@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 // Imports
 import Title from '../../UI/Title/Title';
 import ToggleSwitch from '../../UI/ToggleSwitch/ToggleSwitch';
-import NavButton from '../../UI/Buttons/NavButton/NavButton';
+import Button from '../../UI/Buttons/Button/Button';
 
 // Styles
 import './SetupMenu.scss';
@@ -60,10 +60,11 @@ const SetupMenu = (props) => {
                 <h3>OR</h3>
                 <h3>Enter Custom Words...</h3>
                 <p>Enter 25 words with a , (comma) seperating each word.</p>
+                <p>{props.numCustomWords} / 25</p>
                 <textarea onChange={props.customWordsHandler} />
             </div>
 
-            <NavButton title={'Go!'} route={'/game'} />
+            <Button title={'Go!'} function={() => props.submitHandler()} />
         </section>
     );
 };
@@ -74,6 +75,7 @@ SetupMenu.propTypes = {
     wordGroups: PropTypes.array.isRequired,
     wordGroupHandler: PropTypes.func.isRequired,
     customWordsHandler: PropTypes.func.isRequired,
+    numCustomWords: PropTypes.number.isRequired,
     submitHandler: PropTypes.func.isRequired,
 };
 
@@ -91,6 +93,7 @@ SetupMenu.defaultProps = {
     customWordsHandler: () => {
         console.log('[CUSTOM WORDS] customWordsHandler err');
     },
+    numCustomWords: 0,
     submitHandler: () => {
         console.log('[SUBMIT BTN] submitHandler err');
     },
