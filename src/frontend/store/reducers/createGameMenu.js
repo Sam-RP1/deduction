@@ -29,6 +29,13 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 customWords: action.payload.words,
             };
+        case actionTypes.RESET_STATE:
+            return {
+                turnTimer: false,
+                quickGame: false,
+                wordGroup: null,
+                customWords: [],
+            };
         default:
             return state;
     }
