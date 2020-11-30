@@ -93,12 +93,45 @@
 
         &__text-input {
             @extend .setup-menu__option;
-            h3:first-child {
-                margin-bottom: 20px;
-            }
-
             h3 {
                 margin-bottom: 4px;
+                &:first-child {
+                    margin-bottom: 20px;
+                }
+            }
+            input {
+                font-size: 1.1em;
+            }
+
+            &__bricks {
+                display: flex;
+                flex-flow: row wrap;
+
+                div {
+                    cursor: pointer;
+                    position: relative;
+                    height: auto;
+                    width: auto;
+                    margin: 5px 10px 0 0;
+                    box-sizing: border-box;
+                    padding: 5px;
+                    border: 3px solid;
+                    @include themed() {
+                        border-color: t($border);
+                    }
+                    @include transition-theme(border-color 0.4s ease, background-color 0.3s ease);
+
+                    p {
+                        text-transform: uppercase;
+                    }
+
+                    &:hover {
+                        @include themed() {
+                            color: t($text-secondary);
+                        }
+                        background-color: base.$remove;
+                    }
+                }
             }
         }
     }
