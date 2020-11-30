@@ -74,8 +74,11 @@
                 &[aria-checked='true'] {
                     @include themed() {
                         color: t($text-secondary);
+                        background-color: base.$selected;
+                        &:hover {
+                            background-color: base.$remove;
+                        }
                     }
-                    background-color: base.$selected;
                 }
 
                 p {
@@ -99,8 +102,11 @@
                     margin-bottom: 20px;
                 }
             }
+
             input {
                 font-size: 1.1em;
+                margin-top: 5px;
+                margin-bottom: 5px;
             }
 
             &__bricks {
