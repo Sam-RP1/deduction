@@ -9,7 +9,7 @@
     align-items: center;
 }
 
-.setup-menu {
+.create-game-menu {
     @extend %flex-center-column;
     height: 100%;
     width: 100%;
@@ -45,7 +45,7 @@
         }
 
         &__selection {
-            @extend .setup-menu__option;
+            @extend .create-game-menu__option;
             h3 {
                 margin-bottom: 6px;
             }
@@ -95,7 +95,7 @@
         }
 
         &__text-input {
-            @extend .setup-menu__option;
+            @extend .create-game-menu__option;
             h3 {
                 margin-bottom: 4px;
                 &:first-child {
