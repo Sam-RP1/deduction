@@ -24,11 +24,18 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 wordGroup: action.payload.selectedWordGroup,
             };
-        case actionTypes.UPDATE_CUSTOM_WORDS:
+        case actionTypes.ADD_CUSTOM_WORD:
             return {
                 ...state,
-                customWords: action.payload.words,
+                customWords: state.customWords.concat(action.payload.word),
             };
+        case actionTypes.DELETE_CUSTOM_WORD: {
+            const newCustomWords = state.customWords.filter((word) => word !== action.payload.word);
+            return {
+                ...state,
+                customWords: newCustomWords,
+            };
+        }
         case actionTypes.RESET_STATE:
             return {
                 turnTimer: false,
