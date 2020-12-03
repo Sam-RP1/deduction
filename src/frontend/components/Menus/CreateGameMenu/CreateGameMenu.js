@@ -18,7 +18,7 @@ const CreateGameMenu = (props) => {
             <div className='create-game-menu__option'>
                 <div className='create-game-menu__option__row'>
                     <h3>Turn Timer:</h3>
-                    <ToggleSwitch function={props.toggleTurnTimer} />
+                    <ToggleSwitch toggle={props.turnTimer} function={props.toggleTurnTimer} />
                 </div>
                 <p>If enabled teams have one minute to complete their turn.</p>
             </div>
@@ -26,7 +26,7 @@ const CreateGameMenu = (props) => {
             <div className='create-game-menu__option'>
                 <div className='create-game-menu__option__row'>
                     <h3>Quick Game:</h3>
-                    <ToggleSwitch function={props.toggleQuickGame} />
+                    <ToggleSwitch toggle={props.quickGame} function={props.toggleQuickGame} />
                 </div>
                 <p>
                     If enabled games will last upto six minutes before ending & teams have 30 seconds to complete each
@@ -43,7 +43,7 @@ const CreateGameMenu = (props) => {
                                 key={item.id}
                                 id={item.id}
                                 role='checkbox'
-                                aria-checked='false'
+                                aria-checked={props.selectedWordGroup === item.id ? 'true' : 'false'}
                                 onClick={() => {
                                     props.wordGroupHandler(item.id);
                                 }}
@@ -78,7 +78,7 @@ const CreateGameMenu = (props) => {
                             <div
                                 key={word}
                                 onClick={() => {
-                                    props.deleteCustomWordHandler(word);
+                                    props.deleteCustomWord(word);
                                 }}
                             >
                                 <p>{word}</p>
@@ -96,22 +96,27 @@ const CreateGameMenu = (props) => {
 };
 
 CreateGameMenu.propTypes = {
+    turnTimer: PropTypes.bool.isRequired,
     toggleTurnTimer: PropTypes.func.isRequired,
+    quickGame: PropTypes.bool.isRequired,
     toggleQuickGame: PropTypes.func.isRequired,
+    selectedWordGroup: PropTypes.string.isRequired,
     wordGroups: PropTypes.array.isRequired,
     wordGroupHandler: PropTypes.func.isRequired,
     customWords: PropTypes.array.isRequired,
     addCustomWordHandler: PropTypes.func.isRequired,
-    deleteCustomWordHandler: PropTypes.func.isRequired,
+    deleteCustomWord: PropTypes.func.isRequired,
     customWordsErrMsg: PropTypes.object,
     submitHandler: PropTypes.func.isRequired,
     submitErrMsg: PropTypes.object,
 };
 
 CreateGameMenu.defaultProps = {
+    turnTimer: false,
     toggleTurnTimer: () => {
         console.log('[TURN TIMER] toggleTurnTimer err');
     },
+    quickGame: false,
     toggleQuickGame: () => {
         console.log('[QUICK GAME] toggleQuickGame err');
     },
@@ -123,8 +128,8 @@ CreateGameMenu.defaultProps = {
     addCustomWordHandler: () => {
         console.log('[CUSTOM WORDS] addCustomWordHandler err');
     },
-    deleteCustomWordHandler: () => {
-        console.log('[CUSTOM WORDS] deleteCustomWordHandler err');
+    deleteCustomWord: () => {
+        console.log('[CUSTOM WORDS] deleteCustomWord err');
     },
     submitHandler: () => {
         console.log('[SUBMIT BTN] submitHandler err');
