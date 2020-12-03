@@ -5,8 +5,8 @@ import Container from './components/UI/Container/Container';
 import MainMenu from './containers/MainMenu/MainMenu';
 import CreateGameMenu from './containers/CreateGameMenu/CreateGameMenu';
 import JoinGameMenu from './containers/JoinGameMenu/JoinGameMenu';
-import Deduction from './components/Deduction/Deduction'; // eslint-disable-line
-import Rules from './components/Menus/Rules/Rules'; // eslint-disable-line
+import Game from './components/Game/Game';
+import Rules from './components/Menus/Rules/Rules';
 import Settings from './components/Settings/Settings'; // eslint-disable-line
 import BackButton from './components/UI/Buttons/BackButton/BackButton';
 import Footer from './components/Footer/Footer';
@@ -31,7 +31,7 @@ const App = () => {
                         }}
                     />
                     <Container opClasses={'container--center container--column'}>
-                        <Route path='/game' component={Deduction} />
+                        <Route path='/game' component={Game} />
                         <Route path='/rules' component={Rules} />
                         <Route path='/joingame' component={JoinGameMenu} />
                         <Route path='/creategame' component={CreateGameMenu} />
