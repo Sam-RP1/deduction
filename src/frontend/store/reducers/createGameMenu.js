@@ -1,9 +1,9 @@
-import * as actionTypes from '../actions';
+import * as actionTypes from '../actions/actionTypes';
 
 const initialState = {
     turnTimer: false,
     quickGame: false,
-    wordGroup: null,
+    wordGroup: '',
     customWords: [],
 };
 
@@ -40,7 +40,7 @@ const reducer = (state = initialState, action) => {
             return {
                 turnTimer: false,
                 quickGame: false,
-                wordGroup: null,
+                wordGroup: '',
                 customWords: [],
             };
         default:
