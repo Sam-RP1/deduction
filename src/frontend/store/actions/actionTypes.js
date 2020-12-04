@@ -5,3 +5,4 @@ export const ADD_CUSTOM_WORD = 'ADD_CUSTOM_WORD';
 export const DELETE_CUSTOM_WORD = 'DELETE_CUSTOM_WORD';
 export const SET_GAME_SETTINGS = 'SET_GAME_SETTINGS';
 export const RESET_STATE = 'RESET_STATE';
+export const SET_LINK = 'SET_LINK';

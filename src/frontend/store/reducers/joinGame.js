@@ -6,10 +6,10 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
+        case actionTypes.SET_LINK:
+            return { joinLink: action.payload.link };
         case actionTypes.RESET_STATE:
-            return {
-                joinLink: false,
-            };
+            return { joinLink: false };
         default:
             return state;
     }

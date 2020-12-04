@@ -3,13 +3,13 @@ import { useHistory } from 'react-router-dom';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 
 // Redux Action Types
-import * as cgm from '../../store/actions/createGameMenu';
+import * as cgm from '../../store/actions/createGame';
 
 // Presentational Components
-import CreateGameCmpnt from '../../components/Menus/CreateGameMenu/CreateGameMenu';
+import CreateGameCmpnt from '../../components/Menus/CreateGame/CreateGame';
 
 // Container Component
-const CreateGameMenu = () => {
+const CreateGame = () => {
     // Redux Selectors
     const turnTimer = useSelector((state) => state.cgm.turnTimer);
     const quickGame = useSelector((state) => state.cgm.quickGame);
@@ -123,4 +123,4 @@ const CreateGameMenu = () => {
     );
 };
 
-export default CreateGameMenu;
+export default CreateGame;

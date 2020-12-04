@@ -6,14 +6,14 @@ import Title from '../../UI/Title/Title';
 import NavButton from '../../UI/Buttons/NavButton/NavButton';
 
 // Styles
-import './MainMenu.scss';
+import './Home.scss';
 
 // Presentational Component
-const MainMenu = (props) => {
+const Home = (props) => {
     return (
-        <section className='main-menu'>
+        <section className='home'>
             <Title title='Deduction' />
-            <div className='main-menu__content'>
+            <div className='home__content'>
                 {props.buttons.map((btn, i) => {
                     return <NavButton key={i} title={btn.title} route={btn.route} function={btn.function} />;
                 })}
@@ -22,12 +22,12 @@ const MainMenu = (props) => {
     );
 };
 
-MainMenu.propTypes = {
+Home.propTypes = {
     buttons: PropTypes.array.isRequired,
 };
 
-MainMenu.defaultProps = {
-    buttons: [{ title: 'Error', route: '/', function: () => console.log('[MAIN MENU BTN] error') }],
+Home.defaultProps = {
+    buttons: [{ title: 'Error', route: '/', function: () => console.log('[HOME BTN] error') }],
 };
 
-export default MainMenu;
+export default Home;

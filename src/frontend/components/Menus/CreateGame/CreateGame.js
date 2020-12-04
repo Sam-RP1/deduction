@@ -7,24 +7,24 @@ import ToggleSwitch from '../../UI/ToggleSwitch/ToggleSwitch';
 import Button from '../../UI/Buttons/Button/Button';
 
 // Styles
-import './CreateGameMenu.scss';
+import './CreateGame.scss';
 
 // Presentational Component
-const CreateGameMenu = (props) => {
+const CreateGame = (props) => {
     return (
-        <section className='create-game-menu'>
+        <section className='create-game'>
             <Title title='Deduction' />
 
-            <div className='create-game-menu__option'>
-                <div className='create-game-menu__option__row'>
+            <div className='create-game__option'>
+                <div className='create-game__option__row'>
                     <h3>Turn Timer:</h3>
                     <ToggleSwitch toggle={props.turnTimer} function={props.toggleTurnTimer} />
                 </div>
                 <p>If enabled teams have one minute to complete their turn.</p>
             </div>
 
-            <div className='create-game-menu__option'>
-                <div className='create-game-menu__option__row'>
+            <div className='create-game__option'>
+                <div className='create-game__option__row'>
                     <h3>Quick Game:</h3>
                     <ToggleSwitch toggle={props.quickGame} function={props.toggleQuickGame} />
                 </div>
@@ -34,9 +34,9 @@ const CreateGameMenu = (props) => {
                 </p>
             </div>
 
-            <div className='create-game-menu__option__selection'>
+            <div className='create-game__option__selection'>
                 <h3>Select a Word Group...</h3>
-                <div className='create-game-menu__option__selection__container'>
+                <div className='create-game__option__selection__container'>
                     {props.wordGroups.map((item) => {
                         return (
                             <div
@@ -47,7 +47,7 @@ const CreateGameMenu = (props) => {
                                 onClick={() => {
                                     props.wordGroupHandler(item.id);
                                 }}
-                                className='create-game-menu__option__selection__brick'
+                                className='create-game__option__selection__brick'
                             >
                                 <p>{item.title}</p>
                             </div>
@@ -56,7 +56,7 @@ const CreateGameMenu = (props) => {
                 </div>
             </div>
 
-            <div className='create-game-menu__option__text-input'>
+            <div className='create-game__option__text-input'>
                 <h3>OR</h3>
                 <h3>Enter Custom Words...</h3>
                 <p>Enter 25 words by typing one word at a time in the box below and then pressing your enter key.</p>
@@ -72,7 +72,7 @@ const CreateGameMenu = (props) => {
                     maxLength={30}
                 />
                 <p>{props.customWords.length} / 25</p>
-                <div className='create-game-menu__option__text-input__bricks'>
+                <div className='create-game__option__text-input__bricks'>
                     {props.customWords.map((word) => {
                         return (
                             <div
@@ -95,7 +95,7 @@ const CreateGameMenu = (props) => {
     );
 };
 
-CreateGameMenu.propTypes = {
+CreateGame.propTypes = {
     turnTimer: PropTypes.bool.isRequired,
     toggleTurnTimer: PropTypes.func.isRequired,
     quickGame: PropTypes.bool.isRequired,
@@ -111,7 +111,7 @@ CreateGameMenu.propTypes = {
     submitErrMsg: PropTypes.object,
 };
 
-CreateGameMenu.defaultProps = {
+CreateGame.defaultProps = {
     turnTimer: false,
     toggleTurnTimer: () => {
         console.log('[TURN TIMER] toggleTurnTimer err');
@@ -136,4 +136,4 @@ CreateGameMenu.defaultProps = {
     },
 };
 
-export default CreateGameMenu;
+export default CreateGame;

@@ -7,8 +7,8 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 
 // Imports
 import App from './App';
-import cgmReducer from './store/reducers/createGameMenu';
-import jgmReducer from './store/reducers/joinGameMenu';
+import cgmReducer from './store/reducers/createGame';
+import jgmReducer from './store/reducers/joinGame';
 import game from './store/reducers/game';
 
 // Styles
