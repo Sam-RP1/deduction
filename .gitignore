@@ -3,3 +3,6 @@
 /build
 notes.md
 .env
+/src/frontend/config
+firestore.indexes.json
+firestore.rules
