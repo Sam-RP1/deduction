@@ -5,7 +5,7 @@ import Container from './components/UI/Container/Container';
 import Home from './containers/Home/Home';
 import CreateGame from './containers/CreateGame/CreateGame';
 import JoinGame from './containers/JoinGame/JoinGame';
-import Game from './components/Game/Game';
+import Game from './containers/Game/Game';
 import Rules from './components/Menus/Rules/Rules';
 import Settings from './components/Settings/Settings'; // eslint-disable-line
 import BackButton from './components/UI/Buttons/BackButton/BackButton';
