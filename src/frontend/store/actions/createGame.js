@@ -10,9 +10,7 @@ firebase.initializeApp({
     authDomain: firebaseConfig.authDomain,
     projectId: firebaseConfig.projectId,
 });
-const fbFunctions = firebase.functions();
-
-// const db = firebase.firestore();
+// const fbFunctions = firebase.functions();
 
 export const toggleTurnTimer = () => {
     return { type: actionTypes.TOGGLE_TURN_TIMER };
@@ -34,46 +32,31 @@ export const deleteCustomWord = (word) => {
     return { type: actionTypes.DELETE_CUSTOM_WORD, payload: { word: word } };
 };
 
+export const resetCreateGameState = () => {
+    return { type: actionTypes.RESET_CREATE_GAME_STATE };
+};
+
 export const submitAction = (data) => {
-    return { type: actionTypes.SET_GAME_SETTINGS, payload: { gameData: data } };
+    return { type: actionTypes.SET_GAME_SETTINGS, payload: { gameSettings: data } };
 };
 
 export const submit = () => async (dispatch, getState) => {
-    // const cgmData = getState().cgm;
+    const cgmData = getState().cgm;
 
-    // const docRef = db.collection('test').doc('gameState');
+    const url = 'https://us-central1-deduction-158f9.cloudfunctions.net/deduction/createNewGame';
 
-    // await docRef.set(cgmData);
-    // dispatch(submitAction(cgmData));
-    // dispatch(resetState());
-
-    // db.collection('test')
-    //     .add(cgmData)
-    //     .then(function (docRef) {
-    //         console.log('Document written with ID: ', docRef.id);
-    //         dispatch(submitAction(cgmData));
-    //         dispatch(resetState());
-    //     })
-    //     .catch(function (error) {
-    //         console.error('Error adding document: ', error);
-    //     });
-
-    const addMessage = fbFunctions.httpsCallable('createNewGame');
-    addMessage({ text: messageText })
-        .then((result) => {
-            // Read result of the Cloud Function.
-            var sanitizedMessage = result.data.text;
-        })
-        .catch((error) => {
-            // Getting the Error details.
-            var code = error.code;
-            var message = error.message;
-            var details = error.details;
-            // ...
-        });
-    callable.js;
-};
-
-export const resetState = () => {
-    return { type: actionTypes.RESET_STATE };
+    const response = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            turnTimer: cgmData.turnTimer,
+            quickGame: cgmData.quickGame,
+            wordGroup: cgmData.wordGroup,
+            customWords: cgmData.customWords,
+        }),
+    });
+    const data = await response.json();
+    console.log(data);
+    dispatch(submitAction(data));
+    dispatch(resetCreateGameState());
 };
