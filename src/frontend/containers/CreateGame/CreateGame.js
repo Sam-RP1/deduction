@@ -72,9 +72,7 @@ const CreateGame = () => {
     };
 
     const submitHandler = () => {
-        if ((wordGroup !== '' && customWords.length === 0) || (wordGroup === null && customWords.length === 25)) {
-            console.log('SUBMITTED');
-
+        if ((wordGroup !== '' && customWords.length === 0) || (wordGroup === '' && customWords.length === 25)) {
             submitSettings();
             history.push('/game');
         } else {
