@@ -36,7 +36,7 @@ const reducer = (state = initialState, action) => {
                 customWords: newCustomWords,
             };
         }
-        case actionTypes.RESET_STATE:
+        case actionTypes.RESET_CREATE_GAME_STATE:
             return {
                 turnTimer: false,
                 quickGame: false,
