@@ -86,9 +86,8 @@ const CreateGame = (props) => {
                         );
                     })}
                 </div>
+                {props.submitErrMsg}
             </div>
-
-            {props.submitErrMsg}
 
             <Button title={'Go!'} function={props.submitHandler} />
         </section>
@@ -96,34 +95,44 @@ const CreateGame = (props) => {
 };
 
 CreateGame.propTypes = {
+    // Turn Timer
     turnTimer: PropTypes.bool.isRequired,
     toggleTurnTimer: PropTypes.func.isRequired,
+    // Quick Game
     quickGame: PropTypes.bool.isRequired,
     toggleQuickGame: PropTypes.func.isRequired,
+    // Word Group
     selectedWordGroup: PropTypes.string.isRequired,
     wordGroups: PropTypes.array.isRequired,
     wordGroupHandler: PropTypes.func.isRequired,
+    // Custom Words
     customWords: PropTypes.array.isRequired,
     addCustomWordHandler: PropTypes.func.isRequired,
     deleteCustomWord: PropTypes.func.isRequired,
-    customWordsErrMsg: PropTypes.object,
+    // Submit
     submitHandler: PropTypes.func.isRequired,
+    // Errors
+    customWordsErrMsg: PropTypes.object,
     submitErrMsg: PropTypes.object,
 };
 
 CreateGame.defaultProps = {
+    // Turn Timer
     turnTimer: false,
     toggleTurnTimer: () => {
         console.log('[TURN TIMER] toggleTurnTimer err');
     },
+    // Quick Game
     quickGame: false,
     toggleQuickGame: () => {
         console.log('[QUICK GAME] toggleQuickGame err');
     },
+    // Word Groups
     wordGroups: [{ id: 'err', title: 'ERROR :(' }],
     wordGroupHandler: () => {
         console.log('[WORD GROUP] wordGroupHandler err');
     },
+    // Custom Words
     customWords: ['err'],
     addCustomWordHandler: () => {
         console.log('[CUSTOM WORDS] addCustomWordHandler err');
@@ -131,6 +140,7 @@ CreateGame.defaultProps = {
     deleteCustomWord: () => {
         console.log('[CUSTOM WORDS] deleteCustomWord err');
     },
+    // Submit
     submitHandler: () => {
         console.log('[SUBMIT BTN] submitHandler err');
     },

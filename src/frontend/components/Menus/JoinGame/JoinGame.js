@@ -1,11 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+// Imports
 import Title from '../../UI/Title/Title';
 import Button from '../../UI/Buttons/Button/Button';
 
+// Styles
 import './JoinGame.scss';
 
+// Presentational Component
 const JoinGame = (props) => {
     return (
         <section className='join-game'>
@@ -22,8 +25,11 @@ const JoinGame = (props) => {
 };
 
 JoinGame.propTypes = {
+    // Link
     enterLink: PropTypes.func.isRequired,
+    // Submit
     submitHandler: PropTypes.func.isRequired,
+    // Errors
     submitErrMsg: PropTypes.object,
 };
 
