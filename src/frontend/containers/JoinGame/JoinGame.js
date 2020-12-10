@@ -1,32 +1,43 @@
 import React, { useCallback, useState } from 'react';
-// import { useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 // Redux Action Types
-import * as jgm from '../../store/actions/joinGame';
+import * as jg from '../../store/actions/joinGame';
 
 // Presentational Components
 import JoinGameCmpnt from '../../components/Menus/JoinGame/JoinGame';
 
-const JoinGame = () => {
-    // Local State
-    const [link, setLink] = useState('');
+// TODO:
+// Join Game Errors for input
+// Refactor game and its cmpnts to also deisplay an error if the join link is invalid
 
+const JoinGame = () => {
     // Redux Actions
     const dispatch = useDispatch();
-    const storeLink = useCallback((link) => dispatch(jgm.setLink(link)), [dispatch]);
+    const joinGame = useCallback((gameId) => dispatch(jg.joinGame(gameId)), [dispatch]);
 
-    const enterLink = (evt) => {
-        const enteredLink = evt.target.value;
-        setLink(enteredLink);
+    // Local State
+    const [joinCode, setJoinCode] = useState('');
+    // const [customWordsErrMsg, setCustomWordsErrMsg] = useState(null);
+    // const [submitErrMsg, setSubmitErrMsg] = useState(null);
+
+    // Vars
+    const history = useHistory();
+
+    // Functions
+    const getEnteredCode = (evt) => {
+        const code = evt.target.value;
+        setJoinCode(code);
     };
 
     const submitHandler = () => {
-        console.log(link);
-        storeLink(link);
+        joinGame(joinCode);
+        history.push('/game');
     };
 
-    return <JoinGameCmpnt enterLink={enterLink} submitHandler={submitHandler} />;
+    // Render
+    return <JoinGameCmpnt enterLink={getEnteredCode} submitHandler={submitHandler} />;
 };
 
 export default JoinGame;
