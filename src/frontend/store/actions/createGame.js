@@ -1,16 +1,4 @@
 import * as actionTypes from './actionTypes';
-import firebase from 'firebase';
-import firebaseConfig from '../../config/firebase';
-// Required for side-effects
-import 'firebase/firestore';
-import 'firebase/functions';
-
-firebase.initializeApp({
-    apiKey: firebaseConfig.apiKey,
-    authDomain: firebaseConfig.authDomain,
-    projectId: firebaseConfig.projectId,
-});
-// const fbFunctions = firebase.functions();
 
 export const toggleTurnTimer = () => {
     return { type: actionTypes.TOGGLE_TURN_TIMER };
@@ -43,7 +31,7 @@ export const submitAction = (data) => {
 export const submit = () => async (dispatch, getState) => {
     const cgmData = getState().cgm;
 
-    const url = 'https://us-central1-deduction-158f9.cloudfunctions.net/deduction/createNewGame';
+    const url = 'https://us-central1-deduction-158f9.cloudfunctions.net/deduction/create';
 
     const response = await fetch(url, {
         method: 'POST',
