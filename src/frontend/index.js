@@ -8,7 +8,6 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 // Imports
 import App from './App';
 import cgmReducer from './store/reducers/createGame';
-import jgmReducer from './store/reducers/joinGame';
 import game from './store/reducers/game';
 
 // Styles
@@ -17,7 +16,6 @@ import './styles/root.scss';
 // Reducers
 const rootReducer = combineReducers({
     cgm: cgmReducer,
-    jgm: jgmReducer,
     game: game,
 });
 
