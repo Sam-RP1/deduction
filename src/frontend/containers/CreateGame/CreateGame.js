@@ -60,7 +60,7 @@ const CreateGame = () => {
         } else {
             let errString;
             let optClass = 'err-msg--inherit';
-            if (enteredString.length < 1) {
+            if (enteredString.length < 2) {
                 errString = 'Entered word is too short! Needs to be two characters or more';
             } else if (customWords.length === 25) {
                 errString = 'You have entered 25 words! To delete entered words you can click them below';
