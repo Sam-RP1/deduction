@@ -14,7 +14,8 @@
 
     &__content {
         height: auto;
-        width: auto;
+        width: 100%;
+        max-width: 300px;
         margin-bottom: 25px;
 
         h3 {

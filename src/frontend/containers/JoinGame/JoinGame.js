@@ -8,10 +8,7 @@ import * as jg from '../../store/actions/joinGame';
 // Presentational Components
 import JoinGameCmpnt from '../../components/Menus/JoinGame/JoinGame';
 
-// TODO:
-// Join Game Errors for input
-// Refactor game and its cmpnts to also deisplay an error if the join link is invalid
-
+// Container Component
 const JoinGame = () => {
     // Redux Actions
     const dispatch = useDispatch();
@@ -19,8 +16,7 @@ const JoinGame = () => {
 
     // Local State
     const [joinCode, setJoinCode] = useState('');
-    // const [customWordsErrMsg, setCustomWordsErrMsg] = useState(null);
-    // const [submitErrMsg, setSubmitErrMsg] = useState(null);
+    const [submitErrMsg, setSubmitErrMsg] = useState(null);
 
     // Vars
     const history = useHistory();
@@ -32,12 +28,32 @@ const JoinGame = () => {
     };
 
     const submitHandler = () => {
-        joinGame(joinCode);
-        history.push('/game');
+        console.log('contains', joinCode.search('^[A-Za-z0-9-]+$'));
+        if (joinCode.length === 36 && joinCode.search('^[A-Za-z0-9-]+$') > -1) {
+            joinGame(joinCode);
+            history.push('/game');
+        } else {
+            let errString = 'Invalid join code';
+            let optClass = 'err-msg--inherit err-msg--mw300px';
+            setSubmitErrMsg(errGenerator(errString, optClass, setSubmitErrMsg));
+        }
+    };
+
+    const errGenerator = (errString, optClass, callback) => {
+        return (
+            <p
+                className={'err-msg ' + optClass}
+                onClick={() => {
+                    callback(null);
+                }}
+            >
+                ERROR: {errString} - CLICK TO DISMISS &#10006;
+            </p>
+        );
     };
 
     // Render
-    return <JoinGameCmpnt enterLink={getEnteredCode} submitHandler={submitHandler} />;
+    return <JoinGameCmpnt enterCode={getEnteredCode} submitHandler={submitHandler} submitErrMsg={submitErrMsg} />;
 };
 
 export default JoinGame;

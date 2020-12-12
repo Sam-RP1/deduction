@@ -15,8 +15,9 @@ const JoinGame = (props) => {
             <Title title='Deduction' />
 
             <div className='join-game__content'>
-                <h3>Enter Join Link:</h3>
-                <input onInput={(evt) => props.enterLink(evt)} />
+                <h3>Enter Join Code:</h3>
+                <input onInput={(evt) => props.enterCode(evt)} />
+                {props.submitErrMsg}
             </div>
 
             <Button title={'Join!'} function={props.submitHandler} />
@@ -25,8 +26,8 @@ const JoinGame = (props) => {
 };
 
 JoinGame.propTypes = {
-    // Link
-    enterLink: PropTypes.func.isRequired,
+    // Code
+    enterCode: PropTypes.func.isRequired,
     // Submit
     submitHandler: PropTypes.func.isRequired,
     // Errors
@@ -34,9 +35,11 @@ JoinGame.propTypes = {
 };
 
 JoinGame.defaultProps = {
-    enterLink: () => {
-        console.log('[ENTER LINK] enterLink err');
+    // Code
+    enterCode: () => {
+        console.log('[ENTER CODE] enterCode err');
     },
+    // Submit
     submitHandler: () => {
         console.log('[JOIN BTN] submitHandler err');
     },
