@@ -43,4 +43,8 @@ a {
         @extend .err-msg;
         font-size: inherit;
     }
+
+    &--mw300px {
+        max-width: 300px;
+    }
 }
