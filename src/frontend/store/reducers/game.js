@@ -36,6 +36,26 @@ const reducer = (state = initialState, action) => {
                 words: gameSettings.words,
             };
         }
+        case actionTypes.SET_TEAM:
+            return {
+                ...state,
+                team: action.payload.team,
+            };
+        case actionTypes.SET_ROLE:
+            return {
+                ...state,
+                role: action.payload.role,
+            };
+        case actionTypes.ADD_GUESS_BLUE:
+            return {
+                ...state,
+                guessesBlue: state.guessesBlue.concat(action.payload.guess),
+            };
+        case actionTypes.ADD_GUESS_RED:
+            return {
+                ...state,
+                guessesRed: state.guessesRed.concat(action.payload.guess),
+            };
         default:
             return state;
     }
