@@ -3,7 +3,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const admin = require('firebase-admin');
 const { v4: uuidv4 } = require('uuid');
-const _ = require('underscore');
+const wordFuncs = require('../../modules/generateWords.js');
 
 const create = express.Router();
 
@@ -13,14 +13,13 @@ create.use(cors({ origin: true }));
 create.use(bodyParser.json());
 create.use(bodyParser.urlencoded({ extended: true }));
 
-// Word Imports
-const wordGroups = require('../../wordGroups.js');
-
 // Function
 create.post('/', async (req, res) => {
     try {
-        const reqBody = req.body;
-        console.log(reqBody);
+        const wordGroup = req.body.wordGroup;
+        const customWords = req.body.customWords;
+        const quickGame = req.body.quickGame;
+        const turnTimer = req.body.turnTimer;
         const collection = 'gameInstances';
 
         // Game ID
@@ -37,41 +36,11 @@ create.post('/', async (req, res) => {
         /* eslint-enable no-await-in-loop */
 
         // Game Words
-        let words;
-        const wordsArr = [];
-        if (reqBody.customWords.length !== 25) {
-            if (reqBody.wordGroup === 'eng-standard') {
-                words = _.sample(wordGroups.engStandard, 25);
-            } else {
-                console.log('err selecting word group');
-                words = _.sample(wordGroups.engStandard, 25);
-            }
-        } else {
-            words = reqBody.customWords;
-        }
-
-        const redWords = _.sample(words, 9);
-        const noRedWords = words.filter((word) => !redWords.includes(word));
-        const blueWords = _.sample(noRedWords, 8);
-        const noBlueRedWords = noRedWords.filter((word) => !blueWords.includes(word));
-        const blankWords = _.sample(noBlueRedWords, 7);
-        const bombWord = noBlueRedWords.filter((word) => !blankWords.includes(word));
-
-        for (let i = 0; i < 9; i++) {
-            wordsArr.push({ denomination: 'red', word: redWords[i] });
-        }
-        for (let i = 0; i < 8; i++) {
-            wordsArr.push({ denomination: 'blue', word: blueWords[i] });
-        }
-        for (let i = 0; i < 7; i++) {
-            wordsArr.push({ denomination: 'blank', word: blankWords[i] });
-        }
-        wordsArr.push({ denomination: 'bomb', word: bombWord[0] });
-        console.log(wordsArr);
+        const words = await wordFuncs.generateWords(wordGroup, customWords);
 
         // Game Timer
         let gameTimer = 0;
-        if (reqBody.quickGame === true) {
+        if (quickGame === true) {
             gameTimer = 360000;
         }
 
@@ -79,13 +48,15 @@ create.post('/', async (req, res) => {
         const newGame = {
             created: Date.now(),
             id: gameId,
-            words: wordsArr,
+            words: words,
+            wordGroup: wordGroup,
+            customWords: customWords,
             gameTimer: gameTimer,
             guessesBlue: [],
             guessesRed: [],
             lastQuery: Date.now(),
-            quickGame: reqBody.quickGame,
-            turnTimer: reqBody.turnTimer,
+            quickGame: quickGame,
+            turnTimer: turnTimer,
             score: { red: 9, blue: 8 },
             turn: 'red',
         };
@@ -94,7 +65,58 @@ create.post('/', async (req, res) => {
 
         res.send(newGame);
     } catch (e) {
-        console.log(e);
+        res.send({
+            error: e,
+        });
+    }
+});
+
+create.post('/refresh', async (req, res) => {
+    try {
+        const gameId = req.body.gameId;
+        let wordGroup;
+        let customWords;
+        let quickGame;
+        let turnTimer;
+        const collection = 'gameInstances';
+
+        // Get game
+        const gameData = await admin.firestore().collection(collection).doc(gameId).get();
+
+        if (!gameData.exists) {
+            throw 'Invalid Game ID'; // eslint-disable-line
+        } else {
+            wordGroup = gameData.data().wordGroup;
+            customWords = gameData.data().customWords;
+            quickGame = gameData.data().quickGame;
+            turnTimer = gameData.data().turnTimer;
+        }
+
+        // Game Words
+        const words = await wordFuncs.generateWords(wordGroup, customWords);
+        console.log('WORDS GENERATED', words);
+
+        // Game Timer
+        let gameTimer = 0;
+        if (quickGame === true) {
+            gameTimer = 360000;
+        }
+
+        // Game Settings
+        const newGame = {
+            words: words,
+            gameTimer: gameTimer,
+            guessesBlue: [],
+            guessesRed: [],
+            lastQuery: Date.now(),
+            score: { red: 9, blue: 8 },
+            turn: 'red',
+        };
+
+        await admin.firestore().collection(collection).doc(gameId).set(newGame, { merge: true });
+
+        res.send(newGame);
+    } catch (e) {
         res.send({
             error: e,
         });
