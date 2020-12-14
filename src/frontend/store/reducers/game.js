@@ -36,6 +36,24 @@ const reducer = (state = initialState, action) => {
                 words: gameSettings.words,
             };
         }
+        case actionTypes.NEW_GAME_SETTINGS: {
+            const gameSettings = action.payload.gameSettings;
+            return {
+                ...state,
+                words: gameSettings.words,
+                gameTimer: gameSettings.gameTimer,
+                guessesBlue: gameSettings.guessesBlue,
+                guessesRed: gameSettings.guessesRed,
+                lastQuery: gameSettings.lastQuery,
+                score: gameSettings.score,
+                turn: gameSettings.turn,
+            };
+        }
+        case actionTypes.END_TURN:
+            return {
+                ...state,
+                turn: state.turn === 'red' ? 'blue' : 'red',
+            };
         case actionTypes.SET_TEAM:
             return {
                 ...state,
