@@ -78,6 +78,7 @@
 
     @media screen and (min-width: 768px) {
         &__board {
+            justify-content: center;
             flex-direction: row-reverse;
         }
 

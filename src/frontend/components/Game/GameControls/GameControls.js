@@ -1,49 +1,80 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
+// Imports
 import Button from '../../UI/Buttons/Button/Button';
 
+// Styles
 import './GameControls.scss';
 
-const GameControls = () => {
-  const copyText = () => {
-    console.log("[COPY LINK]")
-    let aux = document.createElement("input");
-    aux.style.display = "none";
-    aux.setAttribute("value", "Test Link");
-    document.body.appendChild(aux);
-    aux.select();
-    document.execCommand("copy");
-    document.body.removeChild(aux);
-  }
+// Presentational Component
+const GameControls = (props) => {
+    const copyJoinCode = () => {
+        console.log('[COPY LINK]');
+        let aux = document.createElement('input');
+        aux.style.position = 'absolute';
+        aux.style.left = '-100px';
+        aux.style.top = '0px';
+        aux.style.display = 'block';
+        aux.style.width = '1px';
+        aux.style.height = '1px';
+        aux.setAttribute('value', props.gameId);
+        document.body.appendChild(aux);
+        aux.select();
+        document.execCommand('copy');
+        document.body.removeChild(aux);
+    };
+    // use redux state to style buttons for active or not
+    return (
+        <section className='game-controls'>
+            <div className='game-controls__btns-container'>
+                <h3>Turn Timer:</h3>
+                <p className='timer-txt'>00:00</p>
+                <Button title={'End Turn'} function={() => props.endTurnReq()} />
+            </div>
 
-  return (
-    <section className="game-controls">
+            <div className='game-controls__btns-container'>
+                <Button title={'New Game'} function={() => props.newGameReq()} />
+                <Button title={'Copy Join Code!'} function={() => copyJoinCode()} />
+            </div>
 
-    <div className="game-controls__btns-container">
-    <h3>Turn Timer:</h3>
-    <p className="timer-txt">00:00</p>
-    <Button title={"End Turn"} />
-    </div>
+            <div className='game-controls__btns-container'>
+                <h3>Choose a Team:</h3>
+                <Button title={'Red'} opClasses={'btn__red'} function={() => props.setTeam('red')} />
+                <Button title={'Blue'} opClasses={'btn__blue'} function={() => props.setTeam('blue')} />
+            </div>
 
-    <div className="game-controls__btns-container">
-    <Button title={"New Game"} />
-    <Button title={"Copy Join Link!"} function={() => copyText()} />
-    </div>
+            <div className='game-controls__btns-container'>
+                <h3>Play as:</h3>
+                <Button title={'Insider'} function={() => props.setRole('insider')} />
+                <Button title={'Agent'} function={() => props.setRole('agent')} />
+            </div>
+        </section>
+    );
+};
 
-    <div className="game-controls__btns-container">
-    <h3>Choose a Team:</h3>
-    <Button title={"Red"} opClasses={"btn__red"} />
-    <Button title={"Blue"} opClasses={"btn__blue"} />
-    </div>
+GameControls.propTypes = {
+    gameId: PropTypes.string.isRequired,
+    newGameReq: PropTypes.func.isRequired,
+    setTeam: PropTypes.func.isRequired,
+    setRole: PropTypes.func.isRequired,
+    endTurnReq: PropTypes.func.isRequired,
+};
 
-    <div className="game-controls__btns-container">
-    <h3>Play as:</h3>
-    <Button title={"Insider"} />
-    <Button title={"Agent"} />
-    </div>
-
-    </section>
-  )
-}
+GameControls.defaultProps = {
+    gameId: 'ERR',
+    newGameReq: () => {
+        console.log('[NEW GAME REQ] error requesting new game');
+    },
+    setTeam: () => {
+        console.log('[SET TEAM BTN] error setting team');
+    },
+    setRole: () => {
+        console.log('[SET ROLE BTN] error setting role');
+    },
+    endTurnReq: () => {
+        console.log('[END TURN REQ] error requesting to end turn');
+    },
+};
 
 export default GameControls;

@@ -16,22 +16,32 @@ const Game = (props) => {
     return (
         <section className='game'>
             <Title />
-            {props.isLoaded && <LoadingIndicator />}
-            {!props.isLoaded && (
+            {!props.isLoaded && <LoadingIndicator />}
+            {props.isLoaded && (
                 <div className='game__board'>
                     <div className='game__board-container'>
                         <div className='game__board-container__information'>
                             <p>
-                                Score: <span className='red-txt'>X</span> - <span className='blue-txt'>X</span>
+                                Score: <span className='red-txt'>{props.score.red}</span> -{' '}
+                                <span className='blue-txt'>{props.score.blue}</span>
                             </p>
-                            <p>Game Time: 6:00</p>
+                            <p>Time: 6:00</p>
                             <p>
-                                <span className='blue-txt'>Blue’s</span> Turn
+                                <span className={props.teamTurn === 'blue' ? 'blue-txt' : 'red-txt'}>
+                                    {props.teamTurn}&lsquo;s
+                                </span>{' '}
+                                Turn
                             </p>
                         </div>
                         <Gameboard wordsArr={props.wordsArr} />
                     </div>
-                    <GameControls />
+                    <GameControls
+                        gameId={props.gameId}
+                        newGameReq={props.newGameReq}
+                        setTeam={props.setTeam}
+                        setRole={props.setRole}
+                        endTurnReq={props.endTurnReq}
+                    />
                 </div>
             )}
         </section>
@@ -40,12 +50,25 @@ const Game = (props) => {
 
 Game.propTypes = {
     isLoaded: PropTypes.bool.isRequired,
+    gameId: PropTypes.string.isRequired,
     wordsArr: PropTypes.array.isRequired,
+    score: PropTypes.object.isRequired,
+    teamTurn: PropTypes.string.isRequired,
+    newGameReq: PropTypes.func,
+    setTeam: PropTypes.func,
+    setRole: PropTypes.func,
+    endTurnReq: PropTypes.func,
 };
 
 Game.defaultProps = {
     isLoaded: false,
+    gameId: 'ERR',
     wordsArr: [{ denomination: 'blank', word: 'ERROR' }],
+    score: {
+        blue: 'ERR',
+        red: 'ERR',
+    },
+    teamTurn: 'ERR',
 };
 
 export default Game;
