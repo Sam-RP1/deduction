@@ -16,18 +16,54 @@
         box-sizing: border-box;
         border: 3px solid;
         @include themed() {
+            color: t($text);
             border-color: t($border);
         }
-        color: base.$text--2--light;
-        background-color: base.$hover--light;
+        background-color: transparent;
         @include transition(border-color 0.4s ease);
         white-space: initial;
         cursor: pointer;
         overflow: hidden;
 
+        &:hover {
+            @include themed() {
+                color: t($text);
+                background-color: t($box-hover);
+            }
+        }
         // &__small {}
 
         // &__medium {}
+
+        &.bomb,
+        &.blank,
+        &.red,
+        &.blue,
+        &.bomb p,
+        &.blank p,
+        &.red p,
+        &.blue p {
+            cursor: none;
+            pointer-events: none;
+        }
+
+        &.bomb {
+            @include themed() {
+                color: t($bomb);
+            }
+        }
+
+        &.red {
+            @include themed() {
+                color: t($text-red);
+            }
+        }
+
+        &.blue {
+            @include themed() {
+                color: t($text-blue);
+            }
+        }
 
         &__large {
             width: calc(100% / 5 - 4px);
@@ -47,6 +83,7 @@
             text-align: center;
             height: auto;
             width: 100%;
+            @include transition(color 0.3s ease);
         }
 
         @media screen and (min-width: 992px) {

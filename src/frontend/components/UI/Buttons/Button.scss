@@ -27,6 +27,12 @@
             background-color: t($hover);
         }
     }
+    &.active {
+        @include themed() {
+            color: t($text-secondary);
+            background-color: t($hover);
+        }
+    }
 
     a {
         display: flex;
@@ -50,6 +56,12 @@
                 background-color: t($text-red);
             }
         }
+        &.active {
+            @include themed() {
+                color: t($text-secondary);
+                background-color: t($text-red);
+            }
+        }
     }
 
     &__blue {
@@ -58,6 +70,12 @@
         }
         &:hover {
             @include themed() {
+                background-color: t($text-blue);
+            }
+        }
+        &.active {
+            @include themed() {
+                color: t($text-secondary);
                 background-color: t($text-blue);
             }
         }

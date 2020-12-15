@@ -8,44 +8,55 @@ $text-blue: 'text-blue';
 $hover: 'hover';
 $selected: 'selected';
 $border: 'border';
+$bomb: 'bomb';
+$box-hover: 'box-hover';
 
 $themes: (
-  default: (
-    bg: base.$bg--light,
-    text: base.$text--light,
-    text-secondary: base.$text--2--light,
-    text-red: base.$text--red--light,
-    text-blue: base.$text--blue--light,
-    hover: base.$hover--light,
-    selected: base.$selected,
-    border: base.$border--light
-  ),
-  dark: (
-    bg: base.$bg--dark,
-    text: base.$text--dark,
-    text-secondary: base.$text--2--dark,
-    text-red: base.$text--red--dark,
-    text-blue: base.$text--blue--dark,
-    hover: base.$hover--dark,
-    selected: base.$selected,
-    border: base.$border--dark
-  ),
+    default: (
+        bg: base.$bg--light,
+        text: base.$text--light,
+        text-secondary: base.$text--2--light,
+        text-red: base.$text--red--light,
+        text-blue: base.$text--blue--light,
+        hover: base.$hover--light,
+        selected: base.$selected,
+        border: base.$border--light,
+        bomb: base.$bomb--light,
+        box-hover: base.$box--hover--light,
+    ),
+    dark: (
+        bg: base.$bg--dark,
+        text: base.$text--dark,
+        text-secondary: base.$text--2--dark,
+        text-red: base.$text--red--dark,
+        text-blue: base.$text--blue--dark,
+        hover: base.$hover--dark,
+        selected: base.$selected,
+        border: base.$border--dark,
+        bomb: base.$bomb--dark,
+        box-hover: base.$box--hover--dark,
+    ),
 );
 
 @mixin themed() {
-  @each $theme, $map in $themes {
-    .theme--#{$theme} & {
-      $theme-map: () !global;
-      @each $key, $submap in $map {
-        $value: map-get(map-get($themes, $theme), '#{$key}');
-        $theme-map: map-merge($theme-map, ($key: $value)) !global;
-      }
-      @content;
-      $theme-map: null !global;
+    @each $theme, $map in $themes {
+        .theme--#{$theme} & {
+            $theme-map: () !global;
+            @each $key, $submap in $map {
+                $value: map-get(map-get($themes, $theme), '#{$key}');
+                $theme-map: map-merge(
+                    $theme-map,
+                    (
+                        $key: $value,
+                    )
+                ) !global;
+            }
+            @content;
+            $theme-map: null !global;
+        }
     }
-  }
 }
 
 @function t($key) {
-  @return map-get($theme-map, $key);
+    @return map-get($theme-map, $key);
 }
