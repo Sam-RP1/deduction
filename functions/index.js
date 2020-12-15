@@ -8,13 +8,9 @@ admin.initializeApp();
 
 // App
 const app = express();
-
 app.use(cors({ origin: true }));
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
-app.use('/create', require('./api/create'));
-app.use('/join', require('./api/join'));
+require('./api')(app);
 
 exports.deduction = functions.https.onRequest(app);
