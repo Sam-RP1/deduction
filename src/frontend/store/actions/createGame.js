@@ -31,7 +31,7 @@ export const submitAction = (data) => {
 export const submit = () => async (dispatch, getState) => {
     const cgmData = getState().cgm;
 
-    const url = 'https://us-central1-deduction-158f9.cloudfunctions.net/deduction/create';
+    const url = 'https://us-central1-deduction-158f9.cloudfunctions.net/deduction/api/create';
 
     const response = await fetch(url, {
         method: 'POST',

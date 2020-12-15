@@ -49,7 +49,7 @@ const reducer = (state = initialState, action) => {
                 turn: gameSettings.turn,
             };
         }
-        case actionTypes.END_TURN:
+        case actionTypes.CHANGE_TURN:
             return {
                 ...state,
                 turn: state.turn === 'red' ? 'blue' : 'red',

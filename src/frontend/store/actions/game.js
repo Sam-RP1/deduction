@@ -41,23 +41,24 @@ export const addGuessRed = (word) => {
     return { type: actionTypes.ADD_GUESS_RED, payload: { guess: word } };
 };
 
-export const updateTurn = (turn) => {
-    return { type: actionTypes.END_TURN, payload: { turn: turn } };
+export const changeTurnAC = (turn) => {
+    return { type: actionTypes.CHANGE_TURN, payload: { turn: turn } };
 };
 
-export const endTurn = () => async (dispatch, getState) => {
-    const turn = getState().game.turn;
+export const changeTurn = () => async (dispatch, getState) => {
     const gameId = getState().game.id;
-    const url = 'https://us-central1-deduction-158f9.cloudfunctions.net/deduction/create/refresh';
+    const turn = getState().game.turn;
+    const url = 'https://us-central1-deduction-158f9.cloudfunctions.net/deduction/api/game/turn';
 
     const response = await fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
             gameId: gameId,
+            turn: turn,
         }),
     });
     const data = await response.json();
-    console.log('test', data);
-    dispatch(updateTurn(turn));
+    console.log('[TURN CHANGER]', data);
+    dispatch(changeTurnAC(turn));
 };
