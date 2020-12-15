@@ -33,7 +33,7 @@ const Game = (props) => {
                                 Turn
                             </p>
                         </div>
-                        <Gameboard wordsArr={props.wordsArr} />
+                        <Gameboard wordsArr={props.wordsArr} team={props.team} role={props.role} guess={props.guess} />
                     </div>
                     <GameControls
                         gameId={props.gameId}
@@ -41,6 +41,8 @@ const Game = (props) => {
                         setTeam={props.setTeam}
                         setRole={props.setRole}
                         endTurnReq={props.endTurnReq}
+                        team={props.team}
+                        role={props.role}
                     />
                 </div>
             )}
@@ -58,6 +60,9 @@ Game.propTypes = {
     setTeam: PropTypes.func,
     setRole: PropTypes.func,
     endTurnReq: PropTypes.func,
+    team: PropTypes.string,
+    role: PropTypes.string,
+    guess: PropTypes.func,
 };
 
 Game.defaultProps = {
