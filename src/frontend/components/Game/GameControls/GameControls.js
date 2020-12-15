@@ -40,14 +40,30 @@ const GameControls = (props) => {
 
             <div className='game-controls__btns-container'>
                 <h3>Choose a Team:</h3>
-                <Button title={'Red'} opClasses={'btn__red'} function={() => props.setTeam('red')} />
-                <Button title={'Blue'} opClasses={'btn__blue'} function={() => props.setTeam('blue')} />
+                <Button
+                    title={'Red'}
+                    opClasses={'btn__red' + (props.team === 'red' ? ' active' : '')}
+                    function={() => props.setTeam('red')}
+                />
+                <Button
+                    title={'Blue'}
+                    opClasses={'btn__blue' + (props.team === 'blue' ? ' active' : '')}
+                    function={() => props.setTeam('blue')}
+                />
             </div>
 
             <div className='game-controls__btns-container'>
                 <h3>Play as:</h3>
-                <Button title={'Insider'} function={() => props.setRole('insider')} />
-                <Button title={'Agent'} function={() => props.setRole('agent')} />
+                <Button
+                    title={'Insider'}
+                    opClasses={props.role === 'insider' ? 'active' : ''}
+                    function={() => props.setRole('insider')}
+                />
+                <Button
+                    title={'Agent'}
+                    opClasses={props.role === 'agent' ? 'active' : ''}
+                    function={() => props.setRole('agent')}
+                />
             </div>
         </section>
     );
@@ -59,6 +75,8 @@ GameControls.propTypes = {
     setTeam: PropTypes.func.isRequired,
     setRole: PropTypes.func.isRequired,
     endTurnReq: PropTypes.func.isRequired,
+    team: PropTypes.string.isRequired,
+    role: PropTypes.string.isRequired,
 };
 
 GameControls.defaultProps = {
@@ -75,6 +93,8 @@ GameControls.defaultProps = {
     endTurnReq: () => {
         console.log('[END TURN REQ] error requesting to end turn');
     },
+    team: 'undefined',
+    role: 'undefined',
 };
 
 export default GameControls;
