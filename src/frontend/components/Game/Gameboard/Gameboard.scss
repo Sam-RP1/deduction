@@ -11,29 +11,24 @@
 
     &__word-block {
         position: relative;
+        width: calc(100% / 5 - 4px);
         margin: 2px 0px;
-        padding-top: calc(100% / 5 - 4px);
+        padding-top: calc(75% / 5 - 4px);
         box-sizing: border-box;
-        border: 3px solid;
+        border-radius: 5px;
+        box-shadow: base.$box--shadow--alt;
         @include themed() {
-            color: t($text);
-            border-color: t($border);
+            background-color: t($word-cell);
         }
-        background-color: transparent;
-        @include transition(border-color 0.4s ease);
-        white-space: initial;
+        @include transition-theme(color 0.3s ease, background-color 0.3s ease);
         cursor: pointer;
         overflow: hidden;
-
         &:hover {
             @include themed() {
                 color: t($text);
-                background-color: t($box-hover);
+                background-color: t($word-cell-hover);
             }
         }
-        // &__small {}
-
-        // &__medium {}
 
         &.bomb,
         &.blank,
@@ -49,46 +44,50 @@
 
         &.bomb {
             @include themed() {
-                color: t($bomb);
+                color: t($orange-main);
+                background-color: t($word-cell-orange);
             }
         }
 
         &.red {
             @include themed() {
-                color: t($text-red);
+                color: t($red-main);
+                background-color: t($word-cell-red);
             }
         }
 
         &.blue {
             @include themed() {
-                color: t($text-blue);
+                color: t($blue-main);
+                background-color: t($word-cell-blue);
             }
         }
 
-        &__large {
-            width: calc(100% / 5 - 4px);
-        }
-
-        p {
+        span {
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            margin: 0;
-            word-break: break-word;
+            top: 0px;
+            left: 0px;
+            height: 100%;
+            width: 100%;
             display: flex;
-            justify-content: center;
             align-items: center;
             text-align: center;
-            height: auto;
-            width: 100%;
-            @include transition(color 0.3s ease);
-        }
+            white-space: initial;
+            padding: 5px;
+            box-sizing: border-box;
 
-        @media screen and (min-width: 992px) {
-            padding: 0;
-            height: 120px;
+            p {
+                word-break: break-word;
+                height: auto;
+                margin: 0px;
+                width: 100%;
+                @media screen and (min-width: 576px) {
+                    font-size: 1.15rem;
+                }
+                @media screen and (min-width: 1376px) {
+                    font-size: 1.2rem;
+                }
+            }
         }
     }
 }

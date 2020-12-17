@@ -1,25 +1,49 @@
+// General
 $primary-black: #1c1c1c;
 $secondary-black: #111111;
+$primary-white: #fff;
 $dark-grey: #292929;
 $selected: #2eb423;
 $remove: #d63d3d;
+$box--shadow: 0px 3px 2px 0px rgba(0, 0, 0, 0.25), 0px 1px 5px 0px rgba(0, 0, 0, 0.17);
+$box--shadow--alt: 0px 2px 2px 0px rgba(0, 0, 0, 0.18), 0px 1px 3px 0px rgba(0, 0, 0, 0.15);
 
+// Backgrounds
 $bg--light: #f2f2f2;
-$text--light: #1c1c1c;
-$text--2--light: #fff;
-$text--red--light: #d41818;
-$text--blue--light: #3622ce;
-$hover--light: #5e5e5e;
-$border--light: #1c1c1c;
-$bomb--light: #b36b00;
-$box--hover--light: #a1a1a1;
-
+$bg--light--alt: transparent;
 $bg--dark: #1c1c1c;
+$bg--dark--alt: #2a2a2a;
+
+// Text
+$text--light: #1c1c1c;
+$text--light--alt: #fff;
 $text--dark: #fff;
-$text--2--dark: #1c1c1c;
-$text--red--dark: #d63d3d;
-$text--blue--dark: #8575ff;
-$hover--dark: #bbbbbb;
-$border--dark: #fff;
-$bomb--dark: #ff9900;
-$box--hover--dark: #464646;
+$text--dark--alt: #1c1c1c;
+
+// Colors
+$red--light: #d41818;
+$red--dark: #e53935;
+$blue--light: #1e88e5;
+$blue--dark: #1e88e5;
+$orange--light: #b36b00;
+$orange--dark: #ff9900;
+
+// Buttons
+$btn--light: #eeeeee;
+$btn--light--active: #2e2e2e;
+$btn--dark: #2e2e2e;
+$btn--dark--active: #eeeeee;
+$hover--light: #2e2e2e;
+$hover--dark: #eeeeee;
+
+// Word Cells
+$word--cell--light: #f2f2f2;
+$word--cell--light--red: #d3a0a0;
+$word--cell--light--blue: #a1bed6;
+$word--cell--light--orange: #d3be9e;
+$word--cell--light--hover: #a1a1a1;
+$word--cell--dark: #eeeeee;
+$word--cell--dark--red: #442222;
+$word--cell--dark--blue: #20313f;
+$word--cell--dark--orange: #473a26;
+$word--cell--dark--hover: #454545;

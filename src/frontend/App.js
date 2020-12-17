@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 
+import Header from './components/Header/Header';
 import Container from './components/UI/Container/Container';
 import Home from './containers/Home/Home';
 import CreateGame from './containers/CreateGame/CreateGame';
 import JoinGame from './containers/JoinGame/JoinGame';
 import Game from './containers/Game/Game';
-import Rules from './components/Menus/Rules/Rules';
 import Settings from './components/Settings/Settings'; // eslint-disable-line
-import BackButton from './components/UI/Buttons/BackButton/BackButton';
+
 import Footer from './components/Footer/Footer';
 
 import './styles/root.scss';
@@ -27,12 +27,11 @@ const App = () => {
                 <div className='base'>
                     <Route
                         render={({ location }) => {
-                            return location.pathname !== '/' ? <BackButton /> : null;
+                            return location.pathname !== '/' ? <Header /> : null;
                         }}
                     />
                     <Container opClasses={'container--center container--column'}>
                         <Route path='/game' component={Game} />
-                        <Route path='/rules' component={Rules} />
                         <Route path='/joingame' component={JoinGame} />
                         <Route path='/creategame' component={CreateGame} />
                         <Route path='/' exact component={Home} />

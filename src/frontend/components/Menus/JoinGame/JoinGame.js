@@ -15,9 +15,11 @@ const JoinGame = (props) => {
             <Title title='Deduction' />
 
             <div className='join-game__content'>
-                <h3>Enter Join Code:</h3>
-                <input onInput={(evt) => props.enterCode(evt)} />
-                {props.submitErrMsg}
+                <h3>Join an existing game:</h3>
+                <label htmlFor='lobby-name'>Lobby Join Link:</label>
+                <input name='lobby-name' type='password' autoComplete='off' />
+                <label htmlFor='player-name'>Player Name:</label>
+                <input name='player-name' autoComplete='off' />
             </div>
 
             <Button title={'Join!'} function={props.submitHandler} />

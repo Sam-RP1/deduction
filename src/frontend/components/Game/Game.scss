@@ -10,7 +10,7 @@
 
 .game {
     @extend %flex-center-column;
-    height: 100%;
+    height: auto;
     width: 100%;
 
     &__board {
@@ -21,10 +21,11 @@
     }
 
     &__board-container {
-        @extend %flex-center-column;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
         height: auto;
-        width: 100%;
-        margin-bottom: 25px;
+        flex: 1;
 
         &__information {
             display: flex;
@@ -36,7 +37,7 @@
             @include themed() {
                 color: t($text);
             }
-            @include transition(color 0.4s ease);
+            @include transition(color 0.3s ease);
 
             p {
                 margin: 0;
@@ -55,35 +56,30 @@
 
             .blue-txt {
                 @include themed() {
-                    color: t($text-blue);
+                    color: t($blue-main);
                 }
             }
 
             .red-txt {
                 @include themed() {
-                    color: t($text-red);
+                    color: t($red-main);
                 }
             }
-        }
 
-        @media screen and (min-width: 768px) {
-            width: 65%;
-            margin-bottom: 0;
-        }
-
-        @media screen and (min-width: 1300px) {
-            width: 50%;
+            @media screen and (min-width: 1092px) {
+                margin-bottom: 0px;
+            }
         }
     }
 
-    @media screen and (min-width: 768px) {
+    @media screen and (min-width: 1092px) {
         &__board {
             justify-content: center;
             flex-direction: row-reverse;
         }
 
-        .game-controls {
-            width: 35%;
+        &__board-container {
+            max-width: 925px;
         }
     }
 }

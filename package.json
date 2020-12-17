@@ -1,6 +1,6 @@
 {
   "name": "deduction-web",
-  "version": "0.1.0",
+  "version": "0.1.2a",
   "description": "The deduction web game repository",
   "main": "index.js",
   "scripts": {

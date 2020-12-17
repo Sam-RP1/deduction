@@ -11,7 +11,7 @@ export const newGameSettings = (data) => {
 export const newGame = () => async (dispatch, getState) => {
     const gameId = getState().game.id;
 
-    const url = 'https://us-central1-deduction-158f9.cloudfunctions.net/deduction/create/refresh';
+    const url = 'https://us-central1-deduction-158f9.cloudfunctions.net/deduction/api/game/restart';
 
     const response = await fetch(url, {
         method: 'POST',

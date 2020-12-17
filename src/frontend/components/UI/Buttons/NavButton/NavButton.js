@@ -6,17 +6,15 @@ import '../Button.scss';
 
 const NavButton = (props) => {
     return (
-        <div className={'btn ' + props.opClasses}>
-            <NavLink
-                to={props.route}
-                exact={true}
-                onClick={() => {
-                    props.function();
-                }}
-            >
-                <p>{props.title}</p>
-            </NavLink>
-        </div>
+        <NavLink
+            to={props.route}
+            exact={true}
+            onClick={() => {
+                props.function();
+            }}
+        >
+            <button className={'btn ' + props.opClasses}>{props.title}</button>
+        </NavLink>
     );
 };
 

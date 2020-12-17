@@ -1,0 +1,23 @@
+@import '../../styles/partials/color-themes';
+@import '../../styles/mixins/transition';
+@import '../../styles/mixins/transform';
+
+.header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    height: auto;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px 16px 0px 16px;
+    @include themed() {
+        color: t($text);
+    }
+    @include transition(color 0.3s ease);
+
+    &__title {
+        font-size: 2rem;
+        margin: 0px;
+    }
+}

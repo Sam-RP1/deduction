@@ -23,7 +23,7 @@ BackButton.propTypes = {
 };
 
 BackButton.defaultProps = {
-    title: 'Back',
+    title: 'Leave',
     opClasses: '',
 };
 

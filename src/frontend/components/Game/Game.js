@@ -2,8 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 // Imports
-import LoadingIndicator from '../UI/LoadingIndicator/LoadingIndicator'; // eslint-disable-line
-import Title from '../UI/Title/Title';
+import LoadingIndicator from '../UI/LoadingIndicator/LoadingIndicator';
 import Gameboard from './Gameboard/Gameboard';
 import GameControls from './GameControls/GameControls';
 
@@ -15,22 +14,17 @@ import './Game.scss';
 const Game = (props) => {
     return (
         <section className='game'>
-            <Title />
             {!props.isLoaded && <LoadingIndicator />}
             {props.isLoaded && (
                 <div className='game__board'>
                     <div className='game__board-container'>
                         <div className='game__board-container__information'>
                             <p>
-                                Score: <span className='red-txt'>{props.score.red}</span> -{' '}
+                                <span className='red-txt'>{props.score.red}</span> -{' '}
                                 <span className='blue-txt'>{props.score.blue}</span>
                             </p>
-                            <p>Time: 6:00</p>
                             <p>
-                                <span className={props.teamTurn === 'blue' ? 'blue-txt' : 'red-txt'}>
-                                    {props.teamTurn}&lsquo;s
-                                </span>{' '}
-                                Turn
+                                <span className={props.teamTurn === 'blue' ? 'blue-txt' : 'red-txt'}>Turn</span>
                             </p>
                         </div>
                         <Gameboard wordsArr={props.wordsArr} team={props.team} role={props.role} guess={props.guess} />

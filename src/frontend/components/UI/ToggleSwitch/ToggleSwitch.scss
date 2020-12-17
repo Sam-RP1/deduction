@@ -1,46 +1,47 @@
+@use '../../../styles/base';
+@import '../../../styles/partials/color-themes';
+@import '../../../styles/mixins/transform';
+@import '../../../styles/mixins/transition';
+
 .toggle-switch {
-  position: relative;
-  display: inline-block;
-  height: 28px;
-  width: 65px;
+    position: relative;
+    display: inline-block;
+    height: 28px;
+    width: 65px;
 
-  span {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    box-sizing: border-box;
-    border: 2px solid #fff;
-    border-radius: 14px;
-    background-color: #c7c7c7;
-    -webkit-transition: .4s;
-    transition: .4s;
-  }
-
-  span:before {
-    position: absolute;
-    content: "";
-    height: 22px;
-    width: 22px;
-    top: 1px;
-    left: 1px;
-    border-radius: 50%;
-    background-color: white;
-    -webkit-transition: .4s;
-    transition: .4s;
-  }
-
-  &.active {
     span {
-      background-color: #2eb423;
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        box-sizing: border-box;
+        border: 2px solid #fff;
+        border-radius: 14px;
+        background-color: #c7c7c7;
+        @include transition(color 0.4s ease);
     }
 
     span:before {
-      -webkit-transform: translateX(36px);
-      -ms-transform: translateX(36px);
-      transform: translateX(36px);
+        position: absolute;
+        content: '';
+        height: 22px;
+        width: 22px;
+        top: 1px;
+        left: 1px;
+        border-radius: 50%;
+        background-color: white;
+        @include transition(0.4s ease);
     }
-  }
+
+    &.active {
+        span {
+            background-color: base.$selected;
+        }
+
+        span:before {
+            @include transform(translateX(36px));
+        }
+    }
 }

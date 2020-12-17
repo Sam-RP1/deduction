@@ -2,66 +2,67 @@
 @import '../../../styles/mixins/transition';
 
 .loading-indicator {
-  display: flex;
-  flex-flow: row wrap;
-  width: 75px;
-  height: 75px;
+    display: flex;
+    flex-flow: row wrap;
+    width: 75px;
+    height: 75px;
 
-  span, div {
-    height: 15px;
-    width: 15px;
-    margin: 5px;
-  }
-
-  div {
-    animation: li-loop 2s ease-out infinite;
-
-    @for $i from 1 through 3 {
-      &:nth-child(#{$i}) {
-        animation-delay: $i * 0.25s;
-      }
+    span,
+    div {
+        height: 15px;
+        width: 15px;
+        margin: 5px;
     }
 
-    &:nth-child(6) {
-      animation-delay: 1.0s;
-    }
+    div {
+        animation: li-loop 2s ease-out infinite;
 
-    &:nth-child(9) {
-      animation-delay: 1.25s;
-    }
+        @for $i from 1 through 3 {
+            &:nth-child(#{$i}) {
+                animation-delay: $i * 0.25s;
+            }
+        }
 
-    &:nth-child(8) {
-      animation-delay: 1.5s;
-    }
+        &:nth-child(6) {
+            animation-delay: 1s;
+        }
 
-    &:nth-child(7) {
-      animation-delay: 1.75s;
-    }
+        &:nth-child(9) {
+            animation-delay: 1.25s;
+        }
 
-    &:nth-child(4) {
-      animation-delay: 2.0s;
-    }
+        &:nth-child(8) {
+            animation-delay: 1.5s;
+        }
 
-    @include themed() {
-      background-color: t($text);
+        &:nth-child(7) {
+            animation-delay: 1.75s;
+        }
+
+        &:nth-child(4) {
+            animation-delay: 2s;
+        }
+
+        @include themed() {
+            background-color: t($text);
+        }
+        @include transition-theme(background-color 0.3s ease);
     }
-    @include transition-theme(background-color 0.4s ease);
-  }
 }
 
 @keyframes li-loop {
-  0% {
-    opacity: 1;
-    transform: scale(1);
-  }
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
 
-  50% {
-    opacity: 0;
-    transform: scale(0.75);
-  }
+    50% {
+        opacity: 0;
+        transform: scale(0.75);
+    }
 
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
 }

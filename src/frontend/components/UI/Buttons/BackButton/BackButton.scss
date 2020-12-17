@@ -3,26 +3,18 @@
 @import '../../../../styles/mixins/transform';
 
 .back-btn {
-    position: absolute;
-    top: 0px;
-    left: 0px;
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
     cursor: pointer;
     font-size: 1.2em;
-    padding: 15px;
     @include themed() {
         color: t($text);
     }
-    @include transition-theme(all 0.3s ease);
-
-    &:hover {
-        @include transform(translateX(-5px));
-    }
+    @include transition(color 0.3s ease);
 
     p {
-        margin: 0 0 0 10px;
+        margin: 0px 0px 0px 10px;
     }
 }

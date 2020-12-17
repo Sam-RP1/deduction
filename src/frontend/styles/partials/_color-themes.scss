@@ -1,40 +1,58 @@
 @use '../base';
 
 $bg: 'bg';
+$bg-alt: 'bg-alt';
 $text: 'text';
 $text-secondary: 'text-secondary';
-$text-red: 'text-red';
-$text-blue: 'text-blue';
+$light-text: 'light-text';
+$red-main: 'red-main';
+$blue-main: 'blue-main';
+$orange-main: 'orange-main';
+$btn: 'btn';
+$btn-active: 'btn-active';
 $hover: 'hover';
-$selected: 'selected';
-$border: 'border';
-$bomb: 'bomb';
-$box-hover: 'box-hover';
+$word-cell: 'word-cell';
+$word-cell-red: 'word-cell-red';
+$word-cell-blue: 'word-cell-blue';
+$word-cell-orange: 'word-cell-orange';
+$word-cell-hover: 'word-cell-hover';
 
 $themes: (
     default: (
         bg: base.$bg--light,
+        bg-alt: base.$bg--light--alt,
         text: base.$text--light,
-        text-secondary: base.$text--2--light,
-        text-red: base.$text--red--light,
-        text-blue: base.$text--blue--light,
+        text-secondary: base.$text--light--alt,
+        light-text: base.$primary-white,
+        red-main: base.$red--light,
+        blue-main: base.$blue--light,
+        orange-main: base.$orange--light,
+        btn: base.$btn--light,
+        btn-active: base.$btn--light--active,
         hover: base.$hover--light,
-        selected: base.$selected,
-        border: base.$border--light,
-        bomb: base.$bomb--light,
-        box-hover: base.$box--hover--light,
+        word-cell: base.$word--cell--light,
+        word-cell-red: base.$word--cell--light--red,
+        word-cell-blue: base.$word--cell--light--blue,
+        word-cell-orange: base.$word--cell--light--orange,
+        word-cell-hover: base.$word--cell--light--hover,
     ),
     dark: (
         bg: base.$bg--dark,
+        bg-alt: base.$bg--dark--alt,
         text: base.$text--dark,
-        text-secondary: base.$text--2--dark,
-        text-red: base.$text--red--dark,
-        text-blue: base.$text--blue--dark,
+        text-secondary: base.$text--dark--alt,
+        light-text: base.$primary-white,
+        red-main: base.$red--dark,
+        blue-main: base.$blue--dark,
+        orange-main: base.$orange--dark,
+        btn: base.$btn--dark,
+        btn-active: base.$btn--dark--active,
         hover: base.$hover--dark,
-        selected: base.$selected,
-        border: base.$border--dark,
-        bomb: base.$bomb--dark,
-        box-hover: base.$box--hover--dark,
+        word-cell: base.$word--cell--dark,
+        word-cell-red: base.$word--cell--dark--red,
+        word-cell-blue: base.$word--cell--dark--blue,
+        word-cell-orange: base.$word--cell--dark--orange,
+        word-cell-hover: base.$word--cell--dark--hover,
     ),
 );
 

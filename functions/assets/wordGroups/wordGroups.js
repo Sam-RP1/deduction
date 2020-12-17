@@ -11,7 +11,7 @@ module.exports.engStandard = [
     'Ankle',
     'Apathy',
     'Applause',
-    'Applesauc',
+    'Applesauce',
     'Application',
     'Archaeologist',
     'Aristocrat',

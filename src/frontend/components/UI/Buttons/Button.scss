@@ -1,3 +1,4 @@
+@use '../../../styles/base';
 @import '../../../styles/partials/color-themes';
 @import '../../../styles/mixins/transition';
 @import '../../../styles/mixins/transform';
@@ -7,19 +8,29 @@
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    height: 50px;
-    min-width: 230px;
-    width: 100%;
-    max-width: 300px;
+    height: auto;
+    width: 300px;
     text-align: center;
-    background-color: transparent;
     box-sizing: border-box;
-    border: 3px solid;
+    padding: 8px 25px;
+    border: none;
+    border-radius: 5px;
+    box-shadow: base.$box--shadow;
+    font-family: 'Share Tech', sans-serif;
+    text-transform: uppercase;
+    font-size: 1.2em;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    -webkit-tap-highlight-color: transparent;
     @include themed() {
         color: t($text);
-        border-color: t($border);
+        background-color: t($btn);
     }
-    @include transition-theme(color 0.3s ease, border-color 0.4s ease, background-color 0.3s ease);
+    @include transition-theme(color 0.3s ease, background-color 0.3s ease);
+
+    &:focus {
+        outline: none;
+    }
 
     &:hover {
         @include themed() {
@@ -30,7 +41,7 @@
     &.active {
         @include themed() {
             color: t($text-secondary);
-            background-color: t($hover);
+            background-color: t($btn-active);
         }
     }
 
@@ -38,46 +49,58 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        height: 100%;
-        width: 100%;
+        height: auto;
+        width: auto;
     }
 
-    p {
-        font-size: 2em;
-        margin: 0;
+    &__red,
+    &__blue {
+        width: 100%;
     }
 
     &__red {
         @include themed() {
-            color: t($text-red);
+            color: t($red-main);
         }
         &:hover {
             @include themed() {
-                background-color: t($text-red);
+                color: t($light-text);
+                background-color: t($red-main);
             }
         }
         &.active {
             @include themed() {
-                color: t($text-secondary);
-                background-color: t($text-red);
+                color: t($light-text);
+                background-color: t($red-main);
             }
         }
     }
 
     &__blue {
         @include themed() {
-            color: t($text-blue);
+            color: t($blue-main);
         }
         &:hover {
             @include themed() {
-                background-color: t($text-blue);
+                color: t($light-text);
+                background-color: t($blue-main);
             }
         }
         &.active {
             @include themed() {
-                color: t($text-secondary);
-                background-color: t($text-blue);
+                color: t($light-text);
+                background-color: t($blue-main);
             }
+        }
+    }
+
+    &__insider,
+    &__agent {
+        width: calc(50% - 5px);
+
+        i {
+            font-size: 0.9em;
+            margin-left: 10px;
         }
     }
 }
