@@ -1,10 +1,13 @@
 const express = require('express');
+const cors = require('cors');
 const path = require('path');
 
 const main = express.Router();
 
 module.exports = main;
 
-main.get(['/', '/creategame', '/joingame', '/rules', '/settings', '/game'], (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+main.use(cors({ origin: true }));
+
+main.get(['/', '/creategame', '/joingame', '/game'], (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
