@@ -1,20 +1,20 @@
 'use strict';
 
 // Imports & Global Variables
-import path from 'path'
-import express from 'express'
+const path = require('path');
+const express = require('express');
 
 const app = express();
 
-require('dotenv').config()
+require('dotenv').config();
 require('./routes')(app);
 
 // Express app.use
-app.use(express.static(__dirname))
+app.use(express.static(__dirname));
 
 // Server
-const PORT = process.env.PORT || 8080
+const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
-    console.log(`App listening on ${PORT}`)
-})
+    console.log(`App listening on ${PORT}`);
+});
