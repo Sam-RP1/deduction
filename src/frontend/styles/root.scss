@@ -65,22 +65,43 @@ input {
     margin-top: 5px;
     margin-bottom: 5px;
     box-sizing: border-box;
+    border-radius: 5px;
     padding: 5px;
     box-shadow: base.$box--shadow;
 
     &:focus {
-        outline: 2px solid base.$selected;
+        outline: none;
+        box-shadow: base.$box--shadow--input--focus;
     }
 }
 
 .err-msg {
     display: block;
+    height: auto;
+    width: auto;
     max-width: 600px;
+    box-shadow: base.$box--shadow;
+    box-sizing: border-box;
+    border-radius: 5px;
+    padding: 7px;
+    font-size: 1rem;
+    background-color: base.$bg--error;
+    margin: 5px 0px !important;
+    cursor: pointer;
+    overflow: hidden;
     @include themed() {
         color: t($red-main);
     }
-    margin: 5px 0px !important;
-    cursor: pointer;
+
+    :nth-child(n) {
+        margin-top: 7px;
+        margin-bottom: 0px;
+    }
+    :first-child {
+        margin-top: 0px;
+        margin-bottom: 0px;
+    }
+
     &--inherit {
         @extend .err-msg;
         font-size: inherit;
