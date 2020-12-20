@@ -13,3 +13,6 @@ export const SET_TEAM = 'SET_TEAM';
 export const SET_ROLE = 'SET_ROLE';
 export const ADD_GUESS_BLUE = 'ADD_GUESS_BLUE';
 export const ADD_GUESS_RED = 'ADD_GUESS_RED';
+
+// New
+export const SET_CREATE_GAME_STATE = 'SET_CREATE_GAME_STATE';
