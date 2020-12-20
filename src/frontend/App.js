@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 
+import useGame from './containers/useGame';
+
 import Header from './components/Header/Header';
 import Container from './components/UI/Container/Container';
 import Home from './containers/Home/Home';
@@ -14,6 +16,8 @@ import Footer from './components/Footer/Footer';
 import './styles/root.scss';
 
 const App = () => {
+    const lobbyId = 'newIdMeme';
+    const { sendUpdate } = useGame(lobbyId); //eslint-disable-line
     const [isDarkTheme, setIsDarkTheme] = useState(false);
 
     const toggleTheme = () => {
@@ -33,7 +37,7 @@ const App = () => {
                     <Container opClasses={'container--center container--column'}>
                         <Route path='/game' component={Game} />
                         <Route path='/joingame' component={JoinGame} />
-                        <Route path='/creategame' component={CreateGame} />
+                        <Route path='/creategame' component={() => <CreateGame sendUpdate={sendUpdate} />} />
                         <Route path='/' exact component={Home} />
                     </Container>
                     <Settings />
