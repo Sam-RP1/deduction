@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
@@ -8,52 +8,51 @@ import * as jg from '../../store/actions/joinGame';
 // Presentational Components
 import JoinGameCmpnt from '../../components/Menus/JoinGame/JoinGame';
 
+// Other
+import useError from '../useError';
+
 // Container Component
 const JoinGame = () => {
     // Redux Actions
     const dispatch = useDispatch();
-    const joinGame = useCallback((gameId) => dispatch(jg.joinGame(gameId)), [dispatch]);
+    const joinGame = useCallback((gameId) => dispatch(jg.joinGame(gameId)), [dispatch]); // eslint-disable-line
 
-    // Local State
-    const [joinCode, setJoinCode] = useState('');
-    const [submitErrMsg, setSubmitErrMsg] = useState(null);
+    // State
+    const [joinLinkError, setJoinLinkError] = useState(null);
+    const [playerNameError, setPlayerNameError] = useState(null);
 
-    // Vars
+    // Vars & Refs
     const history = useHistory();
+    const joinLinkInput = useRef();
+    const playerNameInput = useRef();
+
+    // Other
+    const { checkInput, checkJoinLink } = useError(); // eslint-disable-line
 
     // Functions
-    const getEnteredCode = (evt) => {
-        const code = evt.target.value;
-        setJoinCode(code);
-    };
+    const submitHandler = async () => {
+        const joinLink = joinLinkInput.current.value;
+        const playerName = playerNameInput.current.value;
 
-    const submitHandler = () => {
-        console.log('contains', joinCode.search('^[A-Za-z0-9-]+$'));
-        if (joinCode.length === 36 && joinCode.search('^[A-Za-z0-9-]+$') > -1) {
-            joinGame(joinCode);
+        const joinLinkRes = await checkJoinLink(joinLinkError, joinLink, setJoinLinkError);
+        const playerNameRes = await checkInput(playerNameError, playerName, 'player name', setPlayerNameError);
+
+        if (joinLinkRes === true && playerNameRes === true) {
+            // const data = { joinLink: joinLink, playerName: playerName };
             history.push('/game');
-        } else {
-            let errString = 'Invalid join code';
-            let optClass = 'err-msg--inherit err-msg--mw300px';
-            setSubmitErrMsg(errGenerator(errString, optClass, setSubmitErrMsg));
         }
     };
 
-    const errGenerator = (errString, optClass, callback) => {
-        return (
-            <p
-                className={'err-msg ' + optClass}
-                onClick={() => {
-                    callback(null);
-                }}
-            >
-                ERROR: {errString} - CLICK TO DISMISS &#10006;
-            </p>
-        );
-    };
-
     // Render
-    return <JoinGameCmpnt enterCode={getEnteredCode} submitHandler={submitHandler} submitErrMsg={submitErrMsg} />;
+    return (
+        <JoinGameCmpnt
+            joinLinkRef={joinLinkInput}
+            playerNameRef={playerNameInput}
+            joinLinkError={joinLinkError}
+            playerNameError={playerNameError}
+            submitHandler={submitHandler}
+        />
+    );
 };
 
 export default JoinGame;

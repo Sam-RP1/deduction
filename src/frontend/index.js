@@ -7,7 +7,7 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 
 // Imports
 import App from './App';
-import cgmReducer from './store/reducers/createGame';
+import createGameReducer from './store/reducers/createGame';
 import game from './store/reducers/game';
 
 // Styles
@@ -15,7 +15,7 @@ import './styles/root.scss';
 
 // Reducers
 const rootReducer = combineReducers({
-    cgm: cgmReducer,
+    cgr: createGameReducer,
     game: game,
 });
 

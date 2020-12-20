@@ -1,124 +1,78 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import PropTypes from 'prop-types';
 
 // Redux Action Types
-import * as cgm from '../../store/actions/createGame';
+import * as cg from '../../store/actions/createGame';
 
 // Presentational Components
 import CreateGameCmpnt from '../../components/Menus/CreateGame/CreateGame';
 
-// Container Component
-const CreateGame = () => {
-    // Redux Selectors
-    const turnTimer = useSelector((state) => state.cgm.turnTimer);
-    const quickGame = useSelector((state) => state.cgm.quickGame);
-    const wordGroup = useSelector((state) => state.cgm.wordGroup);
-    const customWords = useSelector((state) => state.cgm.customWords, shallowEqual);
+// Other
+import useError from '../useError';
 
+// Container Component
+const CreateGame = (props) => {
     // Redux Actions
     const dispatch = useDispatch();
-    const toggleTurnTimer = useCallback(() => dispatch(cgm.toggleTurnTimer()), [dispatch]);
-    const toggleQuickGame = useCallback(() => dispatch(cgm.toggleQuickGame()), [dispatch]);
-    const selectWordGroup = useCallback((id) => dispatch(cgm.selectWordGroup(id)), [dispatch]);
-    const addCustomWord = useCallback((word) => dispatch(cgm.addCustomWord(word)), [dispatch]);
-    const deleteCustomWord = useCallback((word) => dispatch(cgm.deleteCustomWord(word)), [dispatch]);
-    const submitSettings = useCallback(() => dispatch(cgm.submit()), [dispatch]);
+    const submitNewGame = useCallback((data) => dispatch(cg.submit(data)), [dispatch]);
 
     // State
-    const [customWordsErrMsg, setCustomWordsErrMsg] = useState(null);
-    const [submitErrMsg, setSubmitErrMsg] = useState(null);
+    const [gameNameError, setGameNameError] = useState(null); // eslint-disable-line
+    const [gamePasswordError, setGamePasswordError] = useState(null); // eslint-disable-line
+    const [playerNameError, setPlayerNameError] = useState(null); // eslint-disable-line
 
-    // Vars
-    const history = useHistory();
-    const wordGroups = [{ id: 'eng-standard', title: 'english' }];
+    // Vars & Refs
+    const history = useHistory(); // eslint-disable-line
+    const gameNameInput = useRef();
+    const gamePasswordInput = useRef();
+    const playerNameInput = useRef();
+
+    // Other
+    const { checkInput } = useError(); // eslint-disable-line
 
     // Functions
-    const wordGroupHandler = (id) => {
-        const prevSelected = document.getElementById(wordGroup);
-        const curSelected = document.getElementById(id);
-        if (id !== wordGroup && wordGroup !== '') {
-            prevSelected.setAttribute('aria-checked', 'false');
-            curSelected.setAttribute('aria-checked', 'true');
-            selectWordGroup(id);
-        } else if (wordGroup === '') {
-            curSelected.setAttribute('aria-checked', 'true');
-            selectWordGroup(id);
-        } else if (id === wordGroup) {
-            curSelected.setAttribute('aria-checked', 'false');
-            selectWordGroup('');
-        }
-    };
+    const submitHandler = async () => {
+        const gameName = gameNameInput.current.value;
+        const gamePassword = gamePasswordInput.current.value;
+        const playerName = playerNameInput.current.value;
 
-    const addCustomWordHandler = (evt) => {
-        const enteredString = evt.target.value;
-        const exists = customWords.indexOf(enteredString);
-
-        if (enteredString.length > 1 && customWords.length < 25 && exists === -1) {
-            addCustomWord(enteredString);
-            document.querySelector('#text-input').value = '';
-        } else {
-            let errString;
-            let optClass = 'err-msg--inherit';
-            if (enteredString.length < 2) {
-                errString = 'Entered word is too short! Needs to be two characters or more';
-            } else if (customWords.length === 25) {
-                errString = 'You have entered 25 words! To delete entered words you can click them below';
-            } else if (exists > -1) {
-                errString = 'No duplicates allowed here! You have already entered this word';
-            }
-            setCustomWordsErrMsg(errGenerator(errString, optClass, setCustomWordsErrMsg));
-        }
-    };
-
-    const submitHandler = () => {
-        if ((wordGroup !== '' && customWords.length === 0) || (wordGroup === '' && customWords.length === 25)) {
-            submitSettings();
-            history.push('/game');
-        } else {
-            let errString;
-            let optClass = 'err-msg--inherit';
-            if (wordGroup === '' && customWords.length !== 25) {
-                errString = 'You need to either select a word group or enter 25 custom words';
-            } else if (wordGroup !== '' && customWords.length > 0) {
-                errString =
-                    'You cannot select a word group and have custom words. Please either deselect the selected word group or remove the custom words you have entered';
-            }
-            setSubmitErrMsg(errGenerator(errString, optClass, setSubmitErrMsg));
-        }
-    };
-
-    const errGenerator = (errString, optClass, callback) => {
-        return (
-            <p
-                className={'err-msg ' + optClass}
-                onClick={() => {
-                    callback(null);
-                }}
-            >
-                ERROR: {errString} - CLICK TO DISMISS &#10006;
-            </p>
+        const gameNameRes = await checkInput(gameNameError, gameName, 'game name', setGameNameError);
+        const gamePasswordRes = await checkInput(
+            gamePasswordError,
+            gamePassword,
+            'game password',
+            setGamePasswordError
         );
+        const playerNameRes = await checkInput(playerNameError, playerName, 'player name', setPlayerNameError);
+
+        if (gameNameRes === true && gamePasswordRes === true && playerNameRes === true) {
+            const data = { gameName: gameName, gamePassword: gamePassword, playerName: playerName };
+            submitNewGame(data);
+            history.push('/game');
+            props.sendUpdate();
+        }
     };
 
     // Render
     return (
         <CreateGameCmpnt
-            turnTimer={turnTimer}
-            toggleTurnTimer={toggleTurnTimer}
-            quickGame={quickGame}
-            toggleQuickGame={toggleQuickGame}
-            selectedWordGroup={wordGroup}
-            wordGroups={wordGroups}
-            wordGroupHandler={wordGroupHandler}
-            customWords={customWords}
-            addCustomWordHandler={addCustomWordHandler}
-            deleteCustomWord={deleteCustomWord}
-            customWordsErrMsg={customWordsErrMsg}
+            gameNameRef={gameNameInput}
+            gamePasswordRef={gamePasswordInput}
+            playerNameRef={playerNameInput}
+            gameNameError={gameNameError}
+            gamePasswordError={gamePasswordError}
+            playerNameError={playerNameError}
             submitHandler={submitHandler}
-            submitErrMsg={submitErrMsg}
         />
     );
 };
+
+CreateGame.propTypes = {
+    sendUpdate: PropTypes.func,
+};
+
+CreateGame.defaultProps = {};
 
 export default CreateGame;

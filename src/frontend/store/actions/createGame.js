@@ -1,50 +1,26 @@
 import * as actionTypes from './actionTypes';
 
-export const toggleTurnTimer = () => {
-    return { type: actionTypes.TOGGLE_TURN_TIMER };
-};
-
-export const toggleQuickGame = () => {
-    return { type: actionTypes.TOGGLE_QUICK_GAME };
-};
-
-export const selectWordGroup = (id) => {
-    return { type: actionTypes.SELECT_WORD_GROUP, payload: { selectedWordGroup: id } };
-};
-
-export const addCustomWord = (word) => {
-    return { type: actionTypes.ADD_CUSTOM_WORD, payload: { word: word } };
-};
-
-export const deleteCustomWord = (word) => {
-    return { type: actionTypes.DELETE_CUSTOM_WORD, payload: { word: word } };
-};
-
-export const resetCreateGameState = () => {
-    return { type: actionTypes.RESET_CREATE_GAME_STATE };
-};
-
 export const submitAction = (data) => {
-    return { type: actionTypes.SET_GAME_SETTINGS, payload: { gameSettings: data } };
+    return {
+        type: actionTypes.SET_CREATE_GAME_STATE,
+        payload: { gameName: data.gameName, gamePassword: data.gamePassword, playerName: data.playerName },
+    };
 };
 
-export const submit = () => async (dispatch, getState) => {
-    const cgmData = getState().cgm;
-
-    const url = 'https://us-central1-deduction-158f9.cloudfunctions.net/deduction/api/create';
+// Get socket id, send playerName: { socketId: playersNameHere }
+export const submit = (data) => async (dispatch) => {
+    const url = 'http://localhost:4000/api/game';
 
     const response = await fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-            turnTimer: cgmData.turnTimer,
-            quickGame: cgmData.quickGame,
-            wordGroup: cgmData.wordGroup,
-            customWords: cgmData.customWords,
+            gameName: data.gameName,
+            gamePassword: data.gamePassword,
+            playerName: data.playerName,
         }),
     });
-    const data = await response.json();
-    console.log(data);
+    const res = await response.json();
+    console.log(res);
     dispatch(submitAction(data));
-    dispatch(resetCreateGameState());
 };

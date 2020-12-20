@@ -16,10 +16,12 @@ const JoinGame = (props) => {
 
             <div className='join-game__content'>
                 <h3>Join an existing game:</h3>
-                <label htmlFor='lobby-name'>Lobby Join Link:</label>
-                <input name='lobby-name' type='password' autoComplete='off' />
+                <label htmlFor='join-link'>Lobby Join Link:</label>
+                <input ref={props.joinLinkRef} name='join-link' type='password' autoComplete='off' maxLength='20' />
+                {props.joinLinkError}
                 <label htmlFor='player-name'>Player Name:</label>
-                <input name='player-name' autoComplete='off' />
+                <input ref={props.playerNameRef} name='player-name' autoComplete='off' maxLength='12' />
+                {props.playerNameError}
             </div>
 
             <Button title={'Join!'} function={props.submitHandler} />
@@ -28,20 +30,14 @@ const JoinGame = (props) => {
 };
 
 JoinGame.propTypes = {
-    // Code
-    enterCode: PropTypes.func.isRequired,
-    // Submit
+    joinLinkRef: PropTypes.object,
+    playerNameRef: PropTypes.object,
+    joinLinkError: PropTypes.element,
+    playerNameError: PropTypes.element,
     submitHandler: PropTypes.func.isRequired,
-    // Errors
-    submitErrMsg: PropTypes.object,
 };
 
 JoinGame.defaultProps = {
-    // Code
-    enterCode: () => {
-        console.log('[ENTER CODE] enterCode err');
-    },
-    // Submit
     submitHandler: () => {
         console.log('[JOIN BTN] submitHandler err');
     },
