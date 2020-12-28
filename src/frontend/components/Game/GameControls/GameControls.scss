@@ -135,9 +135,7 @@
                             color: t($text-secondary);
                         }
                         background-color: base.$selected;
-                        &:hover {
-                            background-color: base.$remove;
-                        }
+                        cursor: default;
                     }
                 }
 
@@ -243,6 +241,11 @@
                         color: t($blue-main);
                     }
                 }
+            }
+
+            &__teamless {
+                @include transition(color 0.3s ease);
+                margin: 10px 0px 0px 0px;
             }
 
             &__submit-btn {

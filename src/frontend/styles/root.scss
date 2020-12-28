@@ -32,7 +32,7 @@ a {
     @include themed() {
         background-color: t($bg);
     }
-    @include transition(background-color 0.3s ease);
+    @include transition(background-color 0.25s ease);
 }
 
 h3 {

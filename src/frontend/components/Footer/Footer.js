@@ -10,7 +10,7 @@ const Footer = (props) => {
         <footer className='footer'>
             <div className='footer__settings footer__settings--row'>
                 <div className='footer__settings__toggle-switch-wrapper'>
-                    <p>Toggle Dark Mode</p>
+                    <p>Toggle Light Mode</p>
                     <ToggleSwitch function={props.themeToggle} />
                 </div>
                 <i

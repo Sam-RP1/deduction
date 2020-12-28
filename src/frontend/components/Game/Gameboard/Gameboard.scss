@@ -90,4 +90,29 @@
             }
         }
     }
+
+    &__placeholder {
+        width: 100%;
+        margin-top: 15px;
+        text-align: center;
+        box-sizing: border-box;
+        border-radius: 5px;
+        box-shadow: base.$box--shadow;
+        @include themed() {
+            background-color: t($word-cell);
+        }
+        @include transition-theme(color 0.3s ease, background-color 0.3s ease);
+        cursor: pointer;
+        overflow: hidden;
+        &:hover {
+            @include themed() {
+                color: t($text);
+                background-color: t($word-cell-hover);
+            }
+        }
+
+        h1 {
+            font-size: 1.3rem;
+        }
+    }
 }

@@ -8,11 +8,23 @@ export const RESET_STATE = 'RESET_STATE';
 export const SET_LINK = 'SET_LINK';
 export const SET_GAME_SETTINGS = 'SET_GAME_SETTINGS';
 export const NEW_GAME_SETTINGS = 'NEW_GAME_SETTINGS';
-export const CHANGE_TURN = 'CHANGE_TURN';
-export const SET_TEAM = 'SET_TEAM';
-export const SET_ROLE = 'SET_ROLE';
 export const ADD_GUESS_BLUE = 'ADD_GUESS_BLUE';
 export const ADD_GUESS_RED = 'ADD_GUESS_RED';
-
-// New
+export const SET_GAME_PASSWORD = 'SET_GAME_PASSWORD';
 export const SET_CREATE_GAME_STATE = 'SET_CREATE_GAME_STATE';
+
+// Being used
+export const RESET_GAME = 'RESET_GAME';
+export const SET_TEAM = 'SET_TEAM';
+export const SET_TEAMS = 'SET_TEAMS';
+export const SET_ROLE = 'SET_ROLE';
+export const SET_ROLES = 'SET_ROLES';
+export const SET_TURN = 'SET_TURN';
+export const SET_WORD_BUNDLE = 'SET_WORD_BUNDLE';
+export const SET_WORDS = 'SET_WORDS';
+// Player
+export const SET_PLAYER_ID = 'SET_PLAYER_ID';
+export const SET_PLAYER_NAME = 'SET_PLAYER_NAME';
+export const SET_PLAYER_TEAM = 'SET_PLAYER_TEAM';
+export const SET_PLAYER_ROLE = 'SET_PLAYER_ROLE';
+export const RESET_PLAYER = 'RESET_PLAYER';

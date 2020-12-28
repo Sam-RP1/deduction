@@ -3,7 +3,6 @@ import * as actionTypes from '../actions/actionTypes';
 const initialState = {
     gameName: '',
     gamePassword: '',
-    playerName: '',
 };
 
 const reducer = (state = initialState, action) => {
@@ -12,13 +11,11 @@ const reducer = (state = initialState, action) => {
             return {
                 gameName: action.payload.gameName,
                 gamePassword: action.payload.gamePassword,
-                playerName: action.payload.playerName,
             };
         case actionTypes.RESET_CREATE_GAME_STATE:
             return {
                 gameName: '',
                 gamePassword: '',
-                playerName: '',
             };
         default:
             return state;
