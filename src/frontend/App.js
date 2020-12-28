@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 
-import useGame from './containers/useGame';
+import useSocket from './hooks/useSocket';
 
 import Header from './components/Header/Header';
 import Container from './components/UI/Container/Container';
@@ -16,17 +16,16 @@ import Footer from './components/Footer/Footer';
 import './styles/root.scss';
 
 const App = () => {
-    const lobbyId = 'newIdMeme';
-    const { sendUpdate } = useGame(lobbyId); //eslint-disable-line
-    const [isDarkTheme, setIsDarkTheme] = useState(false);
+    const { socketRef } = useSocket();
 
     const toggleTheme = () => {
-        isDarkTheme ? setIsDarkTheme(false) : setIsDarkTheme(true);
-        console.log('[THEME] toggled');
+        const themeElem = document.getElementById('theme');
+        themeElem.classList.toggle('theme--dark');
+        themeElem.classList.toggle('theme--default');
     };
 
     return (
-        <div className={'theme ' + (isDarkTheme ? 'theme--dark' : 'theme--default')}>
+        <div id='theme' className='theme theme--dark'>
             <BrowserRouter>
                 <div className='base'>
                     <Route
@@ -35,9 +34,9 @@ const App = () => {
                         }}
                     />
                     <Container opClasses={'container--center container--column'}>
-                        <Route path='/game' component={Game} />
+                        <Route path='/game' component={() => <Game socketRef={socketRef} />} />
                         <Route path='/joingame' component={JoinGame} />
-                        <Route path='/creategame' component={() => <CreateGame sendUpdate={sendUpdate} />} />
+                        <Route path='/creategame' component={CreateGame} />
                         <Route path='/' exact component={Home} />
                     </Container>
                     <Settings />
