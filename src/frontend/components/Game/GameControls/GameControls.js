@@ -9,30 +9,16 @@ import './GameControls.scss';
 
 // Presentational Component
 const GameControls = (props) => {
-    const temp = ['eng-standard', 'halo', 'csgo', 'formula 1', 'pokemon'];
-    const selectedWordBundle = 'eng-standard';
-    const copyJoinCode = () => {
-        console.log('[COPY LINK]');
-        let aux = document.createElement('input');
-        aux.style.position = 'absolute';
-        aux.style.left = '-100px';
-        aux.style.top = '0px';
-        aux.style.display = 'block';
-        aux.style.width = '1px';
-        aux.style.height = '1px';
-        aux.setAttribute('value', props.gameId);
-        document.body.appendChild(aux);
-        aux.select();
-        document.execCommand('copy');
-        document.body.removeChild(aux);
+    const copyJoinCode = async () => {
+        await navigator.clipboard.writeText(props.joinCode);
     };
-    // use redux state to style buttons for active or not
+
     return (
         <section className='game-controls'>
             <div className='game-controls__btns-container'>
-                <Button title={'New Game'} function={() => props.newGameReq()} />
+                <Button title={'New Game'} function={() => props.newGame()} />
                 <Button title={'Join Code'} function={() => copyJoinCode()} />
-                <Button title={'End Turn'} function={() => props.endTurnReq()} />
+                <Button title={'End Turn'} function={() => props.endTurnReq(props.team, props.teamTurn)} />
             </div>
 
             <div className='game-controls__teams'>
@@ -41,24 +27,34 @@ const GameControls = (props) => {
                     <Button
                         title={'Randomize'}
                         opClasses={'game-controls__teams__options__randomize'}
-                        function={() => console.log('RANDOM TEAMS')}
+                        function={() => props.randomiseTeams()}
                     />
                     <div className='game-controls__teams__options__red-team'>
                         <Button
                             title={'Red'}
                             opClasses={'btn__red' + (props.team === 'red' ? ' active' : '')}
-                            function={() => props.setTeam('red')}
+                            function={() => props.setTeam('red', props.team)}
                         />
-                        <p>PLAYER1</p>
+                        {props.redTeam.map((player, i) => {
+                            return <p key={i}>{player.playerName}</p>;
+                        })}
                     </div>
                     <div className='game-controls__teams__options__blue-team'>
                         <Button
                             title={'Blue'}
                             opClasses={'btn__blue' + (props.team === 'blue' ? ' active' : '')}
-                            function={() => props.setTeam('blue')}
+                            function={() => props.setTeam('blue', props.team)}
                         />
-                        <p>PLAYER2</p>
+                        {props.blueTeam.map((player, i) => {
+                            return <p key={i}>{player.playerName}</p>;
+                        })}
                     </div>
+                    <p className='game-controls__teams__options__teamless'>
+                        TEAMLESS:
+                        {props.unassigned.map((player) => {
+                            return ' ' + player.playerName;
+                        })}
+                    </p>
                 </div>
             </div>
 
@@ -94,33 +90,39 @@ const GameControls = (props) => {
                 <h3>Word Bundles</h3>
                 <div className='game-controls__bundles__options'>
                     <div className='game-controls__bundles__options__col'>
-                        {temp.map((bundle) => {
-                            return (
-                                <button
-                                    key={bundle}
-                                    id={bundle}
-                                    role='checkbox'
-                                    aria-checked={selectedWordBundle === bundle ? 'true' : 'false'}
-                                    className='create-game__option__selection__brick'
-                                >
-                                    {bundle}
-                                </button>
-                            );
+                        {props.wordBundles.map((bundle, i) => {
+                            if (i % 2 === 0) {
+                                return (
+                                    <button
+                                        key={bundle}
+                                        id={bundle}
+                                        role='checkbox'
+                                        aria-checked={props.wordBundle === bundle ? 'true' : 'false'}
+                                        className='create-game__option__selection__brick'
+                                        onClick={() => props.selectWordBundle(bundle, props.wordBundle)}
+                                    >
+                                        {bundle}
+                                    </button>
+                                );
+                            }
                         })}
                     </div>
                     <div className='game-controls__bundles__options__col'>
-                        {temp.map((bundle) => {
-                            return (
-                                <button
-                                    key={bundle}
-                                    id={bundle}
-                                    role='checkbox'
-                                    aria-checked={selectedWordBundle === bundle ? 'true' : 'false'}
-                                    className='create-game__option__selection__brick'
-                                >
-                                    {bundle}
-                                </button>
-                            );
+                        {props.wordBundles.map((bundle, i) => {
+                            if (i % 2 === 1) {
+                                return (
+                                    <button
+                                        key={bundle}
+                                        id={bundle}
+                                        role='checkbox'
+                                        aria-checked={props.wordBundle === bundle ? 'true' : 'false'}
+                                        className='create-game__option__selection__brick'
+                                        onClick={() => props.selectWordBundle(bundle, props.wordBundle)}
+                                    >
+                                        {bundle}
+                                    </button>
+                                );
+                            }
                         })}
                     </div>
                     <div className='game-controls__bundles__options__custom'>
@@ -165,20 +167,24 @@ const GameControls = (props) => {
 };
 
 GameControls.propTypes = {
-    gameId: PropTypes.string.isRequired,
-    newGameReq: PropTypes.func.isRequired,
-    setTeam: PropTypes.func.isRequired,
-    setRole: PropTypes.func.isRequired,
-    endTurnReq: PropTypes.func.isRequired,
-    team: PropTypes.string.isRequired,
-    role: PropTypes.string.isRequired,
+    joinCode: PropTypes.string,
+    newGame: PropTypes.func,
+    setTeam: PropTypes.func,
+    randomiseTeams: PropTypes.func,
+    setRole: PropTypes.func,
+    endTurnReq: PropTypes.func,
+    team: PropTypes.string,
+    teamTurn: PropTypes.string,
+    role: PropTypes.string,
+    blueTeam: PropTypes.array,
+    redTeam: PropTypes.array,
+    unassigned: PropTypes.array,
+    selectWordBundle: PropTypes.func,
+    wordBundles: PropTypes.array,
+    wordBundle: PropTypes.string,
 };
 
 GameControls.defaultProps = {
-    gameId: 'ERR',
-    newGameReq: () => {
-        console.log('[NEW GAME REQ] error requesting new game');
-    },
     setTeam: () => {
         console.log('[SET TEAM BTN] error setting team');
     },
@@ -189,6 +195,7 @@ GameControls.defaultProps = {
         console.log('[END TURN REQ] error requesting to end turn');
     },
     team: 'undefined',
+    teamTurn: 'undefined',
     role: 'undefined',
 };
 
