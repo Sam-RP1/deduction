@@ -1,97 +1,82 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-
-// Redux Action Types
-import * as gameRA from '../../store/actions/game';
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import PropTypes from 'prop-types';
 
 // Presentational Components
 import GameCmpnt from '../../components/Game/Game';
 
+// Other
+import useGame from '../../hooks/useGame';
+
 // Container Component
-const Game = () => {
+const Game = (props) => {
+    console.log('[GAME CONTAINER RENDER] ' + Date.now());
+
     // Redux Selectors
-    // const gameTimer = useSelector((state) => state.gameRA.gameTimer);
+    // Player
+    const playerName = useSelector((state) => state.player.name);
+    const playerTeam = useSelector((state) => state.player.team);
+    const playerRole = useSelector((state) => state.player.role);
+
+    // Game
     const gameId = useSelector((state) => state.game.id);
+    const gamePassword = useSelector((state) => state.game.password);
+    const blueTeam = useSelector((state) => state.game.blueTeam);
+    const redTeam = useSelector((state) => state.game.redTeam);
+    const unassigned = useSelector((state) => state.game.unassigned);
+    const wordBundles = useSelector((state) => state.game.wordGroups);
+    const wordBundle = useSelector((state) => state.game.wordGroup);
     const wordsArr = useSelector((state) => state.game.words);
     const score = useSelector((state) => state.game.score);
     const turn = useSelector((state) => state.game.turn);
-    const team = useSelector((state) => state.game.team);
-    const role = useSelector((state) => state.game.role);
     // const guessesBlue = useSelector((state) => state.game.guessesBlue);
     // const guessesRed = useSelector((state) => state.game.guessesRed);
 
-    console.log('gameId', gameId);
-    console.log('turn', turn);
-
-    // Redux Actions
-    const dispatch = useDispatch();
-    const newGameReq = useCallback(() => dispatch(gameRA.newGame()), [dispatch]);
-    const setTeam = useCallback((team) => dispatch(gameRA.setTeamAC(team)), [dispatch]);
-    const setRole = useCallback((team) => dispatch(gameRA.setRoleAC(team)), [dispatch]);
-    const endTurnReq = useCallback(() => dispatch(gameRA.changeTurn()), [dispatch]);
-
     // State
     // const [customWordsErrMsg, setCustomWordsErrMsg] = useState(null);
-    const [isLoaded, setIsLoaded] = useState(false); // eslint-disable-line
+    const [joinCode, setJoinCode] = useState(null);
 
     // Vars
+    const { joinGame, newGame, selectTeam, randomiseTeams, selectRole, selectWordBundle, endTurn } = useGame(
+        props.socketRef,
+        gameId
+    );
 
     // Functions
     useEffect(() => {
-        gameId === null ? setIsLoaded(false) : setIsLoaded(true);
-    }, [gameId]);
-
-    const guess = (guess) => {
-        if (team !== null && role === 'agent') {
-            if (guess.denomination === 'bomb') {
-                console.log('OMG A BOMB');
-                // Declare winning team
-                // Set their score to 0
-                // Show winning UI and button to start a new game
-            } else if (guess.denomination === 'blank') {
-                console.log('OMG A BLANK');
-                // End current teams turn
-            } else if (team === 'red' && guess.denomination === 'blue') {
-                // End the red teams turn
-                // Reduce blue teams score
-            } else if (team === 'blue' && guess.denomination === 'red') {
-                // End the blue teams turn
-                // Reduce red teams score
-            } else if (team === 'red' && guess.denomination === 'red') {
-                // Reduce red teams score
-            } else if (team === 'blue' && guess.denomination === 'blue') {
-                // Reduce blue teams score
-            } else {
-                console.log('ERROR NOT ALL GUESS SCENARIOS COVERED');
-            }
-            console.log(guess);
-        }
-        // check if the word is a bomb
-        // check if the word is a blank
-        // then ELSE
-        // check team
-        // check turn
-        // check role
-        // check not already guessed in either teams arrays
-    };
+        joinGame(gameId, playerName);
+        gamePassword;
+        setJoinCode('gameId=' + gameId + ',gamePassword=' + gamePassword);
+    }, [gameId, gamePassword]);
 
     // Render
     return (
         <GameCmpnt
-            isLoaded={isLoaded}
-            gameId={gameId}
+            joinCode={joinCode}
             wordsArr={wordsArr}
             score={score}
             teamTurn={turn}
-            setTeam={setTeam}
-            setRole={setRole}
-            newGameReq={newGameReq}
-            endTurnReq={endTurnReq}
-            team={team}
-            role={role}
-            guess={guess}
+            setTeam={selectTeam}
+            randomiseTeams={randomiseTeams}
+            setRole={selectRole}
+            newGame={newGame}
+            endTurnReq={endTurn}
+            team={playerTeam}
+            role={playerRole}
+            blueTeam={blueTeam}
+            redTeam={redTeam}
+            unassigned={unassigned}
+            selectWordBundle={selectWordBundle}
+            wordBundles={wordBundles}
+            wordBundle={wordBundle}
         />
     );
 };
+
+Game.propTypes = {
+    socketRef: PropTypes.object,
+};
+
+Game.defaultProps = {};
 
 export default Game;
