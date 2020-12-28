@@ -1,8 +1,8 @@
 'use strict';
 
 const app = require('express')();
-const http = require('http').Server(app);
-const io = require('socket.io')(http);
+const http = require('http').createServer(app);
+const sockets = require('./sockets/index.js');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const webpack = require('webpack');
@@ -26,28 +26,13 @@ app.use(
 );
 app.use(webpackHotMiddleware(compiler));
 
-io.on('connection', (socket) => {
-    console.log('Client connected');
-    socket.on('conc', function (room) {
-        // rooms.push(room);
-        // socket.join(room);
-        console.log('CONC');
-    });
-    socket.on('game_update', function (data) {
-        //  console.log('message: ' + msg);
-        console.log('game update');
-        console.log(data);
-    });
-    socket.on('disconnect', function () {
-        console.log('Client disconnected');
-    });
-});
-
-app.locals.io = io;
-
 // Server
 const PORT = process.env.PORT || 3000;
 
 http.listen(PORT, () => {
     console.log(`App listening on ${PORT}`);
 });
+
+sockets.init(http);
+
+// app.locals.io = io;
