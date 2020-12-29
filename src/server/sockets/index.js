@@ -8,6 +8,15 @@ sockets.init = (server) => {
         console.log('Client connected', socket.id);
 
         // DONE
+        // GAME
+        socket.on('new_game', async (data) => {
+            const result = await dbGame.newGame(data.gameId);
+            console.log(result);
+            io.in(data.gameId).emit('update_game', {
+                msg: 'Game updated!',
+                data: result.data,
+            });
+        });
         // Join & Leave
         socket.on('join_game', async (data) => {
             socket.join(data.gameId);
@@ -70,7 +79,6 @@ sockets.init = (server) => {
         // Words
         socket.on('select_word_bundle', async (data) => {
             const result = await dbGame.updateWordBundle(data.gameId, data.bundle);
-            console.log(result);
             io.in(data.gameId).emit('update_word_bundle', {
                 msg: 'New word bundle selected!',
                 bundle: result.bundle,
@@ -80,20 +88,34 @@ sockets.init = (server) => {
                 words: result.words,
             });
         });
-        //
-
-        // GAME
-        socket.on('new_game', async (data) => {
-            const result = await dbGame.newGame(data.gameId);
-            io.in(data.gameId).emit('update_game', {
-                msg: 'Game updated!',
-                data: result.data,
+        socket.on('add_custom_word', async (data) => {
+            const result = await dbGame.addCustomWord(data.gameId, data.word);
+            console.log('CUSTOM WORDS', result);
+            io.in(data.gameId).emit('update_custom_words', {
+                msg: 'New custom words!',
+                customWords: result.customWords,
             });
         });
-
-        socket.on('add_custom_word', (data) => {});
-
-        socket.on('remove_custom_word', (data) => {});
+        socket.on('remove_custom_word', async (data) => {
+            const result = await dbGame.removeCustomWord(data.gameId, data.word);
+            console.log('CUSTOM WORDS', result.customWords);
+            io.in(data.gameId).emit('update_custom_words', {
+                msg: 'New custom words!',
+                customWords: result.customWords,
+            });
+        });
+        socket.on('use_custom_words', async (data) => {
+            const result = await dbGame.useCustomWords(data.gameId);
+            io.in(data.gameId).emit('update_word_bundle', {
+                msg: 'Word bundle reset!',
+                bundle: result.bundle,
+            });
+            io.in(data.gameId).emit('update_words', {
+                msg: 'New custom words to be used for the game!',
+                words: result.words,
+            });
+        });
+        //
 
         socket.on('submit_custom_words', (data) => {});
 

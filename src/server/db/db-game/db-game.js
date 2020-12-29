@@ -93,21 +93,41 @@ module.exports.checkGameId = async (gameId) => {
 };
 
 module.exports.newGame = async (gameId) => {
-    // TODO: finish basic implementation
     // Will need changes when custom words are implemented
     try {
         const sql = await sqlPromise;
         const [result] = await sql.query(sql.format('select * from game_instances where game_id = ?', [gameId]));
         const gameData = result[0];
-        const words = generateWords(gameData.word_group);
+        let words;
+
+        if (gameData.word_group === '') {
+            words = generateWords(gameData.custom_words, true);
+        } else {
+            words = generateWords(gameData.word_group, false);
+        }
 
         const newGame = {
-            score: JSON.stringify({ blue: 8, red: 9 }),
-            words: JSON.stringify(words),
+            score: { blue: 8, red: 9 },
+            words: words,
             turn: 'red',
-            guesses_blue: JSON.stringify([]),
-            guesses_red: JSON.stringify([]),
+            guessesBlue: [],
+            guessesRed: [],
         };
+
+        const score = JSON.stringify(newGame.score);
+        const wordsStr = JSON.stringify(newGame.words);
+        const turn = newGame.turn;
+        const guessesBlue = JSON.stringify(newGame.guessesBlue);
+        const guessesRed = JSON.stringify(newGame.guessesRed);
+
+        await sql.query(
+            sql.format(
+                'update game_instances set score = ?, words = ?, turn = ?, guesses_blue = ?, guesses_red = ? where game_id = ?',
+                [score, wordsStr, turn, guessesBlue, guessesRed, gameId]
+            )
+        );
+
+        return { status: SUCCESS, data: newGame };
     } catch (e) {
         return { status: ERROR, error: e };
     }
@@ -284,7 +304,7 @@ module.exports.updateTurn = async (gameId) => {
 module.exports.updateWordBundle = async (gameId, bundleId) => {
     try {
         const sql = await sqlPromise;
-        const words = generateWords(bundleId);
+        const words = generateWords(bundleId, false);
         const wordsStr = JSON.stringify(words);
 
         await sql.query(
@@ -296,6 +316,72 @@ module.exports.updateWordBundle = async (gameId, bundleId) => {
         );
 
         return { status: SUCCESS, bundle: bundleId, words: words };
+    } catch (e) {
+        return { status: ERROR, error: e };
+    }
+};
+module.exports.addCustomWord = async (gameId, word) => {
+    try {
+        const sql = await sqlPromise;
+        const [customWordsRes] = await sql.query(
+            sql.format('select custom_words from game_instances where game_id = ?', [gameId])
+        );
+        const customWords = JSON.parse(customWordsRes[0].custom_words);
+        customWords.push(word);
+        const customWordsStr = JSON.stringify(customWords);
+
+        await sql.query(
+            sql.format('update game_instances set custom_words = ? where game_id = ?', [customWordsStr, gameId])
+        );
+
+        return { status: SUCCESS, customWords: customWords };
+    } catch (e) {
+        return { status: ERROR, error: e };
+    }
+};
+module.exports.removeCustomWord = async (gameId, word) => {
+    try {
+        const sql = await sqlPromise;
+        const [customWordsRes] = await sql.query(
+            sql.format('select custom_words from game_instances where game_id = ?', [gameId])
+        );
+        const customWords = JSON.parse(customWordsRes[0].custom_words);
+
+        for (let i = 0; i < customWords.length; i++) {
+            if (customWords[i] === word) {
+                console.log('found and removed word');
+                customWords.splice(i, 1);
+                break;
+            }
+        }
+
+        const customWordsStr = JSON.stringify(customWords);
+
+        await sql.query(
+            sql.format('update game_instances set custom_words = ? where game_id = ?', [customWordsStr, gameId])
+        );
+
+        return { status: SUCCESS, customWords: customWords };
+    } catch (e) {
+        return { status: ERROR, error: e };
+    }
+};
+module.exports.useCustomWords = async (gameId) => {
+    // add check to ensure there are 25 custom words!
+    // case could occur where a word is removed and a custom game is being played then they try to do a new game and it has less then 25 words
+    try {
+        const sql = await sqlPromise;
+        const [result] = await sql.query(sql.format('select * from game_instances where game_id = ?', [gameId]));
+        const parsedData = await parseGameData(result[0]);
+
+        const words = generateWords(parsedData.customWords, true);
+        const wordsStr = JSON.stringify(words);
+
+        await sql.query(
+            sql.format('update game_instances set words = ?, word_group = ? where game_id = ?', [wordsStr, '', gameId])
+        );
+
+        return { status: SUCCESS, bundle: '', words: words };
     } catch (e) {
         return { status: ERROR, error: e };
     }

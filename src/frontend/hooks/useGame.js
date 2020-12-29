@@ -3,12 +3,13 @@ import { useDispatch } from 'react-redux';
 
 // Redux Action Types
 import {
-    newGame,
+    newGameAC,
     setTeamsAC,
     setRolesAC,
     setTurnAC,
     setWordBundleAC,
     setWordsAC,
+    setCustomWordsAC,
     resetGameAC,
 } from '../store/actions/game';
 import { setTeamAC, setRoleAC, resetPlayerAC } from '../store/actions/player';
@@ -16,7 +17,7 @@ import { setTeamAC, setRoleAC, resetPlayerAC } from '../store/actions/player';
 const useGame = (socketRef, gameId) => {
     // Redux Actions
     const dispatch = useDispatch();
-    const requestNewGame = useCallback(() => dispatch(newGame()), [dispatch]); //eslint-disable-line
+    const setNewGame = useCallback((data) => dispatch(newGameAC(data)), [dispatch]); //eslint-disable-line
     // Teams
     const setTeams = useCallback((players) => dispatch(setTeamsAC(players)), [dispatch]);
     const setTeam = useCallback((team) => dispatch(setTeamAC(team)), [dispatch]);
@@ -28,6 +29,7 @@ const useGame = (socketRef, gameId) => {
     // Words
     const setWordBundle = useCallback((bundleId) => dispatch(setWordBundleAC(bundleId)), [dispatch]);
     const setWords = useCallback((words) => dispatch(setWordsAC(words)), [dispatch]);
+    const setCustomWords = useCallback((words) => dispatch(setCustomWordsAC(words)), [dispatch]);
     // Leave
     const resetPlayer = useCallback(() => dispatch(resetPlayerAC()), [dispatch]);
     const resetGame = useCallback(() => dispatch(resetGameAC()), [dispatch]);
@@ -36,6 +38,7 @@ const useGame = (socketRef, gameId) => {
         // New game has been requested
         socketRef.current.on('update_game', (res) => {
             console.log(res.msg);
+            setNewGame(res.data);
         });
         // Player(s) have changed team
         socketRef.current.on('update_teams', (res) => {
@@ -88,6 +91,11 @@ const useGame = (socketRef, gameId) => {
             console.log(res.msg);
             setWords(res.words);
         });
+        // Game custom words have changed
+        socketRef.current.on('update_custom_words', (res) => {
+            console.log(res.msg);
+            setCustomWords(res.customWords);
+        });
 
         // Clean up and remove all socket listeners
         return () => {
@@ -100,6 +108,7 @@ const useGame = (socketRef, gameId) => {
             socketRef.current.removeListener('update_turn');
             socketRef.current.removeListener('update_word_bundle');
             socketRef.current.removeListener('update_words');
+            socketRef.current.removeListener('update_custom_words');
             socketRef.current.emit('leave_game', {
                 gameId: gameId,
             });
@@ -115,7 +124,7 @@ const useGame = (socketRef, gameId) => {
         });
     };
 
-    const newGame = (gameId) => {
+    const newGame = () => {
         socketRef.current.emit('new_game', {
             gameId: gameId,
         });
@@ -156,6 +165,26 @@ const useGame = (socketRef, gameId) => {
         }
     };
 
+    const addCustomWord = (word) => {
+        socketRef.current.emit('add_custom_word', {
+            gameId: gameId,
+            word: word,
+        });
+    };
+
+    const removeCustomWord = (word) => {
+        socketRef.current.emit('remove_custom_word', {
+            gameId: gameId,
+            word: word,
+        });
+    };
+
+    const useCustomWords = () => {
+        socketRef.current.emit('use_custom_words', {
+            gameId: gameId,
+        });
+    };
+
     const endTurn = (team, currentTurn) => {
         console.log(team);
         console.log(currentTurn);
@@ -165,8 +194,20 @@ const useGame = (socketRef, gameId) => {
             });
         }
     };
+    //
 
-    return { joinGame, newGame, selectTeam, randomiseTeams, selectRole, selectWordBundle, endTurn };
+    return {
+        joinGame,
+        newGame,
+        selectTeam,
+        randomiseTeams,
+        selectRole,
+        selectWordBundle,
+        addCustomWord,
+        removeCustomWord,
+        useCustomWords,
+        endTurn,
+    };
 };
 
 export default useGame;
