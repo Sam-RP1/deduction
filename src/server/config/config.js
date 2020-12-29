@@ -22,8 +22,16 @@ module.exports.getWordBundles = () => {
     return idArray;
 };
 
-module.exports.generateWords = (bundleId) => {
-    const bundleWords = wordGroups[bundleId].words;
+module.exports.generateWords = (bundle, isCustom) => {
+    // error with arrays when trying to filter using custom words
+    let bundleWords;
+
+    if (isCustom === false) {
+        bundleWords = wordGroups[bundle].words;
+    } else {
+        bundleWords = bundle;
+    }
+
     const wordsArr = [];
     let words = _.sample(bundleWords, 25);
 
