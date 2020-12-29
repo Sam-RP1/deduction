@@ -78,6 +78,17 @@ const reducer = (state = initialState, action) => {
                 turn: gameSettings.turn,
             };
         }
+        case actionTypes.NEW_GAME: {
+            const newGame = action.payload.data;
+            return {
+                ...state,
+                score: newGame.score,
+                words: newGame.words,
+                turn: newGame.turn,
+                guessesBlue: newGame.guessesBlue,
+                guessesRed: newGame.guessesRed,
+            };
+        }
         case actionTypes.RESET_GAME:
             return {
                 id: null,
@@ -127,6 +138,11 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 words: action.payload.words,
+            };
+        case actionTypes.SET_CUSTOM_WORDS:
+            return {
+                ...state,
+                customWords: action.payload.words,
             };
         case actionTypes.SET_GAME_PASSWORD:
             return {

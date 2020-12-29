@@ -47,24 +47,11 @@ export const newGameSettings = (data) => {
     return { type: actionTypes.NEW_GAME_SETTINGS, payload: { gameSettings: data } };
 };
 
-export const newGame = () => async (dispatch, getState) => {
-    const gameId = getState().game.id;
-
-    const url = 'https://us-central1-deduction-158f9.cloudfunctions.net/deduction/api/game/restart';
-
-    const response = await fetch(url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            gameId: gameId,
-        }),
-    });
-    const data = await response.json();
-    console.log(data);
-    dispatch(newGameSettings(data));
-};
-
 // DONE
+// Game
+export const newGameAC = (data) => {
+    return { type: actionTypes.NEW_GAME, payload: { data: data } };
+};
 // Teams
 export const setTeamsAC = (players) => {
     return { type: actionTypes.SET_TEAMS, payload: { players: players } };
@@ -83,6 +70,9 @@ export const setWordBundleAC = (bundle) => {
 };
 export const setWordsAC = (words) => {
     return { type: actionTypes.SET_WORDS, payload: { words: words } };
+};
+export const setCustomWordsAC = (words) => {
+    return { type: actionTypes.SET_CUSTOM_WORDS, payload: { words: words } };
 };
 // Leave & Reset
 export const resetGameAC = () => {

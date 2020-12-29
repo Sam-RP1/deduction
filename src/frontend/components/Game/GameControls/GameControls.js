@@ -133,33 +133,39 @@ const GameControls = (props) => {
                                 Enter 25 words by typing one word at a time in the box below and then pressing your
                                 enter key.
                             </p>
-                            <input id='text-input' />
-                            <p>placeholder / 25</p>
+                            <input
+                                id='text-input'
+                                onKeyPress={(evt) => {
+                                    if (evt.key === 'Enter') {
+                                        props.addCustomWordHandler(evt);
+                                    }
+                                }}
+                                maxLength={40}
+                            />
+                            <p>{props.customWords.length} / 25</p>
+                            {props.customWordError}
                         </div>
                         <div className='game-controls__bundles__options__custom__bricks'>
-                            {/* {props.customWords.map((word) => {
+                            {props.customWords.map((word) => {
                                 return (
                                     <button
                                         key={word}
                                         onClick={() => {
-                                            props.deleteCustomWord(word);
+                                            props.removeCustomWord(word);
                                         }}
                                     >
                                         <p>{word}</p>
                                     </button>
                                 );
-                            })} */}
-                            <button
-                            // key={word}
-                            // onClick={() => {
-                            //     props.deleteCustomWord(word);
-                            // }}
-                            >
-                                <p>word</p>
-                            </button>
+                            })}
                         </div>
                     </div>
-                    <button className='game-controls__bundles__options__submit-btn'>Submit</button>
+                    <button
+                        onClick={() => props.useCustomWords()}
+                        className='game-controls__bundles__options__submit-btn'
+                    >
+                        Play Custom
+                    </button>
                 </div>
             </div>
         </section>
@@ -182,6 +188,11 @@ GameControls.propTypes = {
     selectWordBundle: PropTypes.func,
     wordBundles: PropTypes.array,
     wordBundle: PropTypes.string,
+    customWords: PropTypes.array,
+    addCustomWordHandler: PropTypes.func,
+    removeCustomWord: PropTypes.func,
+    useCustomWords: PropTypes.func,
+    customWordError: PropTypes.string,
 };
 
 GameControls.defaultProps = {

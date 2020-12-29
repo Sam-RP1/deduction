@@ -110,6 +110,9 @@
                 background-color: t($word-cell-hover);
             }
         }
+        @media screen and (min-width: 1092px) {
+            margin-top: 2px;
+        }
 
         h1 {
             font-size: 1.3rem;

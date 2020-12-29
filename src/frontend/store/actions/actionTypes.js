@@ -14,6 +14,7 @@ export const SET_GAME_PASSWORD = 'SET_GAME_PASSWORD';
 export const SET_CREATE_GAME_STATE = 'SET_CREATE_GAME_STATE';
 
 // Being used
+export const NEW_GAME = 'NEW_GAME';
 export const RESET_GAME = 'RESET_GAME';
 export const SET_TEAM = 'SET_TEAM';
 export const SET_TEAMS = 'SET_TEAMS';
@@ -22,6 +23,7 @@ export const SET_ROLES = 'SET_ROLES';
 export const SET_TURN = 'SET_TURN';
 export const SET_WORD_BUNDLE = 'SET_WORD_BUNDLE';
 export const SET_WORDS = 'SET_WORDS';
+export const SET_CUSTOM_WORDS = 'SET_CUSTOM_WORDS';
 // Player
 export const SET_PLAYER_ID = 'SET_PLAYER_ID';
 export const SET_PLAYER_NAME = 'SET_PLAYER_NAME';

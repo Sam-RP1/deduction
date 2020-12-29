@@ -43,6 +43,11 @@ const Game = (props) => {
                     selectWordBundle={props.selectWordBundle}
                     wordBundles={props.wordBundles}
                     wordBundle={props.wordBundle}
+                    customWords={props.customWords}
+                    addCustomWordHandler={props.addCustomWordHandler}
+                    removeCustomWord={props.removeCustomWord}
+                    useCustomWords={props.useCustomWords}
+                    customWordError={props.customWordError}
                 />
             </div>
         </section>
@@ -68,6 +73,11 @@ Game.propTypes = {
     selectWordBundle: PropTypes.func,
     wordBundles: PropTypes.array,
     wordBundle: PropTypes.string,
+    customWords: PropTypes.array,
+    addCustomWordHandler: PropTypes.func,
+    removeCustomWord: PropTypes.func,
+    useCustomWords: PropTypes.func,
+    customWordError: PropTypes.string,
 };
 
 Game.defaultProps = {
