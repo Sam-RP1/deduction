@@ -23,7 +23,6 @@ module.exports.getWordBundles = () => {
 };
 
 module.exports.generateWords = (bundle, isCustom) => {
-    // error with arrays when trying to filter using custom words
     let bundleWords;
 
     if (isCustom === false) {
@@ -32,7 +31,6 @@ module.exports.generateWords = (bundle, isCustom) => {
         bundleWords = bundle;
     }
 
-    const wordsArr = [];
     let words = _.sample(bundleWords, 25);
 
     // Allocate words between red, blue, blank and bomb
@@ -44,6 +42,7 @@ module.exports.generateWords = (bundle, isCustom) => {
     const bombWord = noBlueRedWords.filter((word) => !blankWords.includes(word));
 
     // Push each denomination of words into an array
+    const wordsArr = [];
     for (let i = 0; i < 9; i++) {
         wordsArr.push({ denomination: 'red', word: redWords[i] });
     }

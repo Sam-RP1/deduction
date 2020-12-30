@@ -50,6 +50,7 @@ const Game = (props) => {
         addCustomWord,
         removeCustomWord,
         useCustomWords,
+        guess,
         endTurn,
     } = useGame(props.socketRef, gameId);
     const { generateError } = useError();
@@ -112,6 +113,7 @@ const Game = (props) => {
             removeCustomWord={removeCustomWord}
             useCustomWords={useCustomWords}
             customWordError={customWordError}
+            guess={guess}
         />
     );
 };

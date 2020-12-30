@@ -678,7 +678,6 @@ module.exports.english = {
         'Zipper',
         'Zone',
         'Zoo',
-        '',
     ],
 };
 

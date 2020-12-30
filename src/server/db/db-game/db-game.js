@@ -92,8 +92,9 @@ module.exports.checkGameId = async (gameId) => {
     }
 };
 
+// DONE (But not refactored or optimised, just working)
+// Game
 module.exports.newGame = async (gameId) => {
-    // Will need changes when custom words are implemented
     try {
         const sql = await sqlPromise;
         const [result] = await sql.query(sql.format('select * from game_instances where game_id = ?', [gameId]));
@@ -101,7 +102,7 @@ module.exports.newGame = async (gameId) => {
         let words;
 
         if (gameData.word_group === '') {
-            words = generateWords(gameData.custom_words, true);
+            words = generateWords(JSON.parse(gameData.custom_words), true);
         } else {
             words = generateWords(gameData.word_group, false);
         }
@@ -132,10 +133,6 @@ module.exports.newGame = async (gameId) => {
         return { status: ERROR, error: e };
     }
 };
-
-// Player functions (Teams & Roles)
-
-// DONE (But not refactored or optimised, just working)
 // Players
 module.exports.addPlayer = async (gameId, playerId, playerName) => {
     try {

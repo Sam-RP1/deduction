@@ -78,6 +78,7 @@ Game.propTypes = {
     removeCustomWord: PropTypes.func,
     useCustomWords: PropTypes.func,
     customWordError: PropTypes.string,
+    guess: PropTypes.func,
 };
 
 Game.defaultProps = {

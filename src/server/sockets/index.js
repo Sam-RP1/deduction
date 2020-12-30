@@ -8,7 +8,7 @@ sockets.init = (server) => {
         console.log('Client connected', socket.id);
 
         // DONE
-        // GAME
+        // Game
         socket.on('new_game', async (data) => {
             const result = await dbGame.newGame(data.gameId);
             console.log(result);
@@ -115,6 +115,8 @@ sockets.init = (server) => {
                 words: result.words,
             });
         });
+        // Game board
+        socket.on('guess', async (data) => {});
         //
 
         socket.on('submit_custom_words', (data) => {});

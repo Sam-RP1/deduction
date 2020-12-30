@@ -185,6 +185,21 @@ const useGame = (socketRef, gameId) => {
         });
     };
 
+    const guess = (word, playerTeam, playerRole) => {
+        console.log('Making a guess');
+        console.log('Word clicked: ', word);
+        console.log('Player team: ', playerTeam);
+        console.log('Player role: ', playerRole);
+        if (playerRole === 'agent' && playerTeam !== null) {
+            socketRef.current.emit('guess', {
+                gameId: gameId,
+                word: word,
+                playerTeam: playerTeam,
+                playerRole: playerRole,
+            });
+        }
+    };
+
     const endTurn = (team, currentTurn) => {
         console.log(team);
         console.log(currentTurn);
@@ -206,6 +221,7 @@ const useGame = (socketRef, gameId) => {
         addCustomWord,
         removeCustomWord,
         useCustomWords,
+        guess,
         endTurn,
     };
 };
