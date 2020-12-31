@@ -10,6 +10,7 @@ import {
     setWordBundleAC,
     setWordsAC,
     setCustomWordsAC,
+    setScoreAC,
     resetGameAC,
 } from '../store/actions/game';
 import { setTeamAC, setRoleAC, resetPlayerAC } from '../store/actions/player';
@@ -30,6 +31,8 @@ const useGame = (socketRef, gameId) => {
     const setWordBundle = useCallback((bundleId) => dispatch(setWordBundleAC(bundleId)), [dispatch]);
     const setWords = useCallback((words) => dispatch(setWordsAC(words)), [dispatch]);
     const setCustomWords = useCallback((words) => dispatch(setCustomWordsAC(words)), [dispatch]);
+    // Score
+    const setScore = useCallback((score) => dispatch(setScoreAC(score)), [dispatch]);
     // Leave
     const resetPlayer = useCallback(() => dispatch(resetPlayerAC()), [dispatch]);
     const resetGame = useCallback(() => dispatch(resetGameAC()), [dispatch]);
@@ -96,6 +99,15 @@ const useGame = (socketRef, gameId) => {
             console.log(res.msg);
             setCustomWords(res.customWords);
         });
+        // Guess has been made
+        socketRef.current.on('guess_made', (res) => {
+            console.log(res);
+            if (res.data.nextTurn !== null) {
+                setTurn(res.data.nextTurn);
+            }
+            setScore(res.data.score);
+            setWords(res.data.words);
+        });
 
         // Clean up and remove all socket listeners
         return () => {
@@ -109,6 +121,7 @@ const useGame = (socketRef, gameId) => {
             socketRef.current.removeListener('update_word_bundle');
             socketRef.current.removeListener('update_words');
             socketRef.current.removeListener('update_custom_words');
+            socketRef.current.removeListener('guess_made');
             socketRef.current.emit('leave_game', {
                 gameId: gameId,
             });
@@ -190,7 +203,7 @@ const useGame = (socketRef, gameId) => {
         console.log('Word clicked: ', word);
         console.log('Player team: ', playerTeam);
         console.log('Player role: ', playerRole);
-        if (playerRole === 'agent' && playerTeam !== null) {
+        if (playerRole === 'agent' && playerTeam !== null && word.guessData.isGuessed === false) {
             socketRef.current.emit('guess', {
                 gameId: gameId,
                 word: word,
