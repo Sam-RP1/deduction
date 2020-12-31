@@ -42,10 +42,25 @@
             pointer-events: none;
         }
 
+        &.blank {
+            &.guessed {
+                color: base.$primary-white;
+                @include themed() {
+                    background-color: t($word-cell-blank-guessed);
+                }
+            }
+        }
+
         &.bomb {
             @include themed() {
                 color: t($orange-main);
                 background-color: t($word-cell-orange);
+            }
+            &.guessed {
+                color: base.$primary-white;
+                @include themed() {
+                    background-color: t($word-cell-orange-guessed);
+                }
             }
         }
 
@@ -54,12 +69,24 @@
                 color: t($red-main);
                 background-color: t($word-cell-red);
             }
+            &.guessed {
+                color: base.$primary-white;
+                @include themed() {
+                    background-color: t($word-cell-red-guessed);
+                }
+            }
         }
 
         &.blue {
             @include themed() {
                 color: t($blue-main);
                 background-color: t($word-cell-blue);
+            }
+            &.guessed {
+                color: base.$primary-white;
+                @include themed() {
+                    background-color: t($word-cell-blue-guessed);
+                }
             }
         }
 
