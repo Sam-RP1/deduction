@@ -14,7 +14,13 @@ const Gameboard = (props) => {
                         <div
                             key={block.word}
                             id={block.word}
-                            className={'gameboard__word-block ' + (props.role === 'insider' ? block.denomination : '')}
+                            className={
+                                'gameboard__word-block ' +
+                                (props.role === 'insider' || block.guessData.isGuessed === true
+                                    ? block.denomination
+                                    : '') +
+                                (block.guessData.isGuessed === true ? ' guessed' : '')
+                            }
                             onClick={() => {
                                 props.guess(block, props.team, props.role);
                             }}
