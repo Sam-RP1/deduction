@@ -8,10 +8,8 @@ CREATE TABLE if not exists deduction_DB.game_instances(
     score JSON NOT NULL,
     word_group VARCHAR(30),
     custom_words VARCHAR(2000),
-    words VARCHAR(2000) NOT NULL,
+    words VARCHAR(3000) NOT NULL,
     turn VARCHAR(4) NOT NULL,
-    guesses_blue VARCHAR(2000) NOT NULL,
-    guesses_red VARCHAR(2000) NOT NULL,
     quick_game BOOLEAN NOT NULL,
     turn_timer BOOLEAN NOT NULL,
     game_timer INT NOT NULL,
@@ -25,10 +23,8 @@ CREATE TABLE if not exists deduction_DB.game_instances(
 -- score: { score: { blue: 8, red: 9 } }
 -- word_group: 'eng-standard'
 -- custom_words: 'word,word,word,word,word,word,word,word'
--- words: { 0: { denomination: 'red', index: 0, word: 'Big' } x24 more}
+-- words: [ { denomination: 'red', index: 0, word: 'Big', guessData: { isGuessed: true/false, team: 'red } } x24 more]
 -- turn: 'blue'
--- guesses_blue: { 0: { denomination: 'red', index: 0, word: 'word' } }
--- guesses_red: { 0: { denomination: 'blue', index: 5, word: 'word2' } }
 -- quick_game: false
 -- turn_timer: false
 -- game_timer: 0

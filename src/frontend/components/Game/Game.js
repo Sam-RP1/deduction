@@ -66,7 +66,6 @@ Game.propTypes = {
     endTurnReq: PropTypes.func,
     team: PropTypes.string,
     role: PropTypes.string,
-    guess: PropTypes.func,
     blueTeam: PropTypes.array,
     redTeam: PropTypes.array,
     unassigned: PropTypes.array,

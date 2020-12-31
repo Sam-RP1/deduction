@@ -31,8 +31,6 @@ const Game = (props) => {
     const score = useSelector((state) => state.game.score);
     const turn = useSelector((state) => state.game.turn);
     const customWords = useSelector((state) => state.game.customWords);
-    // const guessesBlue = useSelector((state) => state.game.guessesBlue);
-    // const guessesRed = useSelector((state) => state.game.guessesRed);
 
     // State
     // const [customWordsErrMsg, setCustomWordsErrMsg] = useState(null);
