@@ -23,8 +23,8 @@ module.exports.createGame = async (gameData) => {
             custom_words: JSON.stringify([]),
             words: JSON.stringify([]),
             turn: 'red',
-            guesses_blue: JSON.stringify([]),
-            guesses_red: JSON.stringify([]),
+            // guesses_blue: JSON.stringify([]),
+            // guesses_red: JSON.stringify([]),
             quick_game: false,
             turn_timer: false,
             game_timer: 0,
@@ -111,24 +111,80 @@ module.exports.newGame = async (gameId) => {
             score: { blue: 8, red: 9 },
             words: words,
             turn: 'red',
-            guessesBlue: [],
-            guessesRed: [],
         };
 
         const score = JSON.stringify(newGame.score);
         const wordsStr = JSON.stringify(newGame.words);
         const turn = newGame.turn;
-        const guessesBlue = JSON.stringify(newGame.guessesBlue);
-        const guessesRed = JSON.stringify(newGame.guessesRed);
 
         await sql.query(
-            sql.format(
-                'update game_instances set score = ?, words = ?, turn = ?, guesses_blue = ?, guesses_red = ? where game_id = ?',
-                [score, wordsStr, turn, guessesBlue, guessesRed, gameId]
-            )
+            sql.format('update game_instances set score = ?, words = ?, turn = ? where game_id = ?', [
+                score,
+                wordsStr,
+                turn,
+                gameId,
+            ])
         );
 
         return { status: SUCCESS, data: newGame };
+    } catch (e) {
+        return { status: ERROR, error: e };
+    }
+};
+module.exports.updateGuess = async (gameId, word, team) => {
+    try {
+        const sql = await sqlPromise;
+        const [gameData] = await sql.query(sql.format('select * from game_instances where game_id = ?', [gameId]));
+        const parsedData = parseGameData(gameData[0]);
+        const words = parsedData.words;
+        console.log('WORDS: ', words);
+        const score = parsedData.score;
+        console.log('SCORE: ', score);
+        let nextTurn = null;
+
+        const wordIndex = word.index;
+        words[wordIndex].guessData.isGuessed = true;
+        words[wordIndex].guessData.team = team;
+
+        if (word.denomination === 'blue' && team === 'blue') {
+            score.blue += -1;
+        } else if (word.denomination === 'blue' && team === 'red') {
+            score.blue += -1;
+            nextTurn = 'blue';
+        } else if (word.denomination === 'red' && team === 'red') {
+            score.red += -1;
+        } else if (word.denomination === 'red' && team === 'blue') {
+            score.red += -1;
+            nextTurn = 'red';
+        } else if (word.denomination === 'blank') {
+            nextTurn = team === 'blue' ? 'red' : 'blue';
+        } else {
+            team === 'blue' ? (score.red = 0) : (score.blue = 0);
+        }
+
+        const wordsStr = JSON.stringify(words);
+        const scoreStr = JSON.stringify(score);
+
+        if (nextTurn !== null) {
+            await sql.query(
+                sql.format('update game_instances set words = ?, score = ?, turn = ? where game_id = ?', [
+                    wordsStr,
+                    scoreStr,
+                    nextTurn,
+                    gameId,
+                ])
+            );
+        } else {
+            await sql.query(
+                sql.format('update game_instances set words = ?, score = ? where game_id = ?', [
+                    wordsStr,
+                    scoreStr,
+                    gameId,
+                ])
+            );
+        }
+
+        return { status: SUCCESS, data: { words: words, score: score, nextTurn: nextTurn } };
     } catch (e) {
         return { status: ERROR, error: e };
     }
@@ -399,8 +455,6 @@ const parseGameData = (gameData) => {
         customWords: JSON.parse(gameData.custom_words),
         words: JSON.parse(gameData.words),
         turn: gameData.turn,
-        guessesBlue: JSON.parse(gameData.guesses_blue),
-        guessesRed: JSON.parse(gameData.guesses_red),
         quickGame: gameData.quick_game,
         turnTimer: gameData.turn_timer,
         gameTimer: gameData.game_timer,
