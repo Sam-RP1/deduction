@@ -116,7 +116,20 @@ sockets.init = (server) => {
             });
         });
         // Game board
-        socket.on('guess', async (data) => {});
+        socket.on('guess', async (data) => {
+            if (data.playerTeam !== null && data.playerRole === 'agent' && data.word.guessData.isGuessed === false) {
+                const result = await dbGame.updateGuess(data.gameId, data.word, data.playerTeam, data.playerRole);
+                console.log(result);
+                io.in(data.gameId).emit('guess_made', {
+                    msg: 'A guess has been made!',
+                    data: result.data,
+                });
+            } else {
+                socket.emit('error', {
+                    msg: 'You have made an error.',
+                });
+            }
+        });
         //
 
         socket.on('submit_custom_words', (data) => {});
