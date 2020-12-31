@@ -59,6 +59,12 @@ module.exports.generateWords = (bundle, isCustom) => {
 
     // Assign words index numbers (0-24)
     for (let i = 0; i < shuffledWords.length; i++) {
+        const guessData = {
+            isGuessed: false,
+            team: null,
+        };
+
+        shuffledWords[i].guessData = guessData;
         shuffledWords[i].index = i;
     }
 
