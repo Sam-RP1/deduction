@@ -74,6 +74,10 @@ export const setWordsAC = (words) => {
 export const setCustomWordsAC = (words) => {
     return { type: actionTypes.SET_CUSTOM_WORDS, payload: { words: words } };
 };
+// Score
+export const setScoreAC = (score) => {
+    return { type: actionTypes.SET_SCORE, payload: { score: score } };
+};
 // Leave & Reset
 export const resetGameAC = () => {
     return { type: actionTypes.RESET_GAME };
