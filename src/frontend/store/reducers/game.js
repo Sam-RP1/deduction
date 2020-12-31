@@ -15,8 +15,6 @@ const initialState = {
     customWords: [], // The games custom words if applicable
     words: [], // The games words generated from the selected word group
     turn: null, // The games turn based on teams
-    guessesBlue: [], // MAYBE REMOVE
-    guessesRed: [], // MAYBE REMOVE
     quickGame: false, // Not implemented
     turnTimer: false, // Not implemented
     gameTimer: 0, // Not implemented
@@ -58,8 +56,6 @@ const reducer = (state = initialState, action) => {
                 customWords: gameSettings.customWords,
                 words: gameSettings.words,
                 turn: gameSettings.turn,
-                guessesBlue: gameSettings.guessesBlue,
-                guessesRed: gameSettings.guessesRed,
                 quickGame: gameSettings.quickGame,
                 turnTimer: gameSettings.turnTimer,
                 gameTimer: gameSettings.gameTimer,
@@ -71,8 +67,6 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 words: gameSettings.words,
                 gameTimer: gameSettings.gameTimer,
-                guessesBlue: gameSettings.guessesBlue,
-                guessesRed: gameSettings.guessesRed,
                 lastQuery: gameSettings.lastQuery,
                 score: gameSettings.score,
                 turn: gameSettings.turn,
@@ -85,8 +79,6 @@ const reducer = (state = initialState, action) => {
                 score: newGame.score,
                 words: newGame.words,
                 turn: newGame.turn,
-                guessesBlue: newGame.guessesBlue,
-                guessesRed: newGame.guessesRed,
             };
         }
         case actionTypes.RESET_GAME:
@@ -105,8 +97,6 @@ const reducer = (state = initialState, action) => {
                 customWords: [],
                 words: [],
                 turn: null,
-                guessesBlue: [],
-                guessesRed: [],
                 quickGame: false,
                 turnTimer: false,
                 gameTimer: 0,
@@ -155,15 +145,10 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 turn: state.turn === 'red' ? 'blue' : 'red',
             };
-        case actionTypes.ADD_GUESS_BLUE:
+        case actionTypes.SET_SCORE:
             return {
                 ...state,
-                guessesBlue: state.guessesBlue.concat(action.payload.guess),
-            };
-        case actionTypes.ADD_GUESS_RED:
-            return {
-                ...state,
-                guessesRed: state.guessesRed.concat(action.payload.guess),
+                score: action.payload.score,
             };
         default:
             return state;
