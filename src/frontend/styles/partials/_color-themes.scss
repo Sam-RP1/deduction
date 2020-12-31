@@ -16,6 +16,10 @@ $word-cell-red: 'word-cell-red';
 $word-cell-blue: 'word-cell-blue';
 $word-cell-orange: 'word-cell-orange';
 $word-cell-hover: 'word-cell-hover';
+$word-cell-blank-guessed: 'word-cell-blank-guessed';
+$word-cell-red-guessed: 'word-cell-red-guessed';
+$word-cell-blue-guessed: 'word-cell-blue-guessed';
+$word-cell-orange-guessed: 'word-cell-orange-guessed';
 
 $themes: (
     default: (
@@ -35,6 +39,10 @@ $themes: (
         word-cell-blue: base.$word--cell--light--blue,
         word-cell-orange: base.$word--cell--light--orange,
         word-cell-hover: base.$word--cell--light--hover,
+        word-cell-blank-guessed: base.$word--cell--light--blank--guessed,
+        word-cell-red-guessed: base.$word--cell--light--red--guessed,
+        word-cell-blue-guessed: base.$word--cell--light--blue--guessed,
+        word-cell-orange-guessed: base.$word--cell--light--orange--guessed,
     ),
     dark: (
         bg: base.$bg--dark,
@@ -53,6 +61,10 @@ $themes: (
         word-cell-blue: base.$word--cell--dark--blue,
         word-cell-orange: base.$word--cell--dark--orange,
         word-cell-hover: base.$word--cell--dark--hover,
+        word-cell-blank-guessed: base.$word--cell--dark--blank--guessed,
+        word-cell-red-guessed: base.$word--cell--dark--red--guessed,
+        word-cell-blue-guessed: base.$word--cell--dark--blue--guessed,
+        word-cell-orange-guessed: base.$word--cell--dark--orange--guessed,
     ),
 );
 
