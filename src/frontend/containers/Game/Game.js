@@ -12,28 +12,26 @@ import useError from '../../hooks/useError';
 // Container Component
 const Game = (props) => {
     console.log('[GAME CONTAINER RENDER] ' + Date.now());
-
     // Redux Selectors
     // Player
     const playerName = useSelector((state) => state.player.name);
     const playerTeam = useSelector((state) => state.player.team);
     const playerRole = useSelector((state) => state.player.role);
-
     // Game
     const gameId = useSelector((state) => state.game.id);
     const gamePassword = useSelector((state) => state.game.password);
     const blueTeam = useSelector((state) => state.game.blueTeam);
     const redTeam = useSelector((state) => state.game.redTeam);
     const unassigned = useSelector((state) => state.game.unassigned);
-    const wordBundles = useSelector((state) => state.game.wordGroups);
-    const wordBundle = useSelector((state) => state.game.wordGroup);
-    const wordsArr = useSelector((state) => state.game.words);
     const score = useSelector((state) => state.game.score);
     const turn = useSelector((state) => state.game.turn);
+    const wordBundles = useSelector((state) => state.game.wordBundles);
+    const wordBundle = useSelector((state) => state.game.wordBundle);
+    const wordsArr = useSelector((state) => state.game.words);
     const customWords = useSelector((state) => state.game.customWords);
 
     // State
-    // const [customWordsErrMsg, setCustomWordsErrMsg] = useState(null);
+    const [isGameOver, setIsGameOver] = useState(null);
     const [joinCode, setJoinCode] = useState(null);
     const [customWordError, setCustomWordError] = useState(null);
 
@@ -53,23 +51,48 @@ const Game = (props) => {
     } = useGame(props.socketRef, gameId);
     const { generateError } = useError();
 
-    // Functions
+    // useEffects
     useEffect(() => {
         joinGame(gameId, playerName);
-        gamePassword;
         setJoinCode('gameId=' + gameId + ',gamePassword=' + gamePassword);
     }, [gameId, gamePassword]);
 
+    useEffect(() => {
+        console.log(score);
+        if (score.blue === 0) {
+            setIsGameOver('blue');
+        } else if (score.red === 0) {
+            setIsGameOver('red');
+        } else {
+            setIsGameOver(null);
+        }
+    }, [score.red, score.blue]);
+
+    // Functions
     const addCustomWordHandler = (evt) => {
         const enteredString = evt.target.value;
-        console.log('custom word: ', enteredString);
+        const pattern = new RegExp('[^A-Za-z0-9]');
         const exists = customWords.indexOf(enteredString);
+        let stringFail = false;
 
-        if (enteredString.length > 1 && enteredString.length < 41 && customWords.length < 25 && exists === -1) {
+        if (enteredString.search(pattern) > -1) {
+            stringFail = true;
+        }
+
+        if (
+            enteredString.length > 1 &&
+            enteredString.length < 41 &&
+            customWords.length < 25 &&
+            exists === -1 &&
+            stringFail === false
+        ) {
             addCustomWord(enteredString);
             document.querySelector('#text-input').value = '';
         } else {
             const errors = [];
+            if (stringFail === true) {
+                errors.push('Entered word cannot contain any special characters or spaces');
+            }
             if (enteredString.length <= 1) {
                 errors.push('Entered word is too short! Needs to be two characters or more');
             }
@@ -89,29 +112,30 @@ const Game = (props) => {
     // Render
     return (
         <GameCmpnt
-            joinCode={joinCode}
-            wordsArr={wordsArr}
-            score={score}
-            teamTurn={turn}
-            setTeam={selectTeam}
-            randomiseTeams={randomiseTeams}
-            setRole={selectRole}
             newGame={newGame}
-            endTurnReq={endTurn}
-            team={playerTeam}
-            role={playerRole}
+            joinCode={joinCode}
+            endTurn={endTurn}
+            score={score}
+            turn={turn}
             blueTeam={blueTeam}
             redTeam={redTeam}
             unassigned={unassigned}
-            selectWordBundle={selectWordBundle}
+            randomiseTeams={randomiseTeams}
+            selectTeam={selectTeam}
+            selectRole={selectRole}
+            playerTeam={playerTeam}
+            playerRole={playerRole}
             wordBundles={wordBundles}
             wordBundle={wordBundle}
+            selectWordBundle={selectWordBundle}
+            wordsArr={wordsArr}
             customWords={customWords}
             addCustomWordHandler={addCustomWordHandler}
             removeCustomWord={removeCustomWord}
             useCustomWords={useCustomWords}
             customWordError={customWordError}
             guess={guess}
+            isGameOver={isGameOver}
         />
     );
 };

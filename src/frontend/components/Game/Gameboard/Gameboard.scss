@@ -9,6 +9,11 @@
     height: auto;
     width: 100%;
 
+    &.disable {
+        cursor: default;
+        pointer-events: none;
+    }
+
     &__word-block {
         position: relative;
         width: calc(100% / 5 - 4px);
@@ -129,19 +134,12 @@
             background-color: t($word-cell);
         }
         @include transition-theme(color 0.3s ease, background-color 0.3s ease);
-        cursor: pointer;
         overflow: hidden;
-        &:hover {
-            @include themed() {
-                color: t($text);
-                background-color: t($word-cell-hover);
-            }
-        }
         @media screen and (min-width: 1092px) {
             margin-top: 2px;
         }
 
-        h1 {
+        h2 {
             font-size: 1.3rem;
         }
     }

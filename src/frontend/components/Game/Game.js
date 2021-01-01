@@ -22,27 +22,45 @@ const Game = (props) => {
                             <span className='blue-txt'>{props.score.blue}</span>
                         </p>
                         <p>
-                            <span className={props.teamTurn === 'blue' ? 'blue-txt' : 'red-txt'}>Turn</span>
+                            <span className={props.turn === 'blue' ? 'blue-txt' : 'red-txt'}>Turn</span>
                         </p>
                     </div>
-                    <Gameboard wordsArr={props.wordsArr} team={props.team} role={props.role} guess={props.guess} />
+                    <Gameboard
+                        turn={props.turn}
+                        playerTeam={props.playerTeam}
+                        playerRole={props.playerRole}
+                        wordsArr={props.wordsArr}
+                        guess={props.guess}
+                        isGameOver={props.isGameOver}
+                    />
+                    {props.isGameOver !== null && (
+                        <div
+                            className={
+                                'game__board-container__game-over ' +
+                                (props.isGameOver === 'blue' ? 'blue-bg' : 'red-bg')
+                            }
+                        >
+                            <h1>--- Game Over ---</h1>
+                            <h1>{props.isGameOver} team wins!</h1>
+                        </div>
+                    )}
                 </div>
                 <GameControls
-                    joinCode={props.joinCode}
                     newGame={props.newGame}
-                    setTeam={props.setTeam}
-                    randomiseTeams={props.randomiseTeams}
-                    setRole={props.setRole}
-                    endTurnReq={props.endTurnReq}
-                    team={props.team}
-                    role={props.role}
-                    teamTurn={props.teamTurn}
+                    joinCode={props.joinCode}
+                    endTurn={props.endTurn}
+                    turn={props.turn}
                     blueTeam={props.blueTeam}
                     redTeam={props.redTeam}
                     unassigned={props.unassigned}
-                    selectWordBundle={props.selectWordBundle}
+                    randomiseTeams={props.randomiseTeams}
+                    selectTeam={props.selectTeam}
+                    selectRole={props.selectRole}
+                    playerTeam={props.playerTeam}
+                    playerRole={props.playerRole}
                     wordBundles={props.wordBundles}
                     wordBundle={props.wordBundle}
+                    selectWordBundle={props.selectWordBundle}
                     customWords={props.customWords}
                     addCustomWordHandler={props.addCustomWordHandler}
                     removeCustomWord={props.removeCustomWord}
@@ -55,37 +73,36 @@ const Game = (props) => {
 };
 
 Game.propTypes = {
-    joinCode: PropTypes.string,
-    wordsArr: PropTypes.array.isRequired,
-    score: PropTypes.object.isRequired,
-    teamTurn: PropTypes.string,
     newGame: PropTypes.func,
-    setTeam: PropTypes.func,
-    randomiseTeams: PropTypes.func,
-    setRole: PropTypes.func,
-    endTurnReq: PropTypes.func,
-    team: PropTypes.string,
-    role: PropTypes.string,
+    joinCode: PropTypes.string,
+    endTurn: PropTypes.func,
+    score: PropTypes.object,
+    turn: PropTypes.string,
+    // Teams & Roles
     blueTeam: PropTypes.array,
     redTeam: PropTypes.array,
     unassigned: PropTypes.array,
-    selectWordBundle: PropTypes.func,
+    randomiseTeams: PropTypes.func,
+    selectTeam: PropTypes.func,
+    selectRole: PropTypes.func,
+    playerTeam: PropTypes.string,
+    playerRole: PropTypes.string,
+    // Words
     wordBundles: PropTypes.array,
     wordBundle: PropTypes.string,
+    selectWordBundle: PropTypes.func,
+    wordsArr: PropTypes.array,
     customWords: PropTypes.array,
     addCustomWordHandler: PropTypes.func,
     removeCustomWord: PropTypes.func,
     useCustomWords: PropTypes.func,
     customWordError: PropTypes.string,
+    // Guess
     guess: PropTypes.func,
+    // Game over
+    isGameOver: PropTypes.string,
 };
 
-Game.defaultProps = {
-    wordsArr: [{ denomination: 'blank', word: 'ERROR' }],
-    score: {
-        blue: 'ERR',
-        red: 'ERR',
-    },
-};
+Game.defaultProps = {};
 
 export default Game;

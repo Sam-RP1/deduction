@@ -18,7 +18,7 @@ import { setTeamAC, setRoleAC, resetPlayerAC } from '../store/actions/player';
 const useGame = (socketRef, gameId) => {
     // Redux Actions
     const dispatch = useDispatch();
-    const setNewGame = useCallback((data) => dispatch(newGameAC(data)), [dispatch]); //eslint-disable-line
+    const setNewGame = useCallback((data) => dispatch(newGameAC(data)), [dispatch]);
     // Teams
     const setTeams = useCallback((players) => dispatch(setTeamsAC(players)), [dispatch]);
     const setTeam = useCallback((team) => dispatch(setTeamAC(team)), [dispatch]);
@@ -131,22 +131,27 @@ const useGame = (socketRef, gameId) => {
     }, []);
 
     const joinGame = (gameId, playerName) => {
+        console.log('[JOIN GAME] joining game');
         socketRef.current.emit('join_game', {
             gameId: gameId,
             playerName: playerName,
         });
     };
 
-    const newGame = () => {
-        socketRef.current.emit('new_game', {
-            gameId: gameId,
-        });
+    const newGame = (wordBundle, customWords) => {
+        console.log('[GAME] request new game');
+        if (wordBundle !== '' || customWords.length === 25) {
+            console.log('[GAME] new game conditions met');
+            socketRef.current.emit('new_game', {
+                gameId: gameId,
+            });
+        }
     };
 
     const selectTeam = (team, currentTeam) => {
-        console.log('TO BE TEAM: ', team);
-        console.log('CURRENT TEAM: ', currentTeam);
+        console.log('[TEAMS] selecting team');
         if (team !== currentTeam) {
+            console.log('[TEAMS] team selected');
             socketRef.current.emit('select_team', {
                 gameId: gameId,
                 team: team,
@@ -155,13 +160,16 @@ const useGame = (socketRef, gameId) => {
     };
 
     const randomiseTeams = () => {
+        console.log('[TEAMS] randomising teams');
         socketRef.current.emit('randomise_teams', {
             gameId: gameId,
         });
     };
 
     const selectRole = (role, currentRole) => {
+        console.log('[ROLE] selecting role');
         if (role !== currentRole) {
+            console.log('[ROLE] role selected');
             socketRef.current.emit('select_role', {
                 gameId: gameId,
                 role: role,
@@ -170,7 +178,9 @@ const useGame = (socketRef, gameId) => {
     };
 
     const selectWordBundle = (bundle, currentBundle) => {
+        console.log('[WORD BUNDLES] selecting word bundle');
         if (bundle !== currentBundle) {
+            console.log('[WORD BUNDLES] selection conditions met');
             socketRef.current.emit('select_word_bundle', {
                 gameId: gameId,
                 bundle: bundle,
@@ -179,6 +189,7 @@ const useGame = (socketRef, gameId) => {
     };
 
     const addCustomWord = (word) => {
+        console.log('[CUSTOM WORDS] adding word');
         socketRef.current.emit('add_custom_word', {
             gameId: gameId,
             word: word,
@@ -186,24 +197,27 @@ const useGame = (socketRef, gameId) => {
     };
 
     const removeCustomWord = (word) => {
+        console.log('[CUSTOM WORDS] removing word');
         socketRef.current.emit('remove_custom_word', {
             gameId: gameId,
             word: word,
         });
     };
 
-    const useCustomWords = () => {
-        socketRef.current.emit('use_custom_words', {
-            gameId: gameId,
-        });
+    const useCustomWords = (customWords) => {
+        console.log('[CUSTOM WORDS] attempting to use custom words');
+        if (customWords.length === 25) {
+            console.log('[CUSTOM WORDS] using custom words');
+            socketRef.current.emit('use_custom_words', {
+                gameId: gameId,
+            });
+        }
     };
 
-    const guess = (word, playerTeam, playerRole) => {
-        console.log('Making a guess');
-        console.log('Word clicked: ', word);
-        console.log('Player team: ', playerTeam);
-        console.log('Player role: ', playerRole);
-        if (playerRole === 'agent' && playerTeam !== null && word.guessData.isGuessed === false) {
+    const guess = (word, gameTurn, playerTeam, playerRole) => {
+        console.log('[GUESS] made a guess');
+        if (playerRole === 'agent' && gameTurn === playerTeam && word.guessData.isGuessed === false) {
+            console.log('[GUESS] guess conditions met');
             socketRef.current.emit('guess', {
                 gameId: gameId,
                 word: word,
@@ -214,15 +228,14 @@ const useGame = (socketRef, gameId) => {
     };
 
     const endTurn = (team, currentTurn) => {
-        console.log(team);
-        console.log(currentTurn);
+        console.log('[TURN] tried ending turn');
         if (team === currentTurn) {
+            console.log('[TURN] ending turn conditions met');
             socketRef.current.emit('end_turn', {
                 gameId: gameId,
             });
         }
     };
-    //
 
     return {
         joinGame,

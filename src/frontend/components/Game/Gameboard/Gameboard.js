@@ -7,7 +7,7 @@ import './Gameboard.scss';
 // Presentational Component
 const Gameboard = (props) => {
     return (
-        <section className='gameboard'>
+        <section className={'gameboard' + (props.isGameOver !== null ? ' disable' : '')}>
             {props.wordsArr.length === 25 ? (
                 props.wordsArr.map((block) => {
                     return (
@@ -16,13 +16,13 @@ const Gameboard = (props) => {
                             id={block.word}
                             className={
                                 'gameboard__word-block ' +
-                                (props.role === 'insider' || block.guessData.isGuessed === true
+                                (props.playerRole === 'insider' || block.guessData.isGuessed === true
                                     ? block.denomination
                                     : '') +
                                 (block.guessData.isGuessed === true ? ' guessed' : '')
                             }
                             onClick={() => {
-                                props.guess(block, props.team, props.role);
+                                props.guess(block, props.turn, props.playerTeam, props.playerRole);
                             }}
                         >
                             <span>
@@ -33,7 +33,7 @@ const Gameboard = (props) => {
                 })
             ) : (
                 <div className='gameboard__placeholder'>
-                    <h1>Welcome! Please select a word bundle or enter 25 of your own words.</h1>
+                    <h2>Welcome! Please select a word bundle or enter 25 of your own words.</h2>
                 </div>
             )}
         </section>
@@ -41,19 +41,14 @@ const Gameboard = (props) => {
 };
 
 Gameboard.propTypes = {
-    team: PropTypes.string,
-    role: PropTypes.string,
+    turn: PropTypes.string,
+    playerTeam: PropTypes.string,
+    playerRole: PropTypes.string,
     wordsArr: PropTypes.array,
     guess: PropTypes.func,
+    isGameOver: PropTypes.string,
 };
 
-Gameboard.defaultProps = {
-    team: 'undefined',
-    role: 'undefined',
-    wordsArr: [{ denomination: 'blank', word: 'ERROR' }],
-    guess: () => {
-        console.log('[GUESS] error making guess');
-    },
-};
+Gameboard.defaultProps = {};
 
 export default Gameboard;

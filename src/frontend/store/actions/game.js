@@ -1,19 +1,7 @@
 import * as actionTypes from './actionTypes';
 
-export const submitNewGameAC = (data) => {
-    return {
-        type: actionTypes.SET_CREATE_GAME_STATE,
-        payload: { gameName: data.gameName, gamePassword: data.gamePassword },
-    };
-};
-
-export const setGamePasswordAC = (password) => {
-    return {
-        type: actionTypes.SET_GAME_PASSWORD,
-        payload: { password: password },
-    };
-};
-
+// DONE
+// Create game
 export const submitNewGame = (data) => async (dispatch) => {
     const url = 'http://localhost:4000/api/game';
 
@@ -36,19 +24,25 @@ export const submitNewGame = (data) => async (dispatch) => {
         return { status: resData.status, msg: resData.msg };
     }
 };
-
-//
-
+export const submitNewGameAC = (data) => {
+    return {
+        type: actionTypes.SET_CREATE_GAME_STATE,
+        payload: { gameName: data.gameName, gamePassword: data.gamePassword },
+    };
+};
+export const setGamePasswordAC = (password) => {
+    return {
+        type: actionTypes.SET_GAME_PASSWORD,
+        payload: { password: password },
+    };
+};
+// Game
 export const setGameSettings = (data) => {
     return { type: actionTypes.SET_GAME_SETTINGS, payload: { gameSettings: data } };
 };
-
 export const newGameSettings = (data) => {
     return { type: actionTypes.NEW_GAME_SETTINGS, payload: { gameSettings: data } };
 };
-
-// DONE
-// Game
 export const newGameAC = (data) => {
     return { type: actionTypes.NEW_GAME, payload: { data: data } };
 };
@@ -83,11 +77,3 @@ export const resetGameAC = () => {
     return { type: actionTypes.RESET_GAME };
 };
 //
-
-export const addGuessBlue = (word) => {
-    return { type: actionTypes.ADD_GUESS_BLUE, payload: { guess: word } };
-};
-
-export const addGuessRed = (word) => {
-    return { type: actionTypes.ADD_GUESS_RED, payload: { guess: word } };
-};

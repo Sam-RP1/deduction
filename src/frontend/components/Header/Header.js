@@ -5,17 +5,17 @@ import BackButton from '../UI/Buttons/BackButton/BackButton';
 
 import './Header.scss';
 
-const Header = () => {
+const Header = (props) => {
     return (
         <header className='header'>
-            <BackButton />
+            <BackButton title={props.btnTitle} />
             <h1 className='header__title'>Deduction</h1>
         </header>
     );
 };
 
 Header.propTypes = {
-    themeToggle: PropTypes.func,
+    btnTitle: PropTypes.string,
 };
 
 export default Header;

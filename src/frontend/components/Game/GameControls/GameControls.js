@@ -16,9 +16,9 @@ const GameControls = (props) => {
     return (
         <section className='game-controls'>
             <div className='game-controls__btns-container'>
-                <Button title={'New Game'} function={() => props.newGame()} />
+                <Button title={'New Game'} function={() => props.newGame(props.wordBundle, props.customWords)} />
                 <Button title={'Join Code'} function={() => copyJoinCode()} />
-                <Button title={'End Turn'} function={() => props.endTurnReq(props.team, props.teamTurn)} />
+                <Button title={'End Turn'} function={() => props.endTurn(props.playerTeam, props.turn)} />
             </div>
 
             <div className='game-controls__teams'>
@@ -32,8 +32,8 @@ const GameControls = (props) => {
                     <div className='game-controls__teams__options__red-team'>
                         <Button
                             title={'Red'}
-                            opClasses={'btn__red' + (props.team === 'red' ? ' active' : '')}
-                            function={() => props.setTeam('red', props.team)}
+                            opClasses={'btn__red' + (props.playerTeam === 'red' ? ' active' : '')}
+                            function={() => props.selectTeam('red', props.playerTeam)}
                         />
                         {props.redTeam.map((player, i) => {
                             return <p key={i}>{player.playerName}</p>;
@@ -42,8 +42,8 @@ const GameControls = (props) => {
                     <div className='game-controls__teams__options__blue-team'>
                         <Button
                             title={'Blue'}
-                            opClasses={'btn__blue' + (props.team === 'blue' ? ' active' : '')}
-                            function={() => props.setTeam('blue', props.team)}
+                            opClasses={'btn__blue' + (props.playerTeam === 'blue' ? ' active' : '')}
+                            function={() => props.selectTeam('blue', props.playerTeam)}
                         />
                         {props.blueTeam.map((player, i) => {
                             return <p key={i}>{player.playerName}</p>;
@@ -65,23 +65,23 @@ const GameControls = (props) => {
                         title={'Insider'}
                         opClasses={
                             'btn__insider' +
-                            (props.team === 'blue' ? ' btn__blue' : '') +
-                            (props.team === 'red' ? ' btn__red' : '') +
-                            (props.role === 'insider' ? ' active' : '')
+                            (props.playerTeam === 'blue' ? ' btn__blue' : '') +
+                            (props.playerTeam === 'red' ? ' btn__red' : '') +
+                            (props.playerRole === 'insider' ? ' active' : '')
                         }
                         opElem={<i className='far fa-comment-dots'></i>}
-                        function={() => props.setRole('insider')}
+                        function={() => props.selectRole('insider', props.playerRole)}
                     />
                     <Button
                         title={'Agent'}
                         opClasses={
                             'btn__agent' +
-                            (props.team === 'blue' ? ' btn__blue' : '') +
-                            (props.team === 'red' ? ' btn__red' : '') +
-                            (props.role === 'agent' ? ' active' : '')
+                            (props.playerTeam === 'blue' ? ' btn__blue' : '') +
+                            (props.playerTeam === 'red' ? ' btn__red' : '') +
+                            (props.playerRole === 'agent' ? ' active' : '')
                         }
                         opElem={<i className='fas fa-search'></i>}
-                        function={() => props.setRole('agent')}
+                        function={() => props.selectRole('agent', props.playerRole)}
                     />
                 </div>
             </div>
@@ -161,7 +161,7 @@ const GameControls = (props) => {
                         </div>
                     </div>
                     <button
-                        onClick={() => props.useCustomWords()}
+                        onClick={() => props.useCustomWords(props.customWords)}
                         className='game-controls__bundles__options__submit-btn'
                     >
                         Play Custom
@@ -173,21 +173,23 @@ const GameControls = (props) => {
 };
 
 GameControls.propTypes = {
-    joinCode: PropTypes.string,
     newGame: PropTypes.func,
-    setTeam: PropTypes.func,
-    randomiseTeams: PropTypes.func,
-    setRole: PropTypes.func,
-    endTurnReq: PropTypes.func,
-    team: PropTypes.string,
-    teamTurn: PropTypes.string,
-    role: PropTypes.string,
+    joinCode: PropTypes.string,
+    endTurn: PropTypes.func,
+    turn: PropTypes.string,
+    // Teams & Roles
     blueTeam: PropTypes.array,
     redTeam: PropTypes.array,
     unassigned: PropTypes.array,
-    selectWordBundle: PropTypes.func,
+    randomiseTeams: PropTypes.func,
+    selectTeam: PropTypes.func,
+    selectRole: PropTypes.func,
+    playerTeam: PropTypes.string,
+    playerRole: PropTypes.string,
+    // Words
     wordBundles: PropTypes.array,
     wordBundle: PropTypes.string,
+    selectWordBundle: PropTypes.func,
     customWords: PropTypes.array,
     addCustomWordHandler: PropTypes.func,
     removeCustomWord: PropTypes.func,
@@ -195,19 +197,6 @@ GameControls.propTypes = {
     customWordError: PropTypes.string,
 };
 
-GameControls.defaultProps = {
-    setTeam: () => {
-        console.log('[SET TEAM BTN] error setting team');
-    },
-    setRole: () => {
-        console.log('[SET ROLE BTN] error setting role');
-    },
-    endTurnReq: () => {
-        console.log('[END TURN REQ] error requesting to end turn');
-    },
-    team: 'undefined',
-    teamTurn: 'undefined',
-    role: 'undefined',
-};
+GameControls.defaultProps = {};
 
 export default GameControls;

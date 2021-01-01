@@ -1,19 +1,7 @@
-export const TOGGLE_TURN_TIMER = 'TOGGLE_TURN_TIMER';
-export const TOGGLE_QUICK_GAME = 'TOGGLE_QUICK_GAME';
-export const SELECT_WORD_GROUP = 'SELECT_WORD_GROUP';
-export const ADD_CUSTOM_WORD = 'ADD_CUSTOM_WORD';
-export const DELETE_CUSTOM_WORD = 'DELETE_CUSTOM_WORD';
-export const RESET_CREATE_GAME_STATE = 'RESET_CREATE_GAME_STATE';
-export const RESET_STATE = 'RESET_STATE';
-export const SET_LINK = 'SET_LINK';
 export const SET_GAME_SETTINGS = 'SET_GAME_SETTINGS';
 export const NEW_GAME_SETTINGS = 'NEW_GAME_SETTINGS';
-export const ADD_GUESS_BLUE = 'ADD_GUESS_BLUE';
-export const ADD_GUESS_RED = 'ADD_GUESS_RED';
 export const SET_GAME_PASSWORD = 'SET_GAME_PASSWORD';
 export const SET_CREATE_GAME_STATE = 'SET_CREATE_GAME_STATE';
-
-// Being used
 export const NEW_GAME = 'NEW_GAME';
 export const RESET_GAME = 'RESET_GAME';
 export const SET_TEAM = 'SET_TEAM';

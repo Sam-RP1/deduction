@@ -71,6 +71,42 @@
                 margin-bottom: 0px;
             }
         }
+
+        &__game-over {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: auto;
+            width: 100%;
+            margin-top: 10px;
+            box-sizing: border-box;
+            padding: 0px 16px;
+            border-radius: 5px;
+            text-align: center;
+            color: #fff;
+            @include transition(background-color 0.3s ease);
+
+            h1 {
+                font-size: 1.2rem;
+                margin: 5px 5px;
+                @media screen and (min-width: 768px) {
+                    font-size: 1.5rem;
+                }
+            }
+
+            &.blue-bg {
+                @include themed() {
+                    background-color: t($blue-main);
+                }
+            }
+
+            &.red-bg {
+                @include themed() {
+                    background-color: t($red-main);
+                }
+            }
+        }
     }
 
     @media screen and (min-width: 1092px) {

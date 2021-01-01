@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { BrowserRouter, Route, Redirect } from 'react-router-dom';
 
 import useSocket from './hooks/useSocket';
 
@@ -30,11 +30,24 @@ const App = () => {
                 <div className='base'>
                     <Route
                         render={({ location }) => {
-                            return location.pathname !== '/' ? <Header /> : null;
+                            if (location.pathname === '/creategame' || location.pathname === '/joingame') {
+                                return <Header btnTitle={'Back'} />;
+                            } else if (location.pathname === '/game') {
+                                return <Header btnTitle={'Leave'} />;
+                            }
                         }}
                     />
                     <Container opClasses={'container--center container--column'}>
-                        <Route path='/game' component={() => <Game socketRef={socketRef} />} />
+                        <Route
+                            path='/game'
+                            component={() => {
+                                if (socketRef.current !== undefined) {
+                                    return <Game socketRef={socketRef} />;
+                                } else {
+                                    return <Redirect to='/' />;
+                                }
+                            }}
+                        />
                         <Route path='/joingame' component={JoinGame} />
                         <Route path='/creategame' component={CreateGame} />
                         <Route path='/' exact component={Home} />
