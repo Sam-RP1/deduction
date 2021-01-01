@@ -10,8 +10,8 @@ const initialState = {
         blue: null,
         red: null,
     }, // The games score
-    wordGroups: [], // The selectable word groups
-    wordGroup: null, // The games selected word group if applicable
+    wordBundles: [], // The selectable word groups
+    wordBundle: '', // The games selected word group if applicable
     customWords: [], // The games custom words if applicable
     words: [], // The games words generated from the selected word group
     turn: null, // The games turn based on teams
@@ -40,6 +40,11 @@ const generateTeams = (players = []) => {
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
+        case actionTypes.SET_GAME_PASSWORD:
+            return {
+                ...state,
+                password: action.payload.password,
+            };
         case actionTypes.SET_GAME_SETTINGS: {
             const gameSettings = action.payload.gameSettings;
             const { blueTeam, redTeam, unassigned } = generateTeams(gameSettings.players);
@@ -51,8 +56,8 @@ const reducer = (state = initialState, action) => {
                 redTeam: redTeam,
                 unassigned: unassigned,
                 score: gameSettings.score,
-                wordGroups: gameSettings.wordGroups,
-                wordGroup: gameSettings.wordGroup,
+                wordBundles: gameSettings.wordGroups,
+                wordBundle: gameSettings.wordGroup,
                 customWords: gameSettings.customWords,
                 words: gameSettings.words,
                 turn: gameSettings.turn,
@@ -92,8 +97,8 @@ const reducer = (state = initialState, action) => {
                     blue: null,
                     red: null,
                 },
-                wordGroups: [],
-                wordGroup: null,
+                wordBundles: [],
+                wordBundle: '',
                 customWords: [],
                 words: [],
                 turn: null,
@@ -119,28 +124,8 @@ const reducer = (state = initialState, action) => {
                 unassigned: unassigned,
             };
         }
-        case actionTypes.SET_WORD_BUNDLE:
-            return {
-                ...state,
-                wordGroup: action.payload.bundle,
-            };
-        case actionTypes.SET_WORDS:
-            return {
-                ...state,
-                words: action.payload.words,
-            };
-        case actionTypes.SET_CUSTOM_WORDS:
-            return {
-                ...state,
-                customWords: action.payload.words,
-            };
-        case actionTypes.SET_GAME_PASSWORD:
-            return {
-                ...state,
-                password: action.payload.password,
-            };
         case actionTypes.SET_TURN:
-            // remove hardcoded approach and use payload
+            console.log('[SETTING TURN REDUCER] turn is: ', action.payload.turn);
             return {
                 ...state,
                 turn: state.turn === 'red' ? 'blue' : 'red',
@@ -149,6 +134,21 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 score: action.payload.score,
+            };
+        case actionTypes.SET_WORD_BUNDLE:
+            return {
+                ...state,
+                wordBundle: action.payload.bundle,
+            };
+        case actionTypes.SET_CUSTOM_WORDS:
+            return {
+                ...state,
+                customWords: action.payload.words,
+            };
+        case actionTypes.SET_WORDS:
+            return {
+                ...state,
+                words: action.payload.words,
             };
         default:
             return state;
