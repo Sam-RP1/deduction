@@ -82,12 +82,13 @@ const useGame = (socketRef, gameId) => {
         // Game turn has changed
         socketRef.current.on('update_turn', (res) => {
             console.log(res.msg);
-            setTurn(res.turn);
+            setTurn(res.nextTurn);
         });
         // Player(s) have changed word bundle
         socketRef.current.on('update_word_bundle', (res) => {
             console.log(res.msg);
-            setWordBundle(res.bundle);
+            setWordBundle(res.wordBundle);
+            setWords(res.words);
         });
         // Game words have changed
         socketRef.current.on('update_words', (res) => {
@@ -107,6 +108,10 @@ const useGame = (socketRef, gameId) => {
             }
             setScore(res.data.score);
             setWords(res.data.words);
+        });
+        // Error has occured
+        socketRef.current.on('error', (res) => {
+            console.log(res);
         });
 
         // Clean up and remove all socket listeners
@@ -131,65 +136,52 @@ const useGame = (socketRef, gameId) => {
     }, []);
 
     const joinGame = (gameId, playerName) => {
-        console.log('[JOIN GAME] joining game');
         socketRef.current.emit('join_game', {
             gameId: gameId,
             playerName: playerName,
         });
     };
 
-    const newGame = (wordBundle, customWords) => {
-        console.log('[GAME] request new game');
-        if (wordBundle !== '' || customWords.length === 25) {
-            console.log('[GAME] new game conditions met');
-            socketRef.current.emit('new_game', {
-                gameId: gameId,
-            });
-        }
+    const newGame = () => {
+        socketRef.current.emit('new_game', {
+            gameId: gameId,
+        });
     };
 
-    const selectTeam = (team, currentTeam) => {
-        console.log('[TEAMS] selecting team');
-        if (team !== currentTeam) {
-            console.log('[TEAMS] team selected');
+    const selectTeam = (selectedTeam, playerTeam) => {
+        if (selectedTeam !== playerTeam) {
             socketRef.current.emit('select_team', {
                 gameId: gameId,
-                team: team,
+                selectedTeam: selectedTeam,
             });
         }
     };
 
     const randomiseTeams = () => {
-        console.log('[TEAMS] randomising teams');
         socketRef.current.emit('randomise_teams', {
             gameId: gameId,
         });
     };
 
-    const selectRole = (role, currentRole) => {
-        console.log('[ROLE] selecting role');
-        if (role !== currentRole) {
-            console.log('[ROLE] role selected');
+    const selectRole = (selectedRole, playerRole) => {
+        if (selectedRole !== playerRole) {
             socketRef.current.emit('select_role', {
                 gameId: gameId,
-                role: role,
+                selectedRole: selectedRole,
             });
         }
     };
 
-    const selectWordBundle = (bundle, currentBundle) => {
-        console.log('[WORD BUNDLES] selecting word bundle');
-        if (bundle !== currentBundle) {
-            console.log('[WORD BUNDLES] selection conditions met');
+    const selectWordBundle = (selectedBundle, currentBundle) => {
+        if (selectedBundle !== currentBundle) {
             socketRef.current.emit('select_word_bundle', {
                 gameId: gameId,
-                bundle: bundle,
+                selectedBundle: selectedBundle,
             });
         }
     };
 
     const addCustomWord = (word) => {
-        console.log('[CUSTOM WORDS] adding word');
         socketRef.current.emit('add_custom_word', {
             gameId: gameId,
             word: word,
@@ -204,10 +196,9 @@ const useGame = (socketRef, gameId) => {
         });
     };
 
+    // could be altered
     const useCustomWords = (customWords) => {
-        console.log('[CUSTOM WORDS] attempting to use custom words');
         if (customWords.length === 25) {
-            console.log('[CUSTOM WORDS] using custom words');
             socketRef.current.emit('use_custom_words', {
                 gameId: gameId,
             });
@@ -215,9 +206,7 @@ const useGame = (socketRef, gameId) => {
     };
 
     const guess = (word, gameTurn, playerTeam, playerRole) => {
-        console.log('[GUESS] made a guess');
         if (playerRole === 'agent' && gameTurn === playerTeam && word.guessData.isGuessed === false) {
-            console.log('[GUESS] guess conditions met');
             socketRef.current.emit('guess', {
                 gameId: gameId,
                 word: word,
@@ -227,12 +216,12 @@ const useGame = (socketRef, gameId) => {
         }
     };
 
-    const endTurn = (team, currentTurn) => {
-        console.log('[TURN] tried ending turn');
-        if (team === currentTurn) {
-            console.log('[TURN] ending turn conditions met');
+    const endTurn = (playerTeam, currentTurn) => {
+        if (playerTeam === currentTurn) {
             socketRef.current.emit('end_turn', {
                 gameId: gameId,
+                playerTeam: playerTeam,
+                currentTurn: currentTurn,
             });
         }
     };

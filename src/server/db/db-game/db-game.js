@@ -23,8 +23,6 @@ module.exports.createGame = async (gameData) => {
             custom_words: JSON.stringify([]),
             words: JSON.stringify([]),
             turn: 'red',
-            // guesses_blue: JSON.stringify([]),
-            // guesses_red: JSON.stringify([]),
             quick_game: false,
             turn_timer: false,
             game_timer: 0,
@@ -92,112 +90,60 @@ module.exports.checkGameId = async (gameId) => {
     }
 };
 
-// DONE (But not refactored or optimised, just working)
 // Game
+// Is there an error here if I have 25 words and a bundle selected?
+// Or if i have custom words playing, then have 24 and then have bundle selected?
 module.exports.newGame = async (gameId) => {
     try {
         const sql = await sqlPromise;
-        const [result] = await sql.query(sql.format('select * from game_instances where game_id = ?', [gameId]));
-        const gameData = result[0];
-        let words;
-
-        if (gameData.word_group === '') {
-            words = generateWords(JSON.parse(gameData.custom_words), true);
-        } else {
-            words = generateWords(gameData.word_group, false);
-        }
-
-        const newGame = {
-            score: { blue: 8, red: 9 },
-            words: words,
-            turn: 'red',
-        };
-
-        const score = JSON.stringify(newGame.score);
-        const wordsStr = JSON.stringify(newGame.words);
-        const turn = newGame.turn;
-
-        await sql.query(
-            sql.format('update game_instances set score = ?, words = ?, turn = ? where game_id = ?', [
-                score,
-                wordsStr,
-                turn,
-                gameId,
-            ])
+        const [result] = await sql.query(
+            sql.format('select word_group, custom_words from game_instances where game_id = ?', [gameId])
         );
+        const gameData = result[0];
+        const wordBundleId = gameData.word_group;
+        const customWords = JSON.parse(gameData.custom_words);
 
-        return { status: SUCCESS, data: newGame };
+        if (wordBundleId !== '' || customWords.length === 25) {
+            const words = wordBundleId === '' ? generateWords(customWords, true) : generateWords(wordBundleId, false);
+
+            const newGame = {
+                score: { blue: 8, red: 9 },
+                words: words,
+                turn: 'red',
+            };
+
+            const score = JSON.stringify(newGame.score);
+            const wordsStr = JSON.stringify(newGame.words);
+            const turn = newGame.turn;
+            const lastQuery = Date.now();
+
+            await sql.query(
+                sql.format(
+                    'update game_instances set score = ?, words = ?, turn = ?, last_query = ? where game_id = ?',
+                    [score, wordsStr, turn, lastQuery, gameId]
+                )
+            );
+
+            return { status: SUCCESS, data: newGame };
+        } else {
+            return {
+                status: FAIL,
+                error:
+                    'To create a new game you must either select a word bundle or currently have 25 custom words entered',
+            };
+        }
     } catch (e) {
         return { status: ERROR, error: e };
     }
 };
-module.exports.updateGuess = async (gameId, word, team) => {
-    try {
-        const sql = await sqlPromise;
-        const [gameData] = await sql.query(sql.format('select * from game_instances where game_id = ?', [gameId]));
-        const parsedData = parseGameData(gameData[0]);
-        const words = parsedData.words;
-        console.log('WORDS: ', words);
-        const score = parsedData.score;
-        console.log('SCORE: ', score);
-        let nextTurn = null;
 
-        const wordIndex = word.index;
-        words[wordIndex].guessData.isGuessed = true;
-        words[wordIndex].guessData.team = team;
-
-        if (word.denomination === 'blue' && team === 'blue') {
-            score.blue += -1;
-        } else if (word.denomination === 'blue' && team === 'red') {
-            score.blue += -1;
-            nextTurn = 'blue';
-        } else if (word.denomination === 'red' && team === 'red') {
-            score.red += -1;
-        } else if (word.denomination === 'red' && team === 'blue') {
-            score.red += -1;
-            nextTurn = 'red';
-        } else if (word.denomination === 'blank') {
-            nextTurn = team === 'blue' ? 'red' : 'blue';
-        } else {
-            team === 'blue' ? (score.red = 0) : (score.blue = 0);
-        }
-
-        const wordsStr = JSON.stringify(words);
-        const scoreStr = JSON.stringify(score);
-
-        if (nextTurn !== null) {
-            await sql.query(
-                sql.format('update game_instances set words = ?, score = ?, turn = ? where game_id = ?', [
-                    wordsStr,
-                    scoreStr,
-                    nextTurn,
-                    gameId,
-                ])
-            );
-        } else {
-            await sql.query(
-                sql.format('update game_instances set words = ?, score = ? where game_id = ?', [
-                    wordsStr,
-                    scoreStr,
-                    gameId,
-                ])
-            );
-        }
-
-        return { status: SUCCESS, data: { words: words, score: score, nextTurn: nextTurn } };
-    } catch (e) {
-        return { status: ERROR, error: e };
-    }
-};
-// Players
+// Add player
 module.exports.addPlayer = async (gameId, playerId, playerName) => {
     try {
         const sql = await sqlPromise;
-        const [gamesPlayers] = await sql.query(
-            sql.format('select players from game_instances where game_id = ?', [gameId])
-        );
+        const [players] = await sql.query(sql.format('select players from game_instances where game_id = ?', [gameId]));
 
-        const playerArr = JSON.parse(gamesPlayers[0].players);
+        const playerArr = JSON.parse(players[0].players);
 
         const newPlayer = [
             {
@@ -220,13 +166,13 @@ module.exports.addPlayer = async (gameId, playerId, playerName) => {
         return { status: ERROR, error: e };
     }
 };
+
+// Remove player
 module.exports.removePlayer = async (gameId, playerId) => {
     try {
         const sql = await sqlPromise;
-        const [gamesPlayers] = await sql.query(
-            sql.format('select players from game_instances where game_id = ?', [gameId])
-        );
-        const playerArr = JSON.parse(gamesPlayers[0].players);
+        const [players] = await sql.query(sql.format('select players from game_instances where game_id = ?', [gameId]));
+        const playerArr = JSON.parse(players[0].players);
 
         for (let i = 0; i < playerArr.length; i++) {
             if (playerArr[i].playerId === playerId) {
@@ -246,14 +192,14 @@ module.exports.removePlayer = async (gameId, playerId) => {
         return { status: ERROR, error: e };
     }
 };
-// Teams
+
+// Update team
+// add if else for fail conditions
 module.exports.updateTeams = async (gameId, playerId, team) => {
     try {
         const sql = await sqlPromise;
-        const [gamesPlayers] = await sql.query(
-            sql.format('select players from game_instances where game_id = ?', [gameId])
-        );
-        const playerArr = JSON.parse(gamesPlayers[0].players);
+        const [players] = await sql.query(sql.format('select players from game_instances where game_id = ?', [gameId]));
+        const playerArr = JSON.parse(players[0].players);
 
         for (let i = 0; i < playerArr.length; i++) {
             if (playerArr[i].playerId === playerId) {
@@ -273,14 +219,14 @@ module.exports.updateTeams = async (gameId, playerId, team) => {
         return { status: ERROR, error: e };
     }
 };
+
+// Randomise teams
 module.exports.randomiseTeams = async (gameId) => {
     try {
         const sql = await sqlPromise;
-        const [gamesPlayers] = await sql.query(
-            sql.format('select players from game_instances where game_id = ?', [gameId])
-        );
+        const [players] = await sql.query(sql.format('select players from game_instances where game_id = ?', [gameId]));
 
-        const playerArr = JSON.parse(gamesPlayers[0].players);
+        const playerArr = JSON.parse(players[0].players);
         const numPlayers = playerArr.length;
         const isEvenPlayers = numPlayers % 2 === 0 ? true : false;
         const shuffledPlayers = _.shuffle(playerArr);
@@ -311,14 +257,13 @@ module.exports.randomiseTeams = async (gameId) => {
         return { status: ERROR, error: e };
     }
 };
-// Roles
+
+// Update a players role
 module.exports.updatePlayerRole = async (gameId, playerId, role) => {
     try {
         const sql = await sqlPromise;
-        const [gamesPlayers] = await sql.query(
-            sql.format('select players from game_instances where game_id = ?', [gameId])
-        );
-        const playerArr = JSON.parse(gamesPlayers[0].players);
+        const [players] = await sql.query(sql.format('select players from game_instances where game_id = ?', [gameId]));
+        const playerArr = JSON.parse(players[0].players);
 
         for (let i = 0; i < playerArr.length; i++) {
             if (playerArr[i].playerId === playerId) {
@@ -338,22 +283,8 @@ module.exports.updatePlayerRole = async (gameId, playerId, role) => {
         return { status: ERROR, error: e };
     }
 };
-// Turn
-module.exports.updateTurn = async (gameId) => {
-    try {
-        const sql = await sqlPromise;
-        const [turn] = await sql.query(sql.format('select turn from game_instances where game_id = ?', [gameId]));
-        const currentTurn = turn[0].turn;
-        const nextTurn = currentTurn === 'blue' ? 'red' : 'blue';
 
-        await sql.query(sql.format('update game_instances set turn = ? where game_id = ?', [nextTurn, gameId]));
-
-        return { status: SUCCESS, nextTurn: nextTurn };
-    } catch (e) {
-        return { status: ERROR, error: e };
-    }
-};
-// Words
+// Update word bundle
 module.exports.updateWordBundle = async (gameId, bundleId) => {
     try {
         const sql = await sqlPromise;
@@ -368,11 +299,34 @@ module.exports.updateWordBundle = async (gameId, bundleId) => {
             ])
         );
 
-        return { status: SUCCESS, bundle: bundleId, words: words };
+        return { status: SUCCESS, wordBundle: bundleId, words: words };
     } catch (e) {
         return { status: ERROR, error: e };
     }
 };
+
+// Update the turn for a game
+module.exports.updateTurn = async (gameId, playerTeam, currentTurn) => {
+    try {
+        const sql = await sqlPromise;
+        const [turn] = await sql.query(sql.format('select turn from game_instances where game_id = ?', [gameId]));
+        const currentStoredTurn = turn[0].turn;
+
+        if (playerTeam === currentTurn && playerTeam === currentStoredTurn) {
+            const nextTurn = currentTurn === 'blue' ? 'red' : 'blue';
+
+            await sql.query(sql.format('update game_instances set turn = ? where game_id = ?', [nextTurn, gameId]));
+
+            return { status: SUCCESS, nextTurn: nextTurn };
+        } else {
+            return { status: FAIL, error: 'You can only end your own teams turn...' };
+        }
+    } catch (e) {
+        return { status: ERROR, error: e };
+    }
+};
+
+// Add a custom word
 module.exports.addCustomWord = async (gameId, word) => {
     try {
         const sql = await sqlPromise;
@@ -392,6 +346,8 @@ module.exports.addCustomWord = async (gameId, word) => {
         return { status: ERROR, error: e };
     }
 };
+
+// Remove a custom word
 module.exports.removeCustomWord = async (gameId, word) => {
     try {
         const sql = await sqlPromise;
@@ -402,7 +358,6 @@ module.exports.removeCustomWord = async (gameId, word) => {
 
         for (let i = 0; i < customWords.length; i++) {
             if (customWords[i] === word) {
-                console.log('found and removed word');
                 customWords.splice(i, 1);
                 break;
             }
@@ -419,27 +374,102 @@ module.exports.removeCustomWord = async (gameId, word) => {
         return { status: ERROR, error: e };
     }
 };
+
+// Use custom words
 module.exports.useCustomWords = async (gameId) => {
-    // add check to ensure there are 25 custom words!
-    // case could occur where a word is removed and a custom game is being played then they try to do a new game and it has less then 25 words
     try {
         const sql = await sqlPromise;
         const [result] = await sql.query(sql.format('select * from game_instances where game_id = ?', [gameId]));
         const parsedData = await parseGameData(result[0]);
+        const customWords = parsedData.customWords;
 
-        const words = generateWords(parsedData.customWords, true);
-        const wordsStr = JSON.stringify(words);
+        if (customWords.length === 25) {
+            const words = generateWords(customWords, true);
+            const wordsStr = JSON.stringify(words);
 
-        await sql.query(
-            sql.format('update game_instances set words = ?, word_group = ? where game_id = ?', [wordsStr, '', gameId])
-        );
+            await sql.query(
+                sql.format('update game_instances set words = ?, word_group = ? where game_id = ?', [
+                    wordsStr,
+                    '',
+                    gameId,
+                ])
+            );
 
-        return { status: SUCCESS, bundle: '', words: words };
+            return { status: SUCCESS, bundle: '', words: words };
+        } else {
+            return { status: FAIL, error: 'To use custom words for a game you must have entered 25 successfully' };
+        }
     } catch (e) {
         return { status: ERROR, error: e };
     }
 };
-//
+
+// Guess has been made
+module.exports.updateGuess = async (gameId, word, playerTeam, playerRole, isGuessed) => {
+    try {
+        const sql = await sqlPromise;
+        const [gameData] = await sql.query(sql.format('select * from game_instances where game_id = ?', [gameId]));
+        const parsedData = parseGameData(gameData[0]);
+
+        if (playerTeam === parsedData.turn && playerRole === 'agent' && isGuessed === false) {
+            const words = parsedData.words;
+            const score = parsedData.score;
+            let nextTurn = null;
+
+            const wordIndex = word.index;
+            words[wordIndex].guessData.isGuessed = true;
+            words[wordIndex].guessData.team = playerTeam;
+
+            if (word.denomination === 'blue' && playerTeam === 'blue') {
+                score.blue += -1;
+            } else if (word.denomination === 'blue' && playerTeam === 'red') {
+                score.blue += -1;
+                nextTurn = 'blue';
+            } else if (word.denomination === 'red' && playerTeam === 'red') {
+                score.red += -1;
+            } else if (word.denomination === 'red' && playerTeam === 'blue') {
+                score.red += -1;
+                nextTurn = 'red';
+            } else if (word.denomination === 'blank') {
+                nextTurn = playerTeam === 'blue' ? 'red' : 'blue';
+            } else {
+                playerTeam === 'blue' ? (score.red = 0) : (score.blue = 0);
+            }
+
+            const wordsStr = JSON.stringify(words);
+            const scoreStr = JSON.stringify(score);
+
+            if (nextTurn !== null) {
+                await sql.query(
+                    sql.format('update game_instances set words = ?, score = ?, turn = ? where game_id = ?', [
+                        wordsStr,
+                        scoreStr,
+                        nextTurn,
+                        gameId,
+                    ])
+                );
+            } else {
+                await sql.query(
+                    sql.format('update game_instances set words = ?, score = ? where game_id = ?', [
+                        wordsStr,
+                        scoreStr,
+                        gameId,
+                    ])
+                );
+            }
+
+            return { status: SUCCESS, data: { words: words, score: score, nextTurn: nextTurn } };
+        } else {
+            return {
+                status: FAIL,
+                error:
+                    'You can only make a guess if it is your teams turn, you are an agent and if the word has not already been guessed',
+            };
+        }
+    } catch (e) {
+        return { status: ERROR, error: e };
+    }
+};
 
 // General functions
 const parseGameData = (gameData) => {

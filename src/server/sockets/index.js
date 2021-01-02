@@ -1,3 +1,5 @@
+const { result } = require('underscore');
+const { SUCCESS } = require('../config/statusTypes');
 const dbGame = require('../db/db-game/db-game');
 const sockets = {};
 
@@ -7,133 +9,273 @@ sockets.init = (server) => {
     io.on('connection', (socket) => {
         console.log('Client connected', socket.id);
 
-        // DONE
         // Game
         socket.on('new_game', async (data) => {
-            const result = await dbGame.newGame(data.gameId);
-            console.log(result);
-            io.in(data.gameId).emit('update_game', {
-                msg: 'Game updated!',
-                data: result.data,
-            });
-        });
-        // Join & Leave
-        socket.on('join_game', async (data) => {
-            socket.join(data.gameId);
-            const result = await dbGame.addPlayer(data.gameId, socket.id, data.playerName);
-            io.in(data.gameId).emit('update_teams', {
-                players: result.players,
-                msg: 'Welcome to the game ' + data.playerName + '! The games ID is ' + data.gameId,
-            });
-        });
-        socket.on('leave_game', async (data) => {
-            socket.leave(data.gameId);
-            const result = await dbGame.removePlayer(data.gameId, socket.id);
-            socket.to(data.gameId).emit('update_teams', {
-                players: result.players,
-                msg: 'Player has left the game',
-            });
-        });
-        // Teams
-        socket.on('select_team', async (data) => {
-            const result = await dbGame.updateTeams(data.gameId, socket.id, data.team);
-            socket.to(data.gameId).emit('update_teams', {
-                players: result.players,
-                msg: 'TO ALL PLAYERS! A player has joined ' + data.team + ' team!',
-            });
-            socket.emit('update_client_team', {
-                players: result.players,
-                team: data.team,
-                msg: 'You have joined ' + data.team + ' team!',
-            });
-        });
-        socket.on('randomise_teams', async (data) => {
-            const result = await dbGame.randomiseTeams(data.gameId);
-            io.in(data.gameId).emit('random_teams', {
-                msg: 'Teams randomised!',
-                players: result.players,
-            });
-        });
-        // Roles
-        socket.on('select_role', async (data) => {
-            const result = await dbGame.updatePlayerRole(data.gameId, socket.id, data.role);
-            socket.to(data.gameId).emit('update_roles', {
-                players: result.players,
-                msg: 'A player changed their role to ' + data.role,
-            });
-            socket.emit('update_client_role', {
-                players: result.players,
-                role: data.role,
-                msg: 'Chose ' + data.role + ' role!',
-            });
-        });
-        // Turn
-        socket.on('end_turn', async (data) => {
-            // Add further check to make sure that the current players team == the current turn of the game
-            const result = await dbGame.updateTurn(data.gameId);
-            io.in(data.gameId).emit('update_turn', {
-                msg: 'Ended turn',
-                turn: result.turn,
-            });
-        });
-        // Words
-        socket.on('select_word_bundle', async (data) => {
-            const result = await dbGame.updateWordBundle(data.gameId, data.bundle);
-            io.in(data.gameId).emit('update_word_bundle', {
-                msg: 'New word bundle selected!',
-                bundle: result.bundle,
-            });
-            io.in(data.gameId).emit('update_words', {
-                msg: 'New words!',
-                words: result.words,
-            });
-        });
-        socket.on('add_custom_word', async (data) => {
-            const result = await dbGame.addCustomWord(data.gameId, data.word);
-            console.log('CUSTOM WORDS', result);
-            io.in(data.gameId).emit('update_custom_words', {
-                msg: 'New custom words!',
-                customWords: result.customWords,
-            });
-        });
-        socket.on('remove_custom_word', async (data) => {
-            const result = await dbGame.removeCustomWord(data.gameId, data.word);
-            console.log('CUSTOM WORDS', result.customWords);
-            io.in(data.gameId).emit('update_custom_words', {
-                msg: 'New custom words!',
-                customWords: result.customWords,
-            });
-        });
-        socket.on('use_custom_words', async (data) => {
-            const result = await dbGame.useCustomWords(data.gameId);
-            io.in(data.gameId).emit('update_word_bundle', {
-                msg: 'Word bundle reset!',
-                bundle: result.bundle,
-            });
-            io.in(data.gameId).emit('update_words', {
-                msg: 'New custom words to be used for the game!',
-                words: result.words,
-            });
-        });
-        // Game board
-        socket.on('guess', async (data) => {
-            if (data.playerTeam !== null && data.playerRole === 'agent' && data.word.guessData.isGuessed === false) {
-                const result = await dbGame.updateGuess(data.gameId, data.word, data.playerTeam, data.playerRole);
-                console.log(result);
-                io.in(data.gameId).emit('guess_made', {
-                    msg: 'A guess has been made!',
+            const gameId = data.gameId;
+
+            const result = await dbGame.newGame(gameId);
+
+            if (result.status === SUCCESS) {
+                io.in(gameId).emit('update_game', {
+                    msg: '[SVR] New game generated',
                     data: result.data,
                 });
             } else {
                 socket.emit('error', {
-                    msg: 'You have made an error.',
+                    msg: '[SVR] Error generating new game',
+                    status: result.status,
+                    error: result.error,
                 });
             }
         });
-        //
 
-        socket.on('submit_custom_words', (data) => {});
+        // Join game
+        socket.on('join_game', async (data) => {
+            const gameId = data.gameId;
+            const playerName = data.playerName;
 
+            const result = await dbGame.addPlayer(gameId, socket.id, playerName);
+
+            if (result.status === SUCCESS) {
+                socket.join(gameId);
+                io.in(gameId).emit('update_teams', {
+                    msg: '[SVR] A new player has joined the game: ' + playerName,
+                    players: result.players,
+                });
+            } else {
+                socket.emit('error', {
+                    msg: '[SVR] Error joining the game',
+                    status: result.status,
+                    error: result.error,
+                });
+            }
+        });
+
+        // Leave game
+        socket.on('leave_game', async (data) => {
+            const gameId = data.gameId;
+
+            const result = await dbGame.removePlayer(gameId, socket.id);
+
+            if (result.status === SUCCESS) {
+                socket.leave(gameId);
+                socket.to(gameId).emit('update_teams', {
+                    msg: '[SVR] A player has left the game',
+                    players: result.players,
+                });
+            } else {
+                socket.emit('error', {
+                    msg: '[SVR] Error leaving the game',
+                    status: result.status,
+                    error: result.error,
+                });
+            }
+        });
+
+        // Select a team
+        socket.on('select_team', async (data) => {
+            const gameId = data.gameId;
+            const selectedTeam = data.selectedTeam;
+
+            const result = await dbGame.updateTeams(gameId, socket.id, selectedTeam);
+
+            if (result.status === SUCCESS) {
+                socket.to(gameId).emit('update_teams', {
+                    msg: '[SVR] A player has selected a team: ' + selectedTeam,
+                    players: result.players,
+                });
+                socket.emit('update_client_team', {
+                    msg: '[SVR] You have joined a team: ' + selectedTeam,
+                    players: result.players,
+                    team: selectedTeam,
+                });
+            } else {
+                socket.emit('error', {
+                    msg: '[SVR] Error changing team',
+                    status: result.status,
+                    error: result.error,
+                });
+            }
+        });
+
+        // Randomise teams
+        socket.on('randomise_teams', async (data) => {
+            const gameId = data.gameId;
+
+            const result = await dbGame.randomiseTeams(gameId);
+
+            if (result.status === SUCCESS) {
+                io.in(gameId).emit('random_teams', {
+                    msg: '[SVR] Teams have been randomised',
+                    players: result.players,
+                });
+            } else {
+                socket.emit('error', {
+                    msg: '[SVR] Error randomising teams',
+                    status: result.status,
+                    error: result.error,
+                });
+            }
+        });
+
+        // Select a role
+        socket.on('select_role', async (data) => {
+            const gameId = data.gameId;
+            const selectedRole = data.selectedRole;
+
+            const result = await dbGame.updatePlayerRole(gameId, socket.id, selectedRole);
+
+            if (result.status === SUCCESS) {
+                socket.to(data.gameId).emit('update_roles', {
+                    msg: '[SVR] A player has selected a role: ' + selectedRole,
+                    players: result.players,
+                });
+                socket.emit('update_client_role', {
+                    msg: '[SVR] You have selected a role: ' + selectedRole,
+                    players: result.players,
+                    role: selectedRole,
+                });
+            } else {
+                socket.emit('error', {
+                    msg: '[SVR] Error changing role',
+                    status: result.status,
+                    error: result.error,
+                });
+            }
+        });
+
+        // Select a word bundle
+        socket.on('select_word_bundle', async (data) => {
+            const gameId = data.gameId;
+            const selectedBundle = data.selectedBundle;
+
+            const result = await dbGame.updateWordBundle(gameId, selectedBundle);
+
+            if (result.status === SUCCESS) {
+                io.in(gameId).emit('update_word_bundle', {
+                    msg: '[SVR] New word bundle selected',
+                    wordBundle: result.wordBundle,
+                    words: result.words,
+                });
+            } else {
+                socket.emit('error', {
+                    msg: '[SVR] Error selecting word bundle',
+                    status: result.status,
+                    error: result.error,
+                });
+            }
+        });
+
+        // Change turn
+        socket.on('end_turn', async (data) => {
+            const gameId = data.gameId;
+            const playerTeam = data.playerTeam;
+            const currentTurn = data.currentTurn;
+
+            const result = await dbGame.updateTurn(gameId, playerTeam, currentTurn);
+
+            if (result.status === SUCCESS) {
+                io.in(gameId).emit('update_turn', {
+                    msg: '[SVR] Turn ended',
+                    nextTurn: result.nextTurn,
+                });
+            } else {
+                socket.emit('error', {
+                    msg: '[SVR] Error ending turn',
+                    status: result.status,
+                    error: result.error,
+                });
+            }
+        });
+
+        // Add a custom word
+        socket.on('add_custom_word', async (data) => {
+            const gameId = data.gameId;
+            const word = data.word;
+
+            const result = await dbGame.addCustomWord(gameId, word);
+
+            if (result.status === SUCCESS) {
+                io.in(gameId).emit('update_custom_words', {
+                    msg: '[SVR] Added a new custom word',
+                    customWords: result.customWords,
+                });
+            } else {
+                socket.emit('error', {
+                    msg: '[SVR] Error adding custom word',
+                    status: result.status,
+                    error: result.error,
+                });
+            }
+        });
+
+        // Remove a custom word
+        socket.on('remove_custom_word', async (data) => {
+            const gameId = data.gameId;
+            const word = data.word;
+
+            const result = await dbGame.removeCustomWord(gameId, word);
+
+            if (result.status === SUCCESS) {
+                io.in(gameId).emit('update_custom_words', {
+                    msg: '[SVR] Removed a custom word',
+                    customWords: result.customWords,
+                });
+            } else {
+                socket.emit('error', {
+                    msg: '[SVR] Error removing a custom word',
+                    status: result.status,
+                    error: result.error,
+                });
+            }
+        });
+
+        // Use custom words
+        socket.on('use_custom_words', async (data) => {
+            const gameId = data.gameId;
+
+            const result = await dbGame.useCustomWords(gameId);
+
+            if (result.status === SUCCESS) {
+                io.in(gameId).emit('update_word_bundle', {
+                    msg: '[SVR] Word bundle reset using custom words',
+                    bundle: result.bundle,
+                    words: result.words,
+                });
+            } else {
+                socket.emit('error', {
+                    msg: '[SVR] Error using custom words',
+                    status: result.status,
+                    error: result.error,
+                });
+            }
+        });
+
+        // Game logic
+        socket.on('guess', async (data) => {
+            const gameId = data.gameId;
+            const word = data.word;
+            const playerTeam = data.playerTeam;
+            const playerRole = data.playerRole;
+            const isGuessed = data.word.guessData.isGuessed;
+
+            const result = await dbGame.updateGuess(gameId, word, playerTeam, playerRole, isGuessed);
+
+            if (result.status === SUCCESS) {
+                io.in(gameId).emit('guess_made', {
+                    msg: '[SVR] A guess has been made',
+                    data: result.data,
+                });
+            } else {
+                socket.emit('error', {
+                    msg: '[SVR] Error guessing word',
+                    status: result.status,
+                    error: result.error,
+                });
+            }
+        });
+
+        // Still needs completing
         socket.on('disconnect', () => {
             // create a clean up function so that if someone leaves via browser close they are removed from any game rooms they were in and their db precense is wiped and then those games are updated accordingly
             console.log('Client disconnected', socket.id);

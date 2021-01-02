@@ -13,7 +13,7 @@ CREATE TABLE if not exists deduction_DB.game_instances(
     quick_game BOOLEAN NOT NULL,
     turn_timer BOOLEAN NOT NULL,
     game_timer INT NOT NULL,
-    last_query VARCHAR(100) NOT NULL,
+    last_query VARCHAR(1000) NOT NULL,
     PRIMARY KEY (game_id)
 ) ENGINE=INNODB;
 

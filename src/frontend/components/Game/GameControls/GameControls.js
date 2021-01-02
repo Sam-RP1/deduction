@@ -16,7 +16,7 @@ const GameControls = (props) => {
     return (
         <section className='game-controls'>
             <div className='game-controls__btns-container'>
-                <Button title={'New Game'} function={() => props.newGame(props.wordBundle, props.customWords)} />
+                <Button title={'New Game'} function={() => props.newGame()} />
                 <Button title={'Join Code'} function={() => copyJoinCode()} />
                 <Button title={'End Turn'} function={() => props.endTurn(props.playerTeam, props.turn)} />
             </div>
