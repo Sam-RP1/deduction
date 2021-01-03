@@ -265,13 +265,14 @@
                     color: t($text);
                     background-color: t($btn);
                 }
-                @include transition-theme(color 0.3s ease, background-color 0.3s ease);
+                @include transition-theme(color 0.3s ease, background-color 0.3s ease, opacity 0.3s ease);
                 &:hover {
                     @include themed() {
                         color: t($text-secondary);
                     }
                     background-color: base.$selected;
                 }
+
                 @media screen and (min-width: 576px) {
                     width: calc(50% - 5px);
                 }

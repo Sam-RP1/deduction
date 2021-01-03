@@ -125,10 +125,9 @@ const reducer = (state = initialState, action) => {
             };
         }
         case actionTypes.SET_TURN:
-            console.log('[SETTING TURN REDUCER] turn is: ', action.payload.turn);
             return {
                 ...state,
-                turn: state.turn === 'red' ? 'blue' : 'red',
+                turn: action.payload.turn,
             };
         case actionTypes.SET_SCORE:
             return {

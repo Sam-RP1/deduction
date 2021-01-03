@@ -111,3 +111,9 @@ input {
         max-width: 300px;
     }
 }
+
+.disable {
+    opacity: 0.5;
+    cursor: default;
+    pointer-events: none;
+}

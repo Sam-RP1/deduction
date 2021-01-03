@@ -2,6 +2,7 @@
 @import '../../../styles/partials/color-themes';
 @import '../../../styles/mixins/transition';
 @import '../../../styles/mixins/transform';
+@import '../../../styles/mixins/userSelect';
 
 .btn {
     display: flex;
@@ -22,11 +23,12 @@
     -moz-appearance: none;
     -webkit-appearance: none;
     -webkit-tap-highlight-color: transparent;
+    @include userSelect(none);
     @include themed() {
         color: t($text);
         background-color: t($btn);
     }
-    @include transition-theme(color 0.3s ease, background-color 0.3s ease);
+    @include transition-theme(color 0.3s ease, background-color 0.3s ease, opacity 0.3s ease);
 
     &:focus {
         outline: none;
@@ -43,6 +45,11 @@
             color: t($text-secondary);
             background-color: t($btn-active);
         }
+    }
+    &.disable {
+        opacity: 0.5;
+        cursor: default;
+        pointer-events: none;
     }
 
     a {

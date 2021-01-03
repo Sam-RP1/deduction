@@ -22,7 +22,7 @@ const JoinGame = (props) => {
                         <h3>Join an existing game:</h3>
                         <p>
                             You can join a game by either entering a valid join link OR entering the games name and
-                            password.
+                            password. Both methods require you to also enter a player name.
                         </p>
                         <label htmlFor='game-join-link'>Game Join Link:</label>
                         <input

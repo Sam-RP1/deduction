@@ -4,6 +4,7 @@ const config = require('../../config/config');
 const { SUCCESS, FAIL, ERROR, EXISTS, EMPTY } = require('../../config/statusTypes');
 const { generateWords } = require('../../config/config');
 const sqlPromise = config.sqlPromise;
+const logError = config.logError;
 
 // TODO: Split into seperate files for each different type
 
@@ -133,7 +134,8 @@ module.exports.newGame = async (gameId) => {
             };
         }
     } catch (e) {
-        return { status: ERROR, error: e };
+        logError(e);
+        return { status: ERROR, error: 'Could not generate a fresh game.' };
     }
 };
 
@@ -163,11 +165,16 @@ module.exports.addPlayer = async (gameId, playerId, playerName) => {
 
         return { status: SUCCESS, players: updatedPlayerArr };
     } catch (e) {
-        return { status: ERROR, error: e };
+        logError(e);
+        return {
+            status: ERROR,
+            error: 'A player has attempted to join the game, but they were not successfully added.',
+        };
     }
 };
 
 // Remove player
+// could use filter
 module.exports.removePlayer = async (gameId, playerId) => {
     try {
         const sql = await sqlPromise;
@@ -189,12 +196,14 @@ module.exports.removePlayer = async (gameId, playerId) => {
 
         return { status: SUCCESS, players: playerArr };
     } catch (e) {
-        return { status: ERROR, error: e };
+        logError(e);
+        return { status: ERROR, error: 'Could not remove a player who has left the game.' };
     }
 };
 
 // Update team
 // add if else for fail conditions
+// could use filter
 module.exports.updateTeams = async (gameId, playerId, team) => {
     try {
         const sql = await sqlPromise;
@@ -216,7 +225,8 @@ module.exports.updateTeams = async (gameId, playerId, team) => {
 
         return { status: SUCCESS, players: playerArr };
     } catch (e) {
-        return { status: ERROR, error: e };
+        logError(e);
+        return { status: ERROR, error: 'Could not change your team.' };
     }
 };
 
@@ -254,11 +264,14 @@ module.exports.randomiseTeams = async (gameId) => {
 
         return { status: SUCCESS, players: shuffledPlayers };
     } catch (e) {
-        return { status: ERROR, error: e };
+        logError(e);
+        return { status: ERROR, error: 'Could not randomise teams.' };
     }
 };
 
 // Update a players role
+// Add check for if role == currentrole
+// maybe use filter
 module.exports.updatePlayerRole = async (gameId, playerId, role) => {
     try {
         const sql = await sqlPromise;
@@ -280,7 +293,8 @@ module.exports.updatePlayerRole = async (gameId, playerId, role) => {
 
         return { status: SUCCESS, players: playerArr };
     } catch (e) {
-        return { status: ERROR, error: e };
+        logError(e);
+        return { status: ERROR, error: 'Could not update your role.' };
     }
 };
 
@@ -301,28 +315,8 @@ module.exports.updateWordBundle = async (gameId, bundleId) => {
 
         return { status: SUCCESS, wordBundle: bundleId, words: words };
     } catch (e) {
-        return { status: ERROR, error: e };
-    }
-};
-
-// Update the turn for a game
-module.exports.updateTurn = async (gameId, playerTeam, currentTurn) => {
-    try {
-        const sql = await sqlPromise;
-        const [turn] = await sql.query(sql.format('select turn from game_instances where game_id = ?', [gameId]));
-        const currentStoredTurn = turn[0].turn;
-
-        if (playerTeam === currentTurn && playerTeam === currentStoredTurn) {
-            const nextTurn = currentTurn === 'blue' ? 'red' : 'blue';
-
-            await sql.query(sql.format('update game_instances set turn = ? where game_id = ?', [nextTurn, gameId]));
-
-            return { status: SUCCESS, nextTurn: nextTurn };
-        } else {
-            return { status: FAIL, error: 'You can only end your own teams turn...' };
-        }
-    } catch (e) {
-        return { status: ERROR, error: e };
+        logError(e);
+        return { status: ERROR, error: 'Could not select word bundle.' };
     }
 };
 
@@ -334,6 +328,7 @@ module.exports.addCustomWord = async (gameId, word) => {
             sql.format('select custom_words from game_instances where game_id = ?', [gameId])
         );
         const customWords = JSON.parse(customWordsRes[0].custom_words);
+
         customWords.push(word);
         const customWordsStr = JSON.stringify(customWords);
 
@@ -343,11 +338,13 @@ module.exports.addCustomWord = async (gameId, word) => {
 
         return { status: SUCCESS, customWords: customWords };
     } catch (e) {
-        return { status: ERROR, error: e };
+        logError(e);
+        return { status: ERROR, error: 'Could not add custom word.' };
     }
 };
 
 // Remove a custom word
+// could use filter
 module.exports.removeCustomWord = async (gameId, word) => {
     try {
         const sql = await sqlPromise;
@@ -371,7 +368,8 @@ module.exports.removeCustomWord = async (gameId, word) => {
 
         return { status: SUCCESS, customWords: customWords };
     } catch (e) {
-        return { status: ERROR, error: e };
+        logError(e);
+        return { status: ERROR, error: 'Could not remove custom word.' };
     }
 };
 
@@ -397,10 +395,11 @@ module.exports.useCustomWords = async (gameId) => {
 
             return { status: SUCCESS, bundle: '', words: words };
         } else {
-            return { status: FAIL, error: 'To use custom words for a game you must have entered 25 successfully' };
+            return { status: FAIL, error: 'To play using custom words you must have entered 25 successfully.' };
         }
     } catch (e) {
-        return { status: ERROR, error: e };
+        logError(e);
+        return { status: ERROR, error: 'Could not generate a game using custom words.' };
     }
 };
 
@@ -467,7 +466,29 @@ module.exports.updateGuess = async (gameId, word, playerTeam, playerRole, isGues
             };
         }
     } catch (e) {
-        return { status: ERROR, error: e };
+        logError(e);
+        return { status: ERROR, error: 'Could not process the guess.' };
+    }
+};
+
+// Update the turn for a game
+module.exports.updateTurn = async (gameId) => {
+    try {
+        const sql = await sqlPromise;
+        const [turn] = await sql.query(sql.format('select turn from game_instances where game_id = ?', [gameId]));
+        const currentTurn = turn[0].turn;
+
+        const nextTurn = currentTurn === 'blue' ? 'red' : 'blue';
+
+        await sql.query(sql.format('update game_instances set turn = ? where game_id = ?', [nextTurn, gameId]));
+
+        return { status: SUCCESS, nextTurn: nextTurn };
+    } catch (e) {
+        logError(e);
+        return {
+            status: ERROR,
+            error: 'Could not update the games turn.',
+        };
     }
 };
 

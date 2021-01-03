@@ -3,14 +3,22 @@
 //------------- GLOBAL VARIABLES -------------//
 const mysql = require('mysql2/promise');
 const _ = require('underscore');
+const fs = require('fs');
 const wordGroups = require('../appdata/wordGroups.js');
 require('dotenv').config();
+
+const errorStream = fs.createWriteStream(__dirname + '/logs/error.txt', { flags: 'a+' });
 
 const dbData = {
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
     password: process.env.DB_PWD,
     database: 'deduction_DB',
+};
+
+module.exports.logError = (e) => {
+    const newEntry = new Data().toISOString() + ': ' + e + '\n';
+    errorStream.write(newEntry);
 };
 
 module.exports.getWordBundles = () => {

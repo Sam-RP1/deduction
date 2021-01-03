@@ -37,6 +37,7 @@ module.exports = (env, argv) => {
                 patterns: [
                     { from: './src/server/routes', to: 'routes' },
                     { from: './src/server/db', to: 'db' },
+                    { from: './src/server/logs', to: 'logs' },
                     { from: './src/server/appdata', to: 'appdata' },
                 ],
             }),

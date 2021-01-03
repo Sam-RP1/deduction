@@ -6,7 +6,7 @@ import '../Button.scss';
 const Button = (props) => {
     return (
         <button
-            className={'btn ' + props.opClasses}
+            className={'btn' + (props.opClasses !== undefined ? ' ' + props.opClasses : '')}
             onClick={() => {
                 props.function();
             }}

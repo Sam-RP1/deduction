@@ -16,9 +16,21 @@ const GameControls = (props) => {
     return (
         <section className='game-controls'>
             <div className='game-controls__btns-container'>
-                <Button title={'New Game'} function={() => props.newGame()} />
+                <Button
+                    opClasses={props.customWords.length !== 25 && props.wordBundle === '' ? ' disable' : ''}
+                    title={'New Game'}
+                    function={() => props.newGame()}
+                />
                 <Button title={'Join Code'} function={() => copyJoinCode()} />
-                <Button title={'End Turn'} function={() => props.endTurn(props.playerTeam, props.turn)} />
+                <Button
+                    opClasses={
+                        'btn__' +
+                        (props.turn === 'blue' ? 'blue' : 'red') +
+                        (props.turn !== props.playerTeam ? ' disable' : '')
+                    }
+                    title={'End Turn'}
+                    function={() => props.endTurn(props.playerTeam, props.turn)}
+                />
             </div>
 
             <div className='game-controls__teams'>
@@ -130,8 +142,9 @@ const GameControls = (props) => {
                             <h3>OR</h3>
                             <h3>Enter Custom Words...</h3>
                             <p>
-                                Enter 25 words by typing one word at a time in the box below and then pressing your
-                                enter key.
+                                To play using custom words you must enter 25 unique words one at a time by typing each
+                                one in the box below and then pressing your enter key to submit it. Once there is 25
+                                words entered the &apos;play custom&apos; button will be active.
                             </p>
                             <input
                                 id='text-input'
@@ -162,7 +175,10 @@ const GameControls = (props) => {
                     </div>
                     <button
                         onClick={() => props.useCustomWords(props.customWords)}
-                        className='game-controls__bundles__options__submit-btn'
+                        className={
+                            'game-controls__bundles__options__submit-btn' +
+                            (props.customWords.length !== 25 ? ' disable' : '')
+                        }
                     >
                         Play Custom
                     </button>
@@ -194,7 +210,7 @@ GameControls.propTypes = {
     addCustomWordHandler: PropTypes.func,
     removeCustomWord: PropTypes.func,
     useCustomWords: PropTypes.func,
-    customWordError: PropTypes.string,
+    customWordError: PropTypes.object,
 };
 
 GameControls.defaultProps = {};

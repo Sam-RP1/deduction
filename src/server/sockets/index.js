@@ -1,4 +1,3 @@
-const { result } = require('underscore');
 const { SUCCESS } = require('../config/statusTypes');
 const dbGame = require('../db/db-game/db-game');
 const sockets = {};
@@ -17,12 +16,10 @@ sockets.init = (server) => {
 
             if (result.status === SUCCESS) {
                 io.in(gameId).emit('update_game', {
-                    msg: '[SVR] New game generated',
                     data: result.data,
                 });
             } else {
                 socket.emit('error', {
-                    msg: '[SVR] Error generating new game',
                     status: result.status,
                     error: result.error,
                 });
@@ -39,12 +36,10 @@ sockets.init = (server) => {
             if (result.status === SUCCESS) {
                 socket.join(gameId);
                 io.in(gameId).emit('update_teams', {
-                    msg: '[SVR] A new player has joined the game: ' + playerName,
                     players: result.players,
                 });
             } else {
-                socket.emit('error', {
-                    msg: '[SVR] Error joining the game',
+                socket.to(gameId).emit('error', {
                     status: result.status,
                     error: result.error,
                 });
@@ -60,12 +55,10 @@ sockets.init = (server) => {
             if (result.status === SUCCESS) {
                 socket.leave(gameId);
                 socket.to(gameId).emit('update_teams', {
-                    msg: '[SVR] A player has left the game',
                     players: result.players,
                 });
             } else {
-                socket.emit('error', {
-                    msg: '[SVR] Error leaving the game',
+                socket.to(gameId).emit('error', {
                     status: result.status,
                     error: result.error,
                 });
@@ -80,18 +73,14 @@ sockets.init = (server) => {
             const result = await dbGame.updateTeams(gameId, socket.id, selectedTeam);
 
             if (result.status === SUCCESS) {
-                socket.to(gameId).emit('update_teams', {
-                    msg: '[SVR] A player has selected a team: ' + selectedTeam,
-                    players: result.players,
-                });
                 socket.emit('update_client_team', {
-                    msg: '[SVR] You have joined a team: ' + selectedTeam,
-                    players: result.players,
                     team: selectedTeam,
+                });
+                io.in(gameId).emit('update_teams', {
+                    players: result.players,
                 });
             } else {
                 socket.emit('error', {
-                    msg: '[SVR] Error changing team',
                     status: result.status,
                     error: result.error,
                 });
@@ -106,12 +95,10 @@ sockets.init = (server) => {
 
             if (result.status === SUCCESS) {
                 io.in(gameId).emit('random_teams', {
-                    msg: '[SVR] Teams have been randomised',
                     players: result.players,
                 });
             } else {
                 socket.emit('error', {
-                    msg: '[SVR] Error randomising teams',
                     status: result.status,
                     error: result.error,
                 });
@@ -126,18 +113,14 @@ sockets.init = (server) => {
             const result = await dbGame.updatePlayerRole(gameId, socket.id, selectedRole);
 
             if (result.status === SUCCESS) {
-                socket.to(data.gameId).emit('update_roles', {
-                    msg: '[SVR] A player has selected a role: ' + selectedRole,
-                    players: result.players,
-                });
                 socket.emit('update_client_role', {
-                    msg: '[SVR] You have selected a role: ' + selectedRole,
-                    players: result.players,
                     role: selectedRole,
+                });
+                io.in(gameId).emit('update_roles', {
+                    players: result.players,
                 });
             } else {
                 socket.emit('error', {
-                    msg: '[SVR] Error changing role',
                     status: result.status,
                     error: result.error,
                 });
@@ -153,35 +136,11 @@ sockets.init = (server) => {
 
             if (result.status === SUCCESS) {
                 io.in(gameId).emit('update_word_bundle', {
-                    msg: '[SVR] New word bundle selected',
                     wordBundle: result.wordBundle,
                     words: result.words,
                 });
             } else {
                 socket.emit('error', {
-                    msg: '[SVR] Error selecting word bundle',
-                    status: result.status,
-                    error: result.error,
-                });
-            }
-        });
-
-        // Change turn
-        socket.on('end_turn', async (data) => {
-            const gameId = data.gameId;
-            const playerTeam = data.playerTeam;
-            const currentTurn = data.currentTurn;
-
-            const result = await dbGame.updateTurn(gameId, playerTeam, currentTurn);
-
-            if (result.status === SUCCESS) {
-                io.in(gameId).emit('update_turn', {
-                    msg: '[SVR] Turn ended',
-                    nextTurn: result.nextTurn,
-                });
-            } else {
-                socket.emit('error', {
-                    msg: '[SVR] Error ending turn',
                     status: result.status,
                     error: result.error,
                 });
@@ -197,12 +156,10 @@ sockets.init = (server) => {
 
             if (result.status === SUCCESS) {
                 io.in(gameId).emit('update_custom_words', {
-                    msg: '[SVR] Added a new custom word',
                     customWords: result.customWords,
                 });
             } else {
                 socket.emit('error', {
-                    msg: '[SVR] Error adding custom word',
                     status: result.status,
                     error: result.error,
                 });
@@ -218,12 +175,10 @@ sockets.init = (server) => {
 
             if (result.status === SUCCESS) {
                 io.in(gameId).emit('update_custom_words', {
-                    msg: '[SVR] Removed a custom word',
                     customWords: result.customWords,
                 });
             } else {
                 socket.emit('error', {
-                    msg: '[SVR] Error removing a custom word',
                     status: result.status,
                     error: result.error,
                 });
@@ -238,13 +193,11 @@ sockets.init = (server) => {
 
             if (result.status === SUCCESS) {
                 io.in(gameId).emit('update_word_bundle', {
-                    msg: '[SVR] Word bundle reset using custom words',
                     bundle: result.bundle,
                     words: result.words,
                 });
             } else {
                 socket.emit('error', {
-                    msg: '[SVR] Error using custom words',
                     status: result.status,
                     error: result.error,
                 });
@@ -263,12 +216,28 @@ sockets.init = (server) => {
 
             if (result.status === SUCCESS) {
                 io.in(gameId).emit('guess_made', {
-                    msg: '[SVR] A guess has been made',
                     data: result.data,
                 });
             } else {
                 socket.emit('error', {
-                    msg: '[SVR] Error guessing word',
+                    status: result.status,
+                    error: result.error,
+                });
+            }
+        });
+
+        // Change turn
+        socket.on('end_turn', async (data) => {
+            const gameId = data.gameId;
+
+            const result = await dbGame.updateTurn(gameId);
+
+            if (result.status === SUCCESS) {
+                io.in(gameId).emit('update_turn', {
+                    nextTurn: result.nextTurn,
+                });
+            } else {
+                socket.emit('error', {
                     status: result.status,
                     error: result.error,
                 });

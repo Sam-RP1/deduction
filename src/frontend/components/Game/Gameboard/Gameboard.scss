@@ -1,6 +1,7 @@
 @use '../../../styles/base';
 @import '../../../styles/partials/color-themes';
 @import '../../../styles/mixins/transition';
+@import '../../../styles/mixins/userSelect';
 
 .gameboard {
     display: flex;
@@ -8,11 +9,6 @@
     justify-content: space-between;
     height: auto;
     width: 100%;
-
-    &.disable {
-        cursor: default;
-        pointer-events: none;
-    }
 
     &__word-block {
         position: relative;
@@ -22,6 +18,7 @@
         box-sizing: border-box;
         border-radius: 5px;
         box-shadow: base.$box--shadow--alt;
+        @include userSelect(none);
         @include themed() {
             background-color: t($word-cell);
         }

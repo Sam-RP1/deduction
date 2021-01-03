@@ -40,23 +40,18 @@ const useGame = (socketRef, gameId) => {
     useEffect(() => {
         // New game has been requested
         socketRef.current.on('update_game', (res) => {
-            console.log(res.msg);
             setNewGame(res.data);
         });
         // Player(s) have changed team
         socketRef.current.on('update_teams', (res) => {
-            console.log(res.msg);
             setTeams(res.players);
         });
         // Player has changed its own team
         socketRef.current.on('update_client_team', (res) => {
-            console.log(res.msg);
             setTeam(res.team);
-            setTeams(res.players);
         });
         // Teams have been randomised
         socketRef.current.on('random_teams', (res) => {
-            console.log(res.msg);
             const playerArr = res.players;
             const playerId = socketRef.current.id;
             let team;
@@ -70,39 +65,31 @@ const useGame = (socketRef, gameId) => {
         });
         // Player(s) have changed role
         socketRef.current.on('update_roles', (res) => {
-            console.log(res.msg);
             setRoles(res.players);
         });
         // Player has changed its own role
         socketRef.current.on('update_client_role', (res) => {
-            console.log(res.msg);
             setRole(res.role);
-            setRoles(res.players);
         });
         // Game turn has changed
         socketRef.current.on('update_turn', (res) => {
-            console.log(res.msg);
             setTurn(res.nextTurn);
         });
         // Player(s) have changed word bundle
         socketRef.current.on('update_word_bundle', (res) => {
-            console.log(res.msg);
             setWordBundle(res.wordBundle);
             setWords(res.words);
         });
         // Game words have changed
         socketRef.current.on('update_words', (res) => {
-            console.log(res.msg);
             setWords(res.words);
         });
         // Game custom words have changed
         socketRef.current.on('update_custom_words', (res) => {
-            console.log(res.msg);
             setCustomWords(res.customWords);
         });
         // Guess has been made
         socketRef.current.on('guess_made', (res) => {
-            console.log(res);
             if (res.data.nextTurn !== null) {
                 setTurn(res.data.nextTurn);
             }
@@ -111,7 +98,9 @@ const useGame = (socketRef, gameId) => {
         });
         // Error has occured
         socketRef.current.on('error', (res) => {
-            console.log(res);
+            console.log('[SVR] Status: ', res.status);
+            console.log(res.error);
+            // send error to a func for display
         });
 
         // Clean up and remove all socket listeners
@@ -142,6 +131,7 @@ const useGame = (socketRef, gameId) => {
         });
     };
 
+    // add check for custom words or word bundle
     const newGame = () => {
         socketRef.current.emit('new_game', {
             gameId: gameId,
@@ -189,14 +179,12 @@ const useGame = (socketRef, gameId) => {
     };
 
     const removeCustomWord = (word) => {
-        console.log('[CUSTOM WORDS] removing word');
         socketRef.current.emit('remove_custom_word', {
             gameId: gameId,
             word: word,
         });
     };
 
-    // could be altered
     const useCustomWords = (customWords) => {
         if (customWords.length === 25) {
             socketRef.current.emit('use_custom_words', {
@@ -205,8 +193,8 @@ const useGame = (socketRef, gameId) => {
         }
     };
 
-    const guess = (word, gameTurn, playerTeam, playerRole) => {
-        if (playerRole === 'agent' && gameTurn === playerTeam && word.guessData.isGuessed === false) {
+    const guess = (word, currentTurn, playerTeam, playerRole) => {
+        if (playerRole === 'agent' && currentTurn === playerTeam && word.guessData.isGuessed === false) {
             socketRef.current.emit('guess', {
                 gameId: gameId,
                 word: word,
@@ -220,8 +208,6 @@ const useGame = (socketRef, gameId) => {
         if (playerTeam === currentTurn) {
             socketRef.current.emit('end_turn', {
                 gameId: gameId,
-                playerTeam: playerTeam,
-                currentTurn: currentTurn,
             });
         }
     };
