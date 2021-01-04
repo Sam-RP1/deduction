@@ -4,7 +4,7 @@
 const mysql = require('mysql2/promise');
 const _ = require('underscore');
 const fs = require('fs');
-const wordGroups = require('../appdata/wordGroups.js');
+const wordGroups = require('./appdata/wordGroups.js');
 require('dotenv').config();
 
 const errorStream = fs.createWriteStream(__dirname + '/logs/error.txt', { flags: 'a+' });

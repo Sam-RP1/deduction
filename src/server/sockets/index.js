@@ -1,4 +1,4 @@
-const { SUCCESS } = require('../config/statusTypes');
+const { SUCCESS } = require('../statusTypes');
 const dbGame = require('../db/game/game.js');
 const dbPlayer = require('../db/game/player.js');
 const dbRoles = require('../db/game/roles.js');

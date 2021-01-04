@@ -86,13 +86,25 @@ module.exports = {
             template: './src/frontend/pages/index.html',
             filename: './index.html',
             excludeChunks: ['server'],
+            publicPath: './',
         }),
         new MiniCssExtractPlugin({
             filename: 'styles/[name].css',
             chunkFilename: '[id].css',
         }),
         new CopyPlugin({
-            patterns: [{ from: './src/server', to: './' }],
+            patterns: [
+                { from: './src/server/appdata', to: '../appdata' },
+                { from: './src/server/db', to: '../db' },
+                { from: './src/server/logs', to: '../logs' },
+                { from: './src/server/routes', to: '../routes' },
+                { from: './src/server/sockets', to: '../sockets' },
+                { from: './src/server/config.js', to: '../config.js' },
+                { from: './src/server/statusTypes.js', to: '../statusTypes.js' },
+                { from: './src/server/server-prod.js', to: '../server.js' },
+                { from: './src/server/package.json', to: '../package.json' },
+                { from: './.env', to: '../' },
+            ],
         }),
     ],
 };

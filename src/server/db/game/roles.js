@@ -1,6 +1,6 @@
 'use strict';
-const { SUCCESS, ERROR } = require('../../config/statusTypes');
-const { sqlPromise, logError } = require('../../config/config');
+const { SUCCESS, ERROR } = require('../../statusTypes');
+const { sqlPromise, logError } = require('../../config');
 
 // Add check for if role == currentrole + maybe use filter
 module.exports.updatePlayerRole = async (gameId, playerId, role) => {

@@ -1,6 +1,6 @@
 'use strict';
-const { SUCCESS, ERROR } = require('../../config/statusTypes');
-const { sqlPromise, logError } = require('../../config/config');
+const { SUCCESS, ERROR } = require('../../statusTypes');
+const { sqlPromise, logError } = require('../../config');
 const _ = require('underscore');
 
 // add if else for fail conditions + could use filter

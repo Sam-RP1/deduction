@@ -34,5 +34,3 @@ http.listen(PORT, () => {
 });
 
 sockets.init(http);
-
-// app.locals.io = io;

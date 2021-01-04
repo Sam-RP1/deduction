@@ -2,8 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const dbGame = require('../../../db/game/game');
-const { SUCCESS, FAIL, EMPTY } = require('../../../config/statusTypes');
-const { getWordBundles } = require('../../../config/config.js');
+const { SUCCESS, FAIL, EMPTY } = require('../../../statusTypes');
+const { getWordBundles } = require('../../../config.js');
 
 const game = express.Router();
 

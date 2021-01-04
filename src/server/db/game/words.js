@@ -1,6 +1,6 @@
 'use strict';
-const { SUCCESS, FAIL, ERROR } = require('../../config/statusTypes');
-const { generateWords, sqlPromise, logError } = require('../../config/config');
+const { SUCCESS, FAIL, ERROR } = require('../../statusTypes');
+const { generateWords, sqlPromise, logError } = require('../../config');
 const { parseGameData } = require('../config');
 const _ = require('underscore');
 

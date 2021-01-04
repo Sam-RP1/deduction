@@ -1,6 +1,6 @@
 'use strict';
-const { SUCCESS, FAIL, ERROR, EXISTS, EMPTY } = require('../../config/statusTypes');
-const { generateWords, sqlPromise, logError } = require('../../config/config');
+const { SUCCESS, FAIL, ERROR, EXISTS, EMPTY } = require('../../statusTypes');
+const { generateWords, sqlPromise, logError } = require('../../config');
 const { parseGameData } = require('../config');
 
 module.exports.checkGameId = async (gameId) => {

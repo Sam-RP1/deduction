@@ -1,6 +1,6 @@
 {
   "name": "deduction-web",
-  "version": "0.1.33a",
+  "version": "0.1.34b",
   "description": "The deduction web game repository",
   "main": "index.js",
   "scripts": {
@@ -31,7 +31,6 @@
   "dependencies": {
     "@babel/runtime": "^7.12.5",
     "express": "^4.17.1",
-    "firebase": "^8.1.1",
     "mysql2": "^2.2.5",
     "prop-types": "^15.7.2",
     "randomstring": "^1.1.5",

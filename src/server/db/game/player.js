@@ -1,6 +1,6 @@
 'use strict';
-const { SUCCESS, ERROR } = require('../../config/statusTypes');
-const { sqlPromise, logError } = require('../../config/config');
+const { SUCCESS, ERROR } = require('../../statusTypes');
+const { sqlPromise, logError } = require('../../config');
 
 module.exports.addPlayer = async (gameId, playerId, playerName) => {
     try {
