@@ -1,6 +1,5 @@
 import * as actionTypes from './actionTypes';
 
-// DONE
 // Create game
 export const submitNewGame = (data) => async (dispatch) => {
     const url = 'http://localhost:4000/api/game';
@@ -75,5 +74,9 @@ export const setScoreAC = (score) => {
 // Leave & Reset
 export const resetGameAC = () => {
     return { type: actionTypes.RESET_GAME };
+};
+// Error
+export const setGameErrorAC = (e) => {
+    return { type: actionTypes.SET_GAME_ERROR, payload: { error: e } };
 };
 //

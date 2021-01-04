@@ -12,6 +12,7 @@ import {
     setCustomWordsAC,
     setScoreAC,
     resetGameAC,
+    setGameErrorAC,
 } from '../store/actions/game';
 import { setTeamAC, setRoleAC, resetPlayerAC } from '../store/actions/player';
 
@@ -36,6 +37,8 @@ const useGame = (socketRef, gameId) => {
     // Leave
     const resetPlayer = useCallback(() => dispatch(resetPlayerAC()), [dispatch]);
     const resetGame = useCallback(() => dispatch(resetGameAC()), [dispatch]);
+    // Error
+    const setGameError = useCallback((e) => dispatch(setGameErrorAC(e)), [dispatch]);
 
     useEffect(() => {
         // New game has been requested
@@ -79,6 +82,7 @@ const useGame = (socketRef, gameId) => {
         socketRef.current.on('update_word_bundle', (res) => {
             setWordBundle(res.wordBundle);
             setWords(res.words);
+            setScore(res.score);
         });
         // Game words have changed
         socketRef.current.on('update_words', (res) => {
@@ -100,7 +104,7 @@ const useGame = (socketRef, gameId) => {
         socketRef.current.on('error', (res) => {
             console.log('[SVR] Status: ', res.status);
             console.log(res.error);
-            // send error to a func for display
+            setGameError(res.error);
         });
 
         // Clean up and remove all socket listeners
@@ -116,6 +120,7 @@ const useGame = (socketRef, gameId) => {
             socketRef.current.removeListener('update_words');
             socketRef.current.removeListener('update_custom_words');
             socketRef.current.removeListener('guess_made');
+            socketRef.current.removeListener('error');
             socketRef.current.emit('leave_game', {
                 gameId: gameId,
             });

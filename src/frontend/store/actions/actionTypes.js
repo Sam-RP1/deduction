@@ -13,6 +13,7 @@ export const SET_WORD_BUNDLE = 'SET_WORD_BUNDLE';
 export const SET_WORDS = 'SET_WORDS';
 export const SET_CUSTOM_WORDS = 'SET_CUSTOM_WORDS';
 export const SET_SCORE = 'SET_SCORE';
+export const SET_GAME_ERROR = 'SET_GAME_ERROR';
 // Player
 export const SET_PLAYER_ID = 'SET_PLAYER_ID';
 export const SET_PLAYER_NAME = 'SET_PLAYER_NAME';

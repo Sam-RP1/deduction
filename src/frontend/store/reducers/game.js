@@ -18,6 +18,7 @@ const initialState = {
     quickGame: false, // Not implemented
     turnTimer: false, // Not implemented
     gameTimer: 0, // Not implemented
+    error: null, // An error recieved from the svr as the result of an action
 };
 
 const generateTeams = (players = []) => {
@@ -105,6 +106,7 @@ const reducer = (state = initialState, action) => {
                 quickGame: false,
                 turnTimer: false,
                 gameTimer: 0,
+                error: null,
             };
         case actionTypes.SET_TEAMS: {
             const { blueTeam, redTeam, unassigned } = generateTeams(action.payload.players);
@@ -148,6 +150,11 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 words: action.payload.words,
+            };
+        case actionTypes.SET_GAME_ERROR:
+            return {
+                ...state,
+                error: action.payload.error,
             };
         default:
             return state;

@@ -110,6 +110,10 @@ input {
     &--mw300px {
         max-width: 300px;
     }
+
+    &--fw100prcnt {
+        min-width: 100%;
+    }
 }
 
 .disable {

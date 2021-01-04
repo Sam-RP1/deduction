@@ -32,6 +32,7 @@ const Game = (props) => {
                         wordsArr={props.wordsArr}
                         guess={props.guess}
                         isGameOver={props.isGameOver}
+                        gameError={props.gameError}
                     />
                     {props.isGameOver !== null && (
                         <div
@@ -44,6 +45,7 @@ const Game = (props) => {
                             <h1>{props.isGameOver} team wins!</h1>
                         </div>
                     )}
+                    {props.gameError}
                 </div>
                 <GameControls
                     newGame={props.newGame}
@@ -96,11 +98,13 @@ Game.propTypes = {
     addCustomWordHandler: PropTypes.func,
     removeCustomWord: PropTypes.func,
     useCustomWords: PropTypes.func,
-    customWordError: PropTypes.string,
+    customWordError: PropTypes.object,
     // Guess
     guess: PropTypes.func,
     // Game over
     isGameOver: PropTypes.string,
+    // Game Error
+    gameError: PropTypes.object,
 };
 
 Game.defaultProps = {};

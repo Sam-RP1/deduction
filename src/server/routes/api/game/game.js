@@ -1,15 +1,11 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const dbGame = require('../../../db/db-game/db-game');
+const dbGame = require('../../../db/game/game');
 const { SUCCESS, FAIL, EMPTY } = require('../../../config/statusTypes');
 const { getWordBundles } = require('../../../config/config.js');
 
 const game = express.Router();
-
-// const io = game.get('socketIO'); dw
-// const io = req.app.locals.io;
-// io.emit('conc', { data: 'data' });
 
 module.exports = game;
 

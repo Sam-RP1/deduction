@@ -29,11 +29,13 @@ const Game = (props) => {
     const wordBundle = useSelector((state) => state.game.wordBundle);
     const wordsArr = useSelector((state) => state.game.words);
     const customWords = useSelector((state) => state.game.customWords);
+    const gameErrorStr = useSelector((state) => state.game.error);
 
     // State
     const [isGameOver, setIsGameOver] = useState(null);
     const [joinCode, setJoinCode] = useState(null);
     const [customWordError, setCustomWordError] = useState(null);
+    const [gameError, setGameError] = useState(null);
 
     // Vars
     const {
@@ -67,6 +69,12 @@ const Game = (props) => {
             setIsGameOver(null);
         }
     }, [score.red, score.blue]);
+
+    useEffect(() => {
+        if (gameErrorStr !== null) {
+            setGameError(generateError([gameErrorStr], 'err-msg--fw100prcnt', setGameError));
+        }
+    }, [gameErrorStr]);
 
     // Functions
     const addCustomWordHandler = (evt) => {
@@ -136,6 +144,7 @@ const Game = (props) => {
             customWordError={customWordError}
             guess={guess}
             isGameOver={isGameOver}
+            gameError={gameError}
         />
     );
 };

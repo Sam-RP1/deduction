@@ -1,13 +1,15 @@
 const { SUCCESS } = require('../config/statusTypes');
-const dbGame = require('../db/db-game/db-game');
+const dbGame = require('../db/game/game.js');
+const dbPlayer = require('../db/game/player.js');
+const dbRoles = require('../db/game/roles.js');
+const dbTeams = require('../db/game/teams.js');
+const dbWords = require('../db/game/words.js');
 const sockets = {};
 
 sockets.init = (server) => {
     const io = require('socket.io')(server);
 
     io.on('connection', (socket) => {
-        console.log('Client connected', socket.id);
-
         // Game
         socket.on('new_game', async (data) => {
             const gameId = data.gameId;
@@ -31,7 +33,7 @@ sockets.init = (server) => {
             const gameId = data.gameId;
             const playerName = data.playerName;
 
-            const result = await dbGame.addPlayer(gameId, socket.id, playerName);
+            const result = await dbPlayer.addPlayer(gameId, socket.id, playerName);
 
             if (result.status === SUCCESS) {
                 socket.join(gameId);
@@ -50,7 +52,7 @@ sockets.init = (server) => {
         socket.on('leave_game', async (data) => {
             const gameId = data.gameId;
 
-            const result = await dbGame.removePlayer(gameId, socket.id);
+            const result = await dbPlayer.removePlayer(gameId, socket.id);
 
             if (result.status === SUCCESS) {
                 socket.leave(gameId);
@@ -70,7 +72,7 @@ sockets.init = (server) => {
             const gameId = data.gameId;
             const selectedTeam = data.selectedTeam;
 
-            const result = await dbGame.updateTeams(gameId, socket.id, selectedTeam);
+            const result = await dbTeams.updateTeams(gameId, socket.id, selectedTeam);
 
             if (result.status === SUCCESS) {
                 socket.emit('update_client_team', {
@@ -91,7 +93,7 @@ sockets.init = (server) => {
         socket.on('randomise_teams', async (data) => {
             const gameId = data.gameId;
 
-            const result = await dbGame.randomiseTeams(gameId);
+            const result = await dbTeams.randomiseTeams(gameId);
 
             if (result.status === SUCCESS) {
                 io.in(gameId).emit('random_teams', {
@@ -110,7 +112,7 @@ sockets.init = (server) => {
             const gameId = data.gameId;
             const selectedRole = data.selectedRole;
 
-            const result = await dbGame.updatePlayerRole(gameId, socket.id, selectedRole);
+            const result = await dbRoles.updatePlayerRole(gameId, socket.id, selectedRole);
 
             if (result.status === SUCCESS) {
                 socket.emit('update_client_role', {
@@ -132,12 +134,13 @@ sockets.init = (server) => {
             const gameId = data.gameId;
             const selectedBundle = data.selectedBundle;
 
-            const result = await dbGame.updateWordBundle(gameId, selectedBundle);
+            const result = await dbWords.updateWordBundle(gameId, selectedBundle);
 
             if (result.status === SUCCESS) {
                 io.in(gameId).emit('update_word_bundle', {
                     wordBundle: result.wordBundle,
                     words: result.words,
+                    score: result.score,
                 });
             } else {
                 socket.emit('error', {
@@ -152,7 +155,7 @@ sockets.init = (server) => {
             const gameId = data.gameId;
             const word = data.word;
 
-            const result = await dbGame.addCustomWord(gameId, word);
+            const result = await dbWords.addCustomWord(gameId, word);
 
             if (result.status === SUCCESS) {
                 io.in(gameId).emit('update_custom_words', {
@@ -171,7 +174,7 @@ sockets.init = (server) => {
             const gameId = data.gameId;
             const word = data.word;
 
-            const result = await dbGame.removeCustomWord(gameId, word);
+            const result = await dbWords.removeCustomWord(gameId, word);
 
             if (result.status === SUCCESS) {
                 io.in(gameId).emit('update_custom_words', {
@@ -189,12 +192,13 @@ sockets.init = (server) => {
         socket.on('use_custom_words', async (data) => {
             const gameId = data.gameId;
 
-            const result = await dbGame.useCustomWords(gameId);
+            const result = await dbWords.useCustomWords(gameId);
 
             if (result.status === SUCCESS) {
                 io.in(gameId).emit('update_word_bundle', {
                     bundle: result.bundle,
                     words: result.words,
+                    score: result.score,
                 });
             } else {
                 socket.emit('error', {
@@ -244,11 +248,25 @@ sockets.init = (server) => {
             }
         });
 
-        // Still needs completing
-        socket.on('disconnect', () => {
-            // create a clean up function so that if someone leaves via browser close they are removed from any game rooms they were in and their db precense is wiped and then those games are updated accordingly
-            console.log('Client disconnected', socket.id);
+        // Client disconnecting
+        socket.on('disconnecting', async () => {
+            const playerId = socket.id;
+            const games = Array.from(socket.rooms);
+
+            games.splice(0, 1);
+
+            for (let i = 0; i < games.length; i++) {
+                const gameId = games[i];
+
+                const result = await dbPlayer.removePlayer(gameId, playerId);
+
+                io.in(gameId).emit('update_teams', {
+                    players: result.players,
+                });
+            }
         });
+
+        socket.on('disconnect', () => {});
     });
 };
 

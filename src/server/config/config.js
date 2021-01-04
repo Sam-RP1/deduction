@@ -17,7 +17,7 @@ const dbData = {
 };
 
 module.exports.logError = (e) => {
-    const newEntry = new Data().toISOString() + ': ' + e + '\n';
+    const newEntry = new Date().toISOString() + ': ' + e + '\n';
     errorStream.write(newEntry);
 };
 
