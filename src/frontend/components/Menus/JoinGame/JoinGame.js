@@ -71,13 +71,9 @@ JoinGame.propTypes = {
     gameNameError: PropTypes.element,
     gamePasswordError: PropTypes.element,
     playerNameError: PropTypes.element,
-    submitHandler: PropTypes.func.isRequired,
+    submitHandler: PropTypes.func,
 };
 
-JoinGame.defaultProps = {
-    submitHandler: () => {
-        console.log('[JOIN BTN] submitHandler err');
-    },
-};
+JoinGame.defaultProps = {};
 
 export default JoinGame;

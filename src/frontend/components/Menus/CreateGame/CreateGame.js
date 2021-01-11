@@ -60,13 +60,9 @@ CreateGame.propTypes = {
     gameNameError: PropTypes.element,
     gamePasswordError: PropTypes.element,
     playerNameError: PropTypes.element,
-    submitHandler: PropTypes.func.isRequired,
+    submitHandler: PropTypes.func,
 };
 
-CreateGame.defaultProps = {
-    submitHandler: () => {
-        console.log('[SUBMIT BTN] submitHandler err');
-    },
-};
+CreateGame.defaultProps = {};
 
 export default CreateGame;

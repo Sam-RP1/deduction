@@ -14,7 +14,6 @@ import useError from '../../hooks/useError';
 
 // Container Component
 const JoinGame = () => {
-    console.log('[JOIN GAME CONTAINER RENDER] ' + Date.now());
     // Redux Actions
     const dispatch = useDispatch();
     const joinGameRA = useCallback((data) => dispatch(joinGame(data)), [dispatch]);

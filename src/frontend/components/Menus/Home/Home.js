@@ -15,7 +15,7 @@ const Home = (props) => {
             <Title title='Deduction' />
             <div className='home__content'>
                 {props.buttons.map((btn, i) => {
-                    return <NavButton key={i} title={btn.title} route={btn.route} function={btn.function} />;
+                    return <NavButton key={i} title={btn.title} route={btn.route} />;
                 })}
             </div>
         </section>
@@ -23,11 +23,9 @@ const Home = (props) => {
 };
 
 Home.propTypes = {
-    buttons: PropTypes.array.isRequired,
+    buttons: PropTypes.array,
 };
 
-Home.defaultProps = {
-    buttons: [{ title: 'Error', route: '/', function: () => console.log('[HOME BTN] error') }],
-};
+Home.defaultProps = {};
 
 export default Home;

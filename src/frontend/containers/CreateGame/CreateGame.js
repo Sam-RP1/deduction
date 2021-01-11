@@ -14,7 +14,6 @@ import useError from '../../hooks/useError';
 
 // Container Component
 const CreateGame = () => {
-    console.log('[CREATE GAME CONTAINER RENDER] ' + Date.now());
     // Redux Actions
     const dispatch = useDispatch();
     const submitNewGameRA = useCallback((data) => dispatch(submitNewGame(data)), [dispatch]);

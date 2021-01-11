@@ -9,7 +9,6 @@ import Home from './containers/Home/Home';
 import CreateGame from './containers/CreateGame/CreateGame';
 import JoinGame from './containers/JoinGame/JoinGame';
 import Game from './containers/Game/Game';
-import Settings from './components/Settings/Settings'; // eslint-disable-line
 
 import Footer from './components/Footer/Footer';
 
@@ -52,7 +51,6 @@ const App = () => {
                         <Route path='/creategame' component={CreateGame} />
                         <Route path='/' exact component={Home} />
                     </Container>
-                    <Settings />
                     <Footer themeToggle={() => toggleTheme()} />
                 </div>
             </BrowserRouter>

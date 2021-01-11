@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 
@@ -11,7 +11,6 @@ import useError from '../../hooks/useError';
 
 // Container Component
 const Game = (props) => {
-    console.log('[GAME CONTAINER RENDER] ' + Date.now());
     // Redux Selectors
     // Player
     const playerName = useSelector((state) => state.player.name);
@@ -60,7 +59,6 @@ const Game = (props) => {
     }, [gameId, gamePassword]);
 
     useEffect(() => {
-        console.log(score);
         if (score.blue === 0) {
             setIsGameOver('blue');
         } else if (score.red === 0) {
@@ -77,7 +75,7 @@ const Game = (props) => {
     }, [gameErrorStr]);
 
     // Functions
-    const addCustomWordHandler = (evt) => {
+    const addCustomWordHandler = useCallback((evt) => {
         const enteredString = evt.target.value;
         const pattern = new RegExp('[^A-Za-z0-9]');
         const exists = customWords.indexOf(enteredString);
@@ -115,7 +113,7 @@ const Game = (props) => {
             }
             setCustomWordError(generateError(errors, null, setCustomWordError));
         }
-    };
+    }, []);
 
     // Render
     return (

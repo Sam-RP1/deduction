@@ -6,13 +6,7 @@ import '../Button.scss';
 
 const NavButton = (props) => {
     return (
-        <NavLink
-            to={props.route}
-            exact={true}
-            onClick={() => {
-                props.function();
-            }}
-        >
+        <NavLink to={props.route} exact={true}>
             <button className={'btn ' + props.opClasses}>{props.title}</button>
         </NavLink>
     );
@@ -21,14 +15,12 @@ const NavButton = (props) => {
 NavButton.propTypes = {
     title: PropTypes.string.isRequired,
     route: PropTypes.string.isRequired,
-    function: PropTypes.func.isRequired,
     opClasses: PropTypes.string,
 };
 
 NavButton.defaultProps = {
     title: 'UNDEFINED',
-    route: '/undefined',
-    function: () => console.log('[BUTTON] undefined button function'),
+    route: '/',
     opClasses: '',
 };
 
