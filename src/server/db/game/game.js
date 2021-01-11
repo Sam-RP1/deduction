@@ -3,16 +3,31 @@ const { SUCCESS, FAIL, ERROR, EXISTS, EMPTY } = require('../../statusTypes');
 const { generateWords, sqlPromise, logError } = require('../../config');
 const { parseGameData } = require('../config');
 
+module.exports.checkNumGames = async () => {
+    try {
+        const sql = await sqlPromise;
+        const maxNumGames = 500;
+        const [games] = await sql.query(sql.format('select game_id from game_instances'));
+
+        const ans = games.length < maxNumGames ? { status: SUCCESS } : { status: FAIL };
+
+        return ans;
+    } catch (e) {
+        logError(e);
+        return { status: ERROR, error: e };
+    }
+};
+
 module.exports.checkGameId = async (gameId) => {
     try {
         const sql = await sqlPromise;
-
         const [result] = await sql.query(sql.format('select * from game_instances where game_id = ?', [gameId]));
 
         const ans = result.length > 0 ? { status: EXISTS } : { status: EMPTY };
 
         return ans;
     } catch (e) {
+        logError(e);
         return { status: ERROR, error: e };
     }
 };
@@ -56,6 +71,7 @@ module.exports.createGame = async (gameData) => {
             };
         }
     } catch (e) {
+        logError(e);
         return { status: ERROR, error: e };
     }
 };
@@ -82,6 +98,7 @@ module.exports.getGame = async (gameId, gamePassword) => {
             };
         }
     } catch (e) {
+        logError(e);
         return { status: ERROR, error: e };
     }
 };
@@ -135,7 +152,7 @@ module.exports.updateGuess = async (gameId, word, playerTeam, playerRole, isGues
     try {
         const sql = await sqlPromise;
         const [gameData] = await sql.query(sql.format('select * from game_instances where game_id = ?', [gameId]));
-        const parsedData = parseGameData(gameData[0]);
+        const parsedData = await parseGameData(gameData[0]);
 
         if (playerTeam === parsedData.turn && playerRole === 'agent' && isGuessed === false) {
             const words = parsedData.words;
@@ -164,21 +181,21 @@ module.exports.updateGuess = async (gameId, word, playerTeam, playerRole, isGues
 
             const wordsStr = JSON.stringify(words);
             const scoreStr = JSON.stringify(score);
+            const lastQuery = Date.now();
 
             if (nextTurn !== null) {
                 await sql.query(
-                    sql.format('update game_instances set words = ?, score = ?, turn = ? where game_id = ?', [
-                        wordsStr,
-                        scoreStr,
-                        nextTurn,
-                        gameId,
-                    ])
+                    sql.format(
+                        'update game_instances set words = ?, score = ?, turn = ?, last_query = ? where game_id = ?',
+                        [wordsStr, scoreStr, nextTurn, lastQuery, gameId]
+                    )
                 );
             } else {
                 await sql.query(
-                    sql.format('update game_instances set words = ?, score = ? where game_id = ?', [
+                    sql.format('update game_instances set words = ?, score = ?, last_query = ? where game_id = ?', [
                         wordsStr,
                         scoreStr,
+                        lastQuery,
                         gameId,
                     ])
                 );
@@ -203,10 +220,16 @@ module.exports.updateTurn = async (gameId) => {
         const sql = await sqlPromise;
         const [turn] = await sql.query(sql.format('select turn from game_instances where game_id = ?', [gameId]));
         const currentTurn = turn[0].turn;
-
         const nextTurn = currentTurn === 'blue' ? 'red' : 'blue';
+        const lastQuery = Date.now();
 
-        await sql.query(sql.format('update game_instances set turn = ? where game_id = ?', [nextTurn, gameId]));
+        await sql.query(
+            sql.format('update game_instances set turn = ?, last_query = ? where game_id = ?', [
+                nextTurn,
+                lastQuery,
+                gameId,
+            ])
+        );
 
         return { status: SUCCESS, nextTurn: nextTurn };
     } catch (e) {
@@ -214,6 +237,29 @@ module.exports.updateTurn = async (gameId) => {
         return {
             status: ERROR,
             error: 'Could not update the games turn.',
+        };
+    }
+};
+
+module.exports.prune = async () => {
+    try {
+        const sql = await sqlPromise;
+        const [allGames] = await sql.query(sql.format('select game_id, last_query from game_instances'));
+
+        const lastHour = Date.now() - 3600000;
+
+        for (let i = 0; i < allGames.length; i++) {
+            if (allGames[i].last_query < lastHour) {
+                await sql.query(sql.format('delete from game_instances where game_id = ?', [allGames[i].game_id]));
+            }
+        }
+
+        return { status: SUCCESS };
+    } catch (e) {
+        logError(e);
+        return {
+            status: ERROR,
+            error: 'Could not prune game instances.',
         };
     }
 };

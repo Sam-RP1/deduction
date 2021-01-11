@@ -17,9 +17,14 @@ module.exports.updatePlayerRole = async (gameId, playerId, role) => {
         }
 
         const updatedPlayerStr = JSON.stringify(playerArr);
+        const lastQuery = Date.now();
 
         await sql.query(
-            sql.format('update game_instances set players = ? where game_id = ?', [updatedPlayerStr, gameId])
+            sql.format('update game_instances set players = ?, last_query = ? where game_id = ?', [
+                updatedPlayerStr,
+                lastQuery,
+                gameId,
+            ])
         );
 
         return { status: SUCCESS, players: playerArr };

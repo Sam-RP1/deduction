@@ -20,9 +20,14 @@ module.exports.addPlayer = async (gameId, playerId, playerName) => {
 
         const updatedPlayerArr = playerArr.concat(newPlayer);
         const updatedPlayerStr = JSON.stringify(updatedPlayerArr);
+        const lastQuery = Date.now();
 
         await sql.query(
-            sql.format('update game_instances set players = ? where game_id = ?', [updatedPlayerStr, gameId])
+            sql.format('update game_instances set players = ?, last_query = ? where game_id = ?', [
+                updatedPlayerStr,
+                lastQuery,
+                gameId,
+            ])
         );
 
         return { status: SUCCESS, players: updatedPlayerArr };
@@ -50,9 +55,14 @@ module.exports.removePlayer = async (gameId, playerId) => {
         }
 
         const updatedPlayerStr = JSON.stringify(playerArr);
+        const lastQuery = Date.now();
 
         await sql.query(
-            sql.format('update game_instances set players = ? where game_id = ?', [updatedPlayerStr, gameId])
+            sql.format('update game_instances set players = ?, last_query = ? where game_id = ?', [
+                updatedPlayerStr,
+                lastQuery,
+                gameId,
+            ])
         );
 
         return { status: SUCCESS, players: playerArr };

@@ -18,9 +18,14 @@ module.exports.updateTeams = async (gameId, playerId, team) => {
         }
 
         const updatedPlayerStr = JSON.stringify(playerArr);
+        const lastQuery = Date.now();
 
         await sql.query(
-            sql.format('update game_instances set players = ? where game_id = ?', [updatedPlayerStr, gameId])
+            sql.format('update game_instances set players = ?, last_query = ? where game_id = ?', [
+                updatedPlayerStr,
+                lastQuery,
+                gameId,
+            ])
         );
 
         return { status: SUCCESS, players: playerArr };
@@ -56,9 +61,14 @@ module.exports.randomiseTeams = async (gameId) => {
         }
 
         const updatedPlayerStr = JSON.stringify(shuffledPlayers);
+        const lastQuery = Date.now();
 
         await sql.query(
-            sql.format('update game_instances set players = ? where game_id = ?', [updatedPlayerStr, gameId])
+            sql.format('update game_instances set players = ?, last_query = ? where game_id = ?', [
+                updatedPlayerStr,
+                lastQuery,
+                gameId,
+            ])
         );
 
         return { status: SUCCESS, players: shuffledPlayers };

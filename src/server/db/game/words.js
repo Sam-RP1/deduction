@@ -12,14 +12,13 @@ module.exports.updateWordBundle = async (gameId, bundleId) => {
 
         const score = { blue: 8, red: 9 };
         const scoreStr = JSON.stringify(score);
+        const lastQuery = Date.now();
 
         await sql.query(
-            sql.format('update game_instances set word_group = ?, words = ?, score = ? where game_id = ?', [
-                bundleId,
-                wordsStr,
-                scoreStr,
-                gameId,
-            ])
+            sql.format(
+                'update game_instances set word_group = ?, words = ?, score = ?, last_query = ? where game_id = ?',
+                [bundleId, wordsStr, scoreStr, lastQuery, gameId]
+            )
         );
 
         return { status: SUCCESS, wordBundle: bundleId, words: words, score: score };
@@ -39,9 +38,14 @@ module.exports.addCustomWord = async (gameId, word) => {
 
         customWords.push(word);
         const customWordsStr = JSON.stringify(customWords);
+        const lastQuery = Date.now();
 
         await sql.query(
-            sql.format('update game_instances set custom_words = ? where game_id = ?', [customWordsStr, gameId])
+            sql.format('update game_instances set custom_words = ?, last_query = ? where game_id = ?', [
+                customWordsStr,
+                lastQuery,
+                gameId,
+            ])
         );
 
         return { status: SUCCESS, customWords: customWords };
@@ -68,9 +72,14 @@ module.exports.removeCustomWord = async (gameId, word) => {
         }
 
         const customWordsStr = JSON.stringify(customWords);
+        const lastQuery = Date.now();
 
         await sql.query(
-            sql.format('update game_instances set custom_words = ? where game_id = ?', [customWordsStr, gameId])
+            sql.format('update game_instances set custom_words = ?, last_query = ? where game_id = ?', [
+                customWordsStr,
+                lastQuery,
+                gameId,
+            ])
         );
 
         return { status: SUCCESS, customWords: customWords };
@@ -92,14 +101,13 @@ module.exports.useCustomWords = async (gameId) => {
             const wordsStr = JSON.stringify(words);
             const score = { blue: 8, red: 9 };
             const scoreStr = JSON.stringify(score);
+            const lastQuery = Date.now();
 
             await sql.query(
-                sql.format('update game_instances set words = ?, word_group = ?, score = ? where game_id = ?', [
-                    wordsStr,
-                    '',
-                    scoreStr,
-                    gameId,
-                ])
+                sql.format(
+                    'update game_instances set words = ?, word_group = ?, score = ?, last_query = ? where game_id = ?',
+                    [wordsStr, '', scoreStr, lastQuery, gameId]
+                )
             );
 
             return { status: SUCCESS, bundle: '', words: words, score: score };
