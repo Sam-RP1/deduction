@@ -1,4 +1,4 @@
-module.exports.parseGameData = (gameData) => {
+module.exports.parseGameData = async (gameData) => {
     gameData.quick_game = gameData.quick_game === 1 ? true : false;
     gameData.turn_timer = gameData.turn_timer === 1 ? true : false;
 
