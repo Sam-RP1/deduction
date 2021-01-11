@@ -80,7 +80,7 @@ const useGame = (socketRef, gameId) => {
         });
         // Player(s) have changed word bundle
         socketRef.current.on('update_word_bundle', (res) => {
-            setWordBundle(res.wordBundle);
+            res.wordBundle === undefined ? setWordBundle('') : setWordBundle(res.wordBundle);
             setWords(res.words);
             setScore(res.score);
         });
@@ -129,76 +129,76 @@ const useGame = (socketRef, gameId) => {
         };
     }, []);
 
-    const joinGame = (gameId, playerName) => {
+    const joinGame = useCallback((gameId, playerName) => {
         socketRef.current.emit('join_game', {
             gameId: gameId,
             playerName: playerName,
         });
-    };
+    }, []);
 
     // add check for custom words or word bundle
-    const newGame = () => {
+    const newGame = useCallback(() => {
         socketRef.current.emit('new_game', {
             gameId: gameId,
         });
-    };
+    }, []);
 
-    const selectTeam = (selectedTeam, playerTeam) => {
+    const selectTeam = useCallback((selectedTeam, playerTeam) => {
         if (selectedTeam !== playerTeam) {
             socketRef.current.emit('select_team', {
                 gameId: gameId,
                 selectedTeam: selectedTeam,
             });
         }
-    };
+    }, []);
 
-    const randomiseTeams = () => {
+    const randomiseTeams = useCallback(() => {
         socketRef.current.emit('randomise_teams', {
             gameId: gameId,
         });
-    };
+    }, []);
 
-    const selectRole = (selectedRole, playerRole) => {
+    const selectRole = useCallback((selectedRole, playerRole) => {
         if (selectedRole !== playerRole) {
             socketRef.current.emit('select_role', {
                 gameId: gameId,
                 selectedRole: selectedRole,
             });
         }
-    };
+    }, []);
 
-    const selectWordBundle = (selectedBundle, currentBundle) => {
+    const selectWordBundle = useCallback((selectedBundle, currentBundle) => {
         if (selectedBundle !== currentBundle) {
             socketRef.current.emit('select_word_bundle', {
                 gameId: gameId,
                 selectedBundle: selectedBundle,
             });
         }
-    };
+    }, []);
 
-    const addCustomWord = (word) => {
+    const addCustomWord = useCallback((word) => {
         socketRef.current.emit('add_custom_word', {
             gameId: gameId,
             word: word,
         });
-    };
+    }, []);
 
-    const removeCustomWord = (word) => {
+    const removeCustomWord = useCallback((word) => {
         socketRef.current.emit('remove_custom_word', {
             gameId: gameId,
             word: word,
         });
-    };
+    }, []);
 
-    const useCustomWords = (customWords) => {
+    const useCustomWords = useCallback((customWords) => {
         if (customWords.length === 25) {
             socketRef.current.emit('use_custom_words', {
                 gameId: gameId,
             });
         }
-    };
+    }, []);
 
-    const guess = (word, currentTurn, playerTeam, playerRole) => {
+    const guess = useCallback((word, currentTurn, playerTeam, playerRole) => {
         if (playerRole === 'agent' && currentTurn === playerTeam && word.guessData.isGuessed === false) {
             socketRef.current.emit('guess', {
                 gameId: gameId,
@@ -207,15 +207,15 @@ const useGame = (socketRef, gameId) => {
                 playerRole: playerRole,
             });
         }
-    };
+    }, []);
 
-    const endTurn = (playerTeam, currentTurn) => {
+    const endTurn = useCallback((playerTeam, currentTurn) => {
         if (playerTeam === currentTurn) {
             socketRef.current.emit('end_turn', {
                 gameId: gameId,
             });
         }
-    };
+    }, []);
 
     return {
         joinGame,
