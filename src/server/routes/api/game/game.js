@@ -37,27 +37,37 @@ game.post('/', async (req, res) => {
         const gameId = req.body.gameId;
         const gamePassword = req.body.gamePassword;
 
-        const result = await dbGame.checkGameId(gameId);
-        console.log('CHECKING ID RES: ', result);
-        if (result.status === EMPTY) {
-            const newGame = {
-                gameId: gameId,
-                gamePassword: gamePassword,
-            };
+        const isAllowed = await dbGame.checkNumGames();
 
-            const game = await dbGame.createGame(newGame);
+        if (isAllowed.status === SUCCESS) {
+            const result = await dbGame.checkGameId(gameId);
 
-            if (game.status === SUCCESS) {
-                const bundles = getWordBundles();
-                game.data.wordGroups = bundles;
-                res.status(201).json({ status: SUCCESS, data: game.data });
+            if (result.status === EMPTY) {
+                const newGame = {
+                    gameId: gameId,
+                    gamePassword: gamePassword,
+                };
+
+                const game = await dbGame.createGame(newGame);
+
+                if (game.status === SUCCESS) {
+                    const bundles = getWordBundles();
+                    game.data.wordGroups = bundles;
+                    res.status(201).json({ status: SUCCESS, data: game.data });
+                } else {
+                    res.status(500).json({ status: FAIL, msg: game.msg });
+                }
             } else {
-                res.status(500).json({ status: FAIL, msg: game.msg });
+                res.status(409).json({
+                    status: FAIL,
+                    msg: 'A game with that name already exists, please try another name.',
+                });
             }
         } else {
             res.status(409).json({
                 status: FAIL,
-                msg: 'A game with that name already exists, please try another name',
+                msg:
+                    'Sorry! Unfortunately there are too many games underway right now. Please try again later. New game slots should become available at the start of every hour.',
             });
         }
     } catch (e) {
