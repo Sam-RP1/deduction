@@ -16,7 +16,6 @@
         height: 50px;
     }
 
-    &__settings,
     &__info {
         &--row {
             display: flex;
@@ -51,7 +50,14 @@
     }
 
     &__settings {
+        display: flex;
+        justify-content: flex-end;
         color: base.$primary-white;
+
+        p {
+            font-size: 1.1em;
+            margin: 0px;
+        }
 
         &__toggle-switch-wrapper {
             display: flex;
@@ -61,15 +67,6 @@
 
             p {
                 margin-right: 10px;
-            }
-        }
-
-        .fa-cog {
-            font-size: 1.5em;
-            cursor: pointer;
-            @include transition(0.3s);
-            &:hover {
-                @include transform(rotate(120deg));
             }
         }
     }

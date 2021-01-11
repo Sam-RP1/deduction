@@ -13,10 +13,6 @@ const Footer = (props) => {
                     <p>Toggle Light Mode</p>
                     <ToggleSwitch function={props.themeToggle} />
                 </div>
-                <i
-                    className='fas fa-cog'
-                    onClick={() => (document.querySelector('.settings').style.display = 'flex')}
-                ></i>
             </div>
 
             <div className='footer__info footer__info--row'>
