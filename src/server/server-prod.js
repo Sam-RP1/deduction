@@ -7,6 +7,8 @@ const sockets = require('./sockets/index.js');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const path = require('path');
+const schedule = require('node-schedule');
+const { prune } = require('./db/game/game');
 
 app.use(cors({ origin: true }));
 app.use(bodyParser.json());
@@ -25,3 +27,7 @@ http.listen(PORT, () => {
 });
 
 sockets.init(http);
+
+const stageChecker = schedule.scheduleJob('30 * * * *', function () {
+    prune();
+});

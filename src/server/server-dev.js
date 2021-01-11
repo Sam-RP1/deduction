@@ -9,6 +9,8 @@ const webpack = require('webpack');
 const webpackDevMiddleware = require('webpack-dev-middleware');
 const webpackHotMiddleware = require('webpack-hot-middleware');
 const config = require('../../webpack.dev.config.js');
+const schedule = require('node-schedule');
+const { prune } = require('./db/game/game');
 
 const compiler = webpack(config);
 
@@ -34,3 +36,7 @@ http.listen(PORT, () => {
 });
 
 sockets.init(http);
+
+const stageChecker = schedule.scheduleJob('48 * * * *', function () {
+    prune();
+});
