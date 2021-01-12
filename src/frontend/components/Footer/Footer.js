@@ -23,7 +23,7 @@ const Footer = (props) => {
                     </a>
                 </p>
                 <p>
-                    <a href=''>
+                    <a target='_blank' rel='noreferrer' href='https://www.buymeacoffee.com/samrp'>
                         <u>Donate here</u>
                     </a>
                 </p>
