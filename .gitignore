@@ -1,8 +1,6 @@
-/example
 /node_modules
 /build
 notes.md
+links.md
 .env
 /src/frontend/config
-firestore.indexes.json
-firestore.rules
