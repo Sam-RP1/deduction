@@ -9,6 +9,10 @@ const Footer = (props) => {
     return (
         <footer className='footer'>
             <div className='footer__settings footer__settings--row'>
+                <div className='footer__settings__rules-wrapper'>
+                    <p>Rules</p>
+                    <i className='far fa-question-circle'></i>
+                </div>
                 <div className='footer__settings__toggle-switch-wrapper'>
                     <p>Toggle Light Mode</p>
                     <ToggleSwitch function={props.themeToggle} />
@@ -18,15 +22,21 @@ const Footer = (props) => {
             <div className='footer__info footer__info--row'>
                 <p>
                     Developed by{' '}
-                    <a href='http://srenshawpanting.co.uk/'>
-                        <u>SRP Designs</u>
+                    <a target='_blank' rel='noreferrer' href='http://srenshawpanting.co.uk/'>
+                        <u>Sam R-P</u>
                     </a>
                 </p>
                 <p>
                     <a target='_blank' rel='noreferrer' href='https://www.buymeacoffee.com/samrp'>
-                        <u>Donate here</u>
+                        <u>Support Sam</u>
                     </a>
                 </p>
+            </div>
+
+            <div className=''>
+                <h1>Rules</h1>
+
+                <p>Deduction...</p>
             </div>
         </footer>
     );

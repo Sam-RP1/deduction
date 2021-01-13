@@ -1,7 +1,7 @@
 {
   "name": "deduction-web",
-  "version": "1.0.0",
-  "description": "The deduction web game repository",
+  "version": "1.0.1",
+  "description": "The deduction game repository",
   "main": "index.js",
   "scripts": {
     "test": "jest",
@@ -30,6 +30,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.12.5",
+    "clipboard-copy": "^4.0.1",
     "express": "^4.17.1",
     "mysql2": "^2.2.5",
     "node-schedule": "^1.3.2",

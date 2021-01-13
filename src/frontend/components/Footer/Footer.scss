@@ -16,7 +16,8 @@
         height: 50px;
     }
 
-    &__info {
+    &__info,
+    &__settings {
         &--row {
             display: flex;
             flex-direction: row;
@@ -50,16 +51,10 @@
     }
 
     &__settings {
-        display: flex;
-        justify-content: flex-end;
         color: base.$primary-white;
 
-        p {
-            font-size: 1.1em;
-            margin: 0px;
-        }
-
-        &__toggle-switch-wrapper {
+        &__toggle-switch-wrapper,
+        &__rules-wrapper {
             display: flex;
             flex-direction: row;
             justify-content: space-between;
@@ -67,6 +62,14 @@
 
             p {
                 margin-right: 10px;
+            }
+        }
+
+        &__rules-wrapper {
+            cursor: pointer;
+
+            i {
+                font-size: 1.1rem;
             }
         }
     }

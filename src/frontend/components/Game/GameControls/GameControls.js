@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
+import copy from 'clipboard-copy';
 
 // Imports
 import Button from '../../UI/Buttons/Button/Button';
@@ -10,7 +11,7 @@ import './GameControls.scss';
 // Presentational Component
 const GameControls = (props) => {
     const copyJoinCode = async () => {
-        await navigator.clipboard.writeText(props.joinCode);
+        await copy(props.joinCode);
     };
 
     return useMemo(() => {
