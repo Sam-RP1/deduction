@@ -3,15 +3,19 @@ import PropTypes from 'prop-types';
 
 import ToggleSwitch from '../UI/ToggleSwitch/ToggleSwitch';
 
+import Rules from './Rules';
+
 import './Footer.scss';
 
 const Footer = (props) => {
     return (
         <footer className='footer'>
+            <Rules />
+
             <div className='footer__settings footer__settings--row'>
                 <div className='footer__settings__rules-wrapper'>
-                    <p>Rules</p>
-                    <i className='far fa-question-circle'></i>
+                    <p>Rules & Help</p>
+                    <i className='fas fa-question-circle'></i>
                 </div>
                 <div className='footer__settings__toggle-switch-wrapper'>
                     <p>Toggle Light Mode</p>
@@ -31,12 +35,6 @@ const Footer = (props) => {
                         <u>Support Sam</u>
                     </a>
                 </p>
-            </div>
-
-            <div className=''>
-                <h1>Rules</h1>
-
-                <p>Deduction...</p>
             </div>
         </footer>
     );
