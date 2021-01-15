@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 // Imports
-import LoadingIndicator from '../../UI/LoadingIndicator/LoadingIndicator';
+import Loading from '../../UI/Indicators/Loading/Loading';
 import Title from '../../UI/Title/Title';
 import Button from '../../UI/Buttons/Button/Button';
 
@@ -15,7 +15,7 @@ const JoinGame = (props) => {
         <section className='join-game'>
             <Title title='Deduction' />
             {props.isLoading ? (
-                <LoadingIndicator />
+                <Loading />
             ) : (
                 <>
                     <div className='join-game__content'>
