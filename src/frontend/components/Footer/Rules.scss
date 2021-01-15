@@ -1,0 +1,90 @@
+@use '../../styles/base';
+@import '../../styles/partials/color-themes';
+@import '../../styles/mixins/transition';
+@import '../../styles/mixins/transform';
+@import '../../styles/mixins/userSelect';
+
+.rules {
+    position: relative;
+    top: -500px;
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    width: 100%;
+    border-radius: 5px;
+    box-shadow: base.$box--shadow--alt;
+
+    @include themed() {
+        color: t($text);
+        background-color: t($bg-alt);
+    }
+    @include transition-theme(color 0.3s ease, background-color 0.3s ease, height 0.25s ease);
+
+    &__tab {
+        overflow: hidden;
+        &:first-child {
+            border-radius: 5px 5px 0px 0px;
+        }
+        &:last-child {
+            border-radius: 0px 0px 5px 5px;
+        }
+
+        &__title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-top: 1px solid;
+            border-bottom: 1px solid;
+            box-sizing: border-box;
+            padding: 10px;
+            cursor: pointer;
+
+            h1 {
+                margin: 0px;
+                font-size: 2rem;
+            }
+
+            h1,
+            .chevron {
+                pointer-events: none;
+                @include userSelect(none);
+            }
+
+            @include themed() {
+                color: t($text);
+                background-color: t($btn);
+                border-color: t($bg);
+            }
+            @include transition-theme(color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease);
+        }
+
+        &__content {
+            display: flex;
+            height: 0px;
+            width: 100%;
+            overflow: hidden;
+
+            @include themed() {
+                border-color: t($bg);
+                background-color: t($bg-alt);
+            }
+            @include transition(height 0.3s ease, background-color 0.3s ease);
+
+            p {
+                font-size: 1.1rem;
+                margin: 0px;
+                box-sizing: border-box;
+                padding: 10px;
+            }
+        }
+    }
+}
+
+// X
+// &:nth-child(1) {
+//     @include transform(rotate(44deg) translate(-3px, 7px));
+// }
+
+// &:nth-child(2) {
+//     @include transform(rotate(136deg) translate(4px, 6px));
+// }
