@@ -1,0 +1,50 @@
+@use '../../../../styles/base';
+@import '../../../../styles/partials/color-themes';
+@import '../../../../styles/mixins/transition';
+@import '../../../../styles/mixins/transform';
+
+.chevron {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    width: auto;
+    cursor: pointer;
+
+    div {
+        position: relative;
+        display: block;
+        height: 4px;
+        width: 21px;
+        border-radius: 5px;
+        pointer-events: none;
+        @include themed() {
+            background-color: t($text);
+        }
+        @include transition-theme(background-color 0.3s ease, transform 0.3s ease);
+
+        &:nth-child(1) {
+            left: 4px;
+            @include transform(rotate(40deg));
+        }
+
+        &:nth-child(2) {
+            right: 4px;
+            @include transform(rotate(-40deg));
+        }
+    }
+}
+
+.active,
+[data-collapsed='false'] {
+    .chevron {
+        div {
+            &:nth-child(1) {
+                @include transform(rotate(320deg));
+            }
+
+            &:nth-child(2) {
+                @include transform(rotate(-320deg));
+            }
+        }
+    }
+}
