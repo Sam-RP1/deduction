@@ -35,25 +35,29 @@ const Help = () => {
     return useMemo(() => {
         return (
             <section className='help'>
-                <div className='help__menu'>
-                    <div className='help__tab' data-collapsed='true'>
-                        <div id='deduction-info' className='help__tab__title' onClick={(evt) => toggleTab(evt)}>
+                <div className='help__modal'>
+                    <div className='help__modal__tab' data-collapsed='true'>
+                        <div id='deduction-info' className='help__modal__tab__title' onClick={(evt) => toggleTab(evt)}>
                             <h1>Deduction</h1>
                             <Chevron />
                         </div>
-                        <div className='help__tab__content'>
+                        <div className='help__modal__tab__content'>
                             <p>
                                 Deduction is a game where players are split into two teams, red and blue, and face off
                                 against each other in an attempt to get their teams score down to 0 first!
                             </p>
                         </div>
                     </div>
-                    <div className='help__tab' data-collapsed='true'>
-                        <div id='deduction-basics' className='help__tab__title' onClick={(evt) => toggleTab(evt)}>
+                    <div className='help__modal__tab' data-collapsed='true'>
+                        <div
+                            id='deduction-basics'
+                            className='help__modal__tab__title'
+                            onClick={(evt) => toggleTab(evt)}
+                        >
                             <h1>Basics</h1>
                             <Chevron />
                         </div>
-                        <div className='help__tab__content'>
+                        <div className='help__modal__tab__content'>
                             <ul>
                                 <li>Deduction requires at least 4 players to be played properly.</li>
                                 <li>
@@ -73,12 +77,12 @@ const Help = () => {
                             </ul>
                         </div>
                     </div>
-                    <div className='help__tab' data-collapsed='true'>
-                        <div id='deduction-roles' className='help__tab__title' onClick={(evt) => toggleTab(evt)}>
+                    <div className='help__modal__tab' data-collapsed='true'>
+                        <div id='deduction-roles' className='help__modal__tab__title' onClick={(evt) => toggleTab(evt)}>
                             <h1>Roles</h1>
                             <Chevron />
                         </div>
-                        <div className='help__tab__content'>
+                        <div className='help__modal__tab__content'>
                             <p>
                                 In Deduction, players can either be an &apos;insider&apos; or an &apos;agent&apos;.
                                 Please note that each team must have at least 1 &apos;insider&apos; and at least 1
@@ -109,12 +113,16 @@ const Help = () => {
                             </p>
                         </div>
                     </div>
-                    <div className='help__tab' data-collapsed='true'>
-                        <div id='deduction-scoring' className='help__tab__title' onClick={(evt) => toggleTab(evt)}>
+                    <div className='help__modal__tab' data-collapsed='true'>
+                        <div
+                            id='deduction-scoring'
+                            className='help__modal__tab__title'
+                            onClick={(evt) => toggleTab(evt)}
+                        >
                             <h1>Scoring</h1>
                             <Chevron />
                         </div>
-                        <div className='help__tab__content'>
+                        <div className='help__modal__tab__content'>
                             <ul>
                                 <li>
                                     If an &apos;agent&apos; guesses a word that belongs to their team, it will reduce
@@ -137,6 +145,10 @@ const Help = () => {
                         </div>
                     </div>
                 </div>
+                <button className='help__close-btn'>
+                    <div></div>
+                    <div></div>
+                </button>
             </section>
         );
     });

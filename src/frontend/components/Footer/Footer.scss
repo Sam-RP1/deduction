@@ -25,7 +25,7 @@
             align-items: center;
 
             p {
-                font-size: 1.1em;
+                font-size: 1.1rem;
                 margin: 0px;
             }
 
@@ -54,7 +54,7 @@
         color: base.$primary-white;
 
         &__toggle-switch-wrapper,
-        &__rules-wrapper {
+        &__help-wrapper {
             display: flex;
             flex-direction: row;
             justify-content: space-between;
@@ -65,7 +65,20 @@
             }
         }
 
-        &__rules-wrapper {
+        &__toggle-switch-wrapper {
+            i {
+                &:first-of-type {
+                    margin-right: 7px;
+                    font-size: 1.1rem;
+                }
+                &:last-of-type {
+                    margin-left: 7px;
+                    font-size: 1.2rem;
+                }
+            }
+        }
+
+        &__help-wrapper {
             cursor: pointer;
 
             i {

@@ -8,115 +8,174 @@
     position: absolute;
     top: 0px;
     left: 0px;
-    height: auto;
-    max-height: calc(100vh - 80px);
+    display: block;
+    height: 100vh;
     width: 100%;
     box-sizing: border-box;
     padding: 35px 16px;
+    background-color: rgba(0, 0, 0, 0.7);
     overflow: scroll;
-    z-index: 5;
+    z-index: 10;
+    @include transition(background-color 0.3s ease);
 
-    // &__container {
-    //     height: auto;
-    //     max-height: 100%;
-    //     overflow: scroll;
-    // }
+    &__close-btn {
+        position: fixed;
+        bottom: 35px;
+        right: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 50px;
+        width: 50px;
+        border-radius: 50%;
+        border: 1px solid;
+        box-shadow: base.$box--shadow--alt;
+        padding: 0px;
+        -moz-appearance: none;
+        -webkit-appearance: none;
+        -webkit-tap-highlight-color: transparent;
+        @include userSelect(none);
+        cursor: pointer;
+        z-index: 2;
+        @include themed() {
+            border-color: t($bg);
+            background-color: t($btn);
+        }
+        @include transition-theme(border-color 0.3s ease, background-color 0.3s ease);
 
-    &__menu {
+        &:focus {
+            outline: none;
+        }
+
+        div {
+            position: relative;
+            height: 30px;
+            width: 4px;
+            border-radius: 5px;
+            background-color: base.$remove;
+            @include transition(transform 0.25s ease);
+
+            &:nth-child(1) {
+                top: 0px;
+                left: 2px;
+                @include transform(rotate(-45deg));
+            }
+            &:nth-child(2) {
+                top: 0px;
+                right: 2px;
+                @include transform(rotate(45deg));
+            }
+        }
+
+        &:hover {
+            div {
+                &:nth-child(1) {
+                    @include transform(rotate(-25deg));
+                }
+                &:nth-child(2) {
+                    @include transform(rotate(25deg));
+                }
+            }
+        }
+    }
+
+    &__modal {
+        position: relative;
         display: flex;
         flex-direction: column;
         height: auto;
         border-radius: 5px;
         box-shadow: base.$box--shadow--alt;
+        z-index: 2;
         @include themed() {
             background-color: t($bg-alt);
         }
         @include transition-theme(background-color 0.3s ease);
-    }
 
-    &__tab {
-        width: 100%;
-        overflow: hidden;
-        @include themed() {
-            color: t($text);
-        }
-        @include transition-theme(color 0.3s ease, height 0.25s ease);
-
-        &:first-child {
-            border-radius: 5px 5px 0px 0px;
-        }
-        &:last-child {
-            border-radius: 0px 0px 5px 5px;
-        }
-
-        &__title {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border-top: 1px solid;
-            border-bottom: 1px solid;
-            box-sizing: border-box;
-            padding: 10px;
-            cursor: pointer;
-
-            h1 {
-                margin: 0px;
-                font-size: 2rem;
-                font-weight: 400;
-            }
-
-            h1,
-            .chevron {
-                pointer-events: none;
-                @include userSelect(none);
-            }
-
-            @include themed() {
-                color: t($text);
-                background-color: t($btn);
-                border-color: t($bg);
-            }
-            @include transition-theme(color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease);
-        }
-
-        &__content {
-            display: flex;
-            flex-direction: column;
-            height: 0px;
+        &__tab {
             width: 100%;
             overflow: hidden;
-
             @include themed() {
-                border-color: t($bg);
-                background-color: t($bg-alt);
+                color: t($text);
             }
-            @include transition(height 0.3s ease, background-color 0.3s ease);
+            @include transition-theme(color 0.3s ease, height 0.25s ease);
 
-            p,
-            ul {
-                font-size: 1.1rem;
+            &:first-child {
+                border-radius: 5px 5px 0px 0px;
+            }
+            &:last-child {
+                border-radius: 0px 0px 5px 5px;
             }
 
-            p {
-                margin: 0px;
+            &__title {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                border-top: 1px solid;
+                border-bottom: 1px solid;
                 box-sizing: border-box;
-                padding: 10px;
+                padding: 10px 14px;
+                cursor: pointer;
+
+                h1 {
+                    margin: 0px;
+                    font-size: 1.8rem;
+                    font-weight: 400;
+                }
+
+                h1,
+                .chevron {
+                    pointer-events: none;
+                    @include userSelect(none);
+                }
+
+                @include themed() {
+                    color: t($text);
+                    background-color: t($btn);
+                    border-color: t($bg);
+                }
+                @include transition-theme(color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease);
             }
 
-            ul {
-                margin: 0px;
-                padding: 10px 10px 10px 30px;
-            }
+            &__content {
+                display: flex;
+                flex-direction: column;
+                height: 0px;
+                width: 100%;
+                overflow: hidden;
 
-            li {
-                margin-top: 4px;
+                @include themed() {
+                    border-color: t($bg);
+                    background-color: t($bg-alt);
+                }
+                @include transition(height 0.3s ease, background-color 0.3s ease);
 
-                &:first-of-type {
-                    margin-top: 0px;
+                p,
+                ul {
+                    font-size: 1.1rem;
+                }
+
+                p {
+                    margin: 0px;
+                    box-sizing: border-box;
+                    padding: 10px 14px;
                 }
 
                 ul {
-                    padding: 10px 0px 10px 20px;
+                    margin: 0px;
+                    padding: 10px 14px 10px 34px;
+                }
+
+                li {
+                    margin-top: 4px;
+
+                    &:first-of-type {
+                        margin-top: 0px;
+                    }
+
+                    ul {
+                        padding: 10px 0px 10px 20px;
+                    }
                 }
             }
         }

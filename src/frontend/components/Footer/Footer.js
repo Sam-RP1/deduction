@@ -13,13 +13,14 @@ const Footer = (props) => {
             <Help />
 
             <div className='footer__settings footer__settings--row'>
-                <div className='footer__settings__rules-wrapper'>
-                    <p>Rules & Help</p>
+                <div className='footer__settings__help-wrapper'>
+                    <p>Help & More</p>
                     <i className='fas fa-question-circle'></i>
                 </div>
                 <div className='footer__settings__toggle-switch-wrapper'>
-                    <p>Toggle Light Mode</p>
+                    <i className='fas fa-moon'></i>
                     <ToggleSwitch function={props.themeToggle} />
+                    <i className='fas fa-sun'></i>
                 </div>
             </div>
 

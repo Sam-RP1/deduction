@@ -20,7 +20,7 @@
         border: 2px solid #fff;
         border-radius: 14px;
         background-color: #c7c7c7;
-        @include transition(color 0.4s ease);
+        @include transition(color 0.35s ease);
     }
 
     span:before {
