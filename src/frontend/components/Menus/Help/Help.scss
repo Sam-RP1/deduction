@@ -1,27 +1,47 @@
-@use '../../styles/base';
-@import '../../styles/partials/color-themes';
-@import '../../styles/mixins/transition';
-@import '../../styles/mixins/transform';
-@import '../../styles/mixins/userSelect';
+@use '../../../styles/base';
+@import '../../../styles/partials/color-themes';
+@import '../../../styles/mixins/transition';
+@import '../../../styles/mixins/transform';
+@import '../../../styles/mixins/userSelect';
 
-.rules {
-    position: relative;
-    top: -500px;
-    display: flex;
-    flex-direction: column;
+.help {
+    position: absolute;
+    top: 0px;
+    left: 0px;
     height: auto;
+    max-height: calc(100vh - 80px);
     width: 100%;
-    border-radius: 5px;
-    box-shadow: base.$box--shadow--alt;
+    box-sizing: border-box;
+    padding: 35px 16px;
+    overflow: scroll;
+    z-index: 5;
 
-    @include themed() {
-        color: t($text);
-        background-color: t($bg-alt);
+    // &__container {
+    //     height: auto;
+    //     max-height: 100%;
+    //     overflow: scroll;
+    // }
+
+    &__menu {
+        display: flex;
+        flex-direction: column;
+        height: auto;
+        border-radius: 5px;
+        box-shadow: base.$box--shadow--alt;
+        @include themed() {
+            background-color: t($bg-alt);
+        }
+        @include transition-theme(background-color 0.3s ease);
     }
-    @include transition-theme(color 0.3s ease, background-color 0.3s ease, height 0.25s ease);
 
     &__tab {
+        width: 100%;
         overflow: hidden;
+        @include themed() {
+            color: t($text);
+        }
+        @include transition-theme(color 0.3s ease, height 0.25s ease);
+
         &:first-child {
             border-radius: 5px 5px 0px 0px;
         }
@@ -42,6 +62,7 @@
             h1 {
                 margin: 0px;
                 font-size: 2rem;
+                font-weight: 400;
             }
 
             h1,
@@ -60,6 +81,7 @@
 
         &__content {
             display: flex;
+            flex-direction: column;
             height: 0px;
             width: 100%;
             overflow: hidden;
@@ -70,21 +92,33 @@
             }
             @include transition(height 0.3s ease, background-color 0.3s ease);
 
-            p {
+            p,
+            ul {
                 font-size: 1.1rem;
+            }
+
+            p {
                 margin: 0px;
                 box-sizing: border-box;
                 padding: 10px;
             }
+
+            ul {
+                margin: 0px;
+                padding: 10px 10px 10px 30px;
+            }
+
+            li {
+                margin-top: 4px;
+
+                &:first-of-type {
+                    margin-top: 0px;
+                }
+
+                ul {
+                    padding: 10px 0px 10px 20px;
+                }
+            }
         }
     }
 }
-
-// X
-// &:nth-child(1) {
-//     @include transform(rotate(44deg) translate(-3px, 7px));
-// }
-
-// &:nth-child(2) {
-//     @include transform(rotate(136deg) translate(4px, 6px));
-// }

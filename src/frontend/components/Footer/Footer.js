@@ -3,14 +3,14 @@ import PropTypes from 'prop-types';
 
 import ToggleSwitch from '../UI/ToggleSwitch/ToggleSwitch';
 
-import Rules from './Rules';
+import Help from '../Menus/Help/Help';
 
 import './Footer.scss';
 
 const Footer = (props) => {
     return (
         <footer className='footer'>
-            <Rules />
+            <Help />
 
             <div className='footer__settings footer__settings--row'>
                 <div className='footer__settings__rules-wrapper'>
