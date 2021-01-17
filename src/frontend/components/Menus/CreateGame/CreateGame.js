@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 
 // Imports
 import Loading from '../../UI/Indicators/Loading/Loading.js';
-import Title from '../../UI/Title/Title';
 import Button from '../../UI/Buttons/Button/Button';
 
 // Styles
@@ -13,7 +12,6 @@ import './CreateGame.scss';
 const CreateGame = (props) => {
     return (
         <section className='create-game'>
-            <Title />
             {props.isLoading ? (
                 <Loading />
             ) : (
