@@ -17,7 +17,7 @@ import './styles/root.scss';
 const App = () => {
     const { socketRef } = useSocket();
 
-    const toggleTheme = () => {
+    const themeToggle = () => {
         const themeElem = document.getElementById('theme');
         themeElem.classList.toggle('theme--dark');
         themeElem.classList.toggle('theme--default');
@@ -51,7 +51,7 @@ const App = () => {
                         <Route path='/creategame' component={CreateGame} />
                         <Route path='/' exact component={Home} />
                     </Container>
-                    <Footer themeToggle={() => toggleTheme()} />
+                    <Footer themeToggle={() => themeToggle()} />
                 </div>
             </BrowserRouter>
         </div>
