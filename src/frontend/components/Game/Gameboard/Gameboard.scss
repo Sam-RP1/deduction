@@ -13,6 +13,7 @@
     &__word-block {
         position: relative;
         width: calc(100% / 5 - 4px);
+        font-size: 1rem;
         margin: 2px 0px;
         padding-top: calc(75% / 5 - 4px);
         box-sizing: border-box;
@@ -25,6 +26,7 @@
         @include transition-theme(color 0.3s ease, background-color 0.3s ease);
         cursor: pointer;
         overflow: hidden;
+
         &:hover {
             @include themed() {
                 color: t($text);
@@ -110,13 +112,26 @@
                 height: auto;
                 margin: 0px;
                 width: 100%;
-                @media screen and (min-width: 576px) {
-                    font-size: 1.15rem;
-                }
-                @media screen and (min-width: 1376px) {
-                    font-size: 1.2rem;
-                }
+                // @media screen and (min-width: 576px) {
+                //     font-size: 1.15rem;
+                // }
+                // @media screen and (min-width: 1376px) {
+                //     font-size: 1.2rem;
+                // }
             }
+        }
+
+        @media screen and(min-width: 400px) {
+            font-size: 1.1rem;
+        }
+        @media screen and(min-width: 678px) {
+            font-size: 1.2rem;
+        }
+        @media screen and(min-width: 768px) {
+            font-size: 1.25rem;
+        }
+        @media screen and(min-width: 892px) {
+            font-size: 1.3rem;
         }
     }
 

@@ -3,7 +3,7 @@
 @import '../../styles/mixins/transform';
 
 .header {
-    position: absolute;
+    position: relative;
     top: 0px;
     left: 0px;
     display: flex;
@@ -20,6 +20,7 @@
     @include transition(color 0.3s ease);
 
     &__title {
+        font-weight: 400;
         font-size: 2rem;
         margin: 0px;
     }

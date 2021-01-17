@@ -10,7 +10,8 @@
     align-items: center;
     cursor: pointer;
     height: auto;
-    width: 300px;
+    width: 100%;
+    max-width: 300px;
     text-align: center;
     box-sizing: border-box;
     padding: 8px 25px;
@@ -63,6 +64,7 @@
     &__red,
     &__blue {
         width: 100%;
+        max-width: initial;
     }
 
     &__red {
@@ -104,6 +106,7 @@
     &__insider,
     &__agent {
         width: calc(50% - 5px);
+        max-width: initial;
 
         i {
             font-size: 0.9em;

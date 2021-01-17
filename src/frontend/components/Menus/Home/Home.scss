@@ -16,6 +16,9 @@
         width: 100%;
 
         a {
+            width: inherit;
+            max-width: 300px;
+
             &:nth-of-type(n) {
                 margin-top: 15px;
             }

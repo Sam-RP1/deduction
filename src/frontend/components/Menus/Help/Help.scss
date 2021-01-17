@@ -5,7 +5,7 @@
 @import '../../../styles/mixins/userSelect';
 
 .help {
-    position: absolute;
+    position: fixed;
     top: 0px;
     left: 0px;
     display: block;
@@ -13,9 +13,11 @@
     width: 100%;
     box-sizing: border-box;
     padding: 35px 16px;
-    background-color: rgba(0, 0, 0, 0.7);
-    overflow: scroll;
+    overflow: auto;
     z-index: 10;
+    @include themed() {
+        background-color: t($bg);
+    }
     @include transition(background-color 0.3s ease);
 
     &__close-btn {
@@ -29,7 +31,7 @@
         width: 50px;
         border-radius: 50%;
         border: 1px solid;
-        box-shadow: base.$box--shadow--alt;
+        box-shadow: base.$box--shadow;
         padding: 0px;
         -moz-appearance: none;
         -webkit-appearance: none;
@@ -70,10 +72,10 @@
         &:hover {
             div {
                 &:nth-child(1) {
-                    @include transform(rotate(-25deg));
+                    @include transform(rotate(-90deg));
                 }
                 &:nth-child(2) {
-                    @include transform(rotate(25deg));
+                    @include transform(rotate(90deg));
                 }
             }
         }
@@ -85,7 +87,7 @@
         flex-direction: column;
         height: auto;
         border-radius: 5px;
-        box-shadow: base.$box--shadow--alt;
+        box-shadow: base.$box--shadow;
         z-index: 2;
         @include themed() {
             background-color: t($bg-alt);
