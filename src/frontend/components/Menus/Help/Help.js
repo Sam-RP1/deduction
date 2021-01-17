@@ -1,11 +1,11 @@
 import React, { useMemo } from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 
 import Chevron from '../../UI/Indicators/Chevron/Chevron';
 
 import './Help.scss';
 
-const Help = () => {
+const Help = (props) => {
     const toggleTab = (evt) => {
         const elem = evt.target.parentElement;
         const isCollapsed = elem.getAttribute('data-collapsed') === 'false';
@@ -145,7 +145,7 @@ const Help = () => {
                         </div>
                     </div>
                 </div>
-                <button className='help__close-btn'>
+                <button className='help__close-btn' onClick={props.close}>
                     <div></div>
                     <div></div>
                 </button>
@@ -154,6 +154,8 @@ const Help = () => {
     });
 };
 
-// Help.propTypes = {};
+Help.propTypes = {
+    close: PropTypes.func,
+};
 
 export default Help;
