@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import Chevron from '../../UI/Indicators/Chevron/Chevron';
@@ -6,14 +6,49 @@ import Chevron from '../../UI/Indicators/Chevron/Chevron';
 import './Help.scss';
 
 const Help = (props) => {
-    const toggleTab = (evt) => {
-        const elem = evt.target.parentElement;
-        const isCollapsed = elem.getAttribute('data-collapsed') === 'false';
+    const [innerHeight, setInnerHeight] = useState(0);
+
+    useEffect(() => {
+        handleMaxHeight();
+        window.addEventListener('resize', handleMaxHeight, false);
+        return () => {
+            window.removeEventListener('resize', handleMaxHeight, false);
+        };
+    }, []);
+
+    const handleMaxHeight = () => {
+        let height;
+
+        if (window.innerWidth < 678) {
+            height = window.innerHeight;
+        } else if (window.innerHeight < 768) {
+            height = document.body.scrollHeight - 80;
+        } else {
+            height = document.body.scrollHeight - 50;
+        }
+
+        setInnerHeight(height);
+    };
+
+    const tabHandler = (evt) => {
+        const clickedTab = evt.target.parentElement;
+        const isCollapsed = clickedTab.getAttribute('data-collapsed') === 'false';
+        const helpModal = document.querySelector('.help__modal');
+        const otherTabs = helpModal.childNodes;
+
+        for (let i = 0; i < otherTabs.length; i++) {
+            const tab = otherTabs[i];
+            if (tab.getAttribute('data-collapsed') === 'false') {
+                collapseTab(tab);
+            }
+        }
 
         if (isCollapsed) {
-            collapseTab(elem);
+            console.log('collapse');
+            collapseTab(clickedTab);
         } else {
-            expandTab(elem);
+            console.log('expand');
+            expandTab(clickedTab);
         }
     };
 
@@ -34,10 +69,14 @@ const Help = (props) => {
 
     return useMemo(() => {
         return (
-            <section className='help'>
+            <section className='help' style={{ maxHeight: innerHeight }}>
+                <button className='help__close-btn' onClick={props.close}>
+                    <div></div>
+                    <div></div>
+                </button>
                 <div className='help__modal'>
                     <div className='help__modal__tab' data-collapsed='true'>
-                        <div id='deduction-info' className='help__modal__tab__title' onClick={(evt) => toggleTab(evt)}>
+                        <div id='deduction-info' className='help__modal__tab__title' onClick={(evt) => tabHandler(evt)}>
                             <h1>Deduction</h1>
                             <Chevron />
                         </div>
@@ -52,7 +91,7 @@ const Help = (props) => {
                         <div
                             id='deduction-basics'
                             className='help__modal__tab__title'
-                            onClick={(evt) => toggleTab(evt)}
+                            onClick={(evt) => tabHandler(evt)}
                         >
                             <h1>Basics</h1>
                             <Chevron />
@@ -78,7 +117,11 @@ const Help = (props) => {
                         </div>
                     </div>
                     <div className='help__modal__tab' data-collapsed='true'>
-                        <div id='deduction-roles' className='help__modal__tab__title' onClick={(evt) => toggleTab(evt)}>
+                        <div
+                            id='deduction-roles'
+                            className='help__modal__tab__title'
+                            onClick={(evt) => tabHandler(evt)}
+                        >
                             <h1>Roles</h1>
                             <Chevron />
                         </div>
@@ -117,7 +160,7 @@ const Help = (props) => {
                         <div
                             id='deduction-scoring'
                             className='help__modal__tab__title'
-                            onClick={(evt) => toggleTab(evt)}
+                            onClick={(evt) => tabHandler(evt)}
                         >
                             <h1>Scoring</h1>
                             <Chevron />
@@ -145,10 +188,6 @@ const Help = (props) => {
                         </div>
                     </div>
                 </div>
-                <button className='help__close-btn' onClick={props.close}>
-                    <div></div>
-                    <div></div>
-                </button>
             </section>
         );
     });
