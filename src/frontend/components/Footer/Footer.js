@@ -13,7 +13,7 @@ const Footer = (props) => {
         <footer className='footer'>
             {isHelpOpen === true ? <Help close={() => setIsHelpOpen(false)} /> : null}
             <div className='footer__settings footer__settings--row'>
-                <div className='footer__settings__help-wrapper' onClick={() => setIsHelpOpen(true)}>
+                <div className='footer__settings__help-wrapper' onClick={() => setIsHelpOpen(!isHelpOpen)}>
                     <p>Help & More</p>
                     <i className='fas fa-question-circle'></i>
                 </div>
