@@ -8,7 +8,9 @@
     "build-dev": "rm -rf build && webpack --mode development --config webpack.server.config.js && webpack --mode development --config webpack.dev.config.js",
     "build-prod": "rm -rf build && webpack --mode production --config webpack.prod.config.js",
     "start": "node ./build/server.js",
-    "setup": "mysql -u root -proot < src/server/db/initsql.sql"
+    "setup-database": "mysql -u root -proot < src/server/db/sql/initdb.sql",
+    "enter-database-languages": "mysql -u root -proot < src/server/db/sql/bundles/languages.sql",
+    "enter-database-games": "mysql -u root -proot < src/server/db/sql/bundles/games.sql"
   },
   "author": "Samuel Renshaw-Panting",
   "license": "",
