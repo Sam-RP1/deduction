@@ -2,8 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 // Imports
-import LoadingIndicator from '../../UI/LoadingIndicator/LoadingIndicator';
-import Title from '../../UI/Title/Title';
+import Loading from '../../UI/Indicators/Loading/Loading.js';
 import Button from '../../UI/Buttons/Button/Button';
 
 // Styles
@@ -13,9 +12,8 @@ import './CreateGame.scss';
 const CreateGame = (props) => {
     return (
         <section className='create-game'>
-            <Title />
             {props.isLoading ? (
-                <LoadingIndicator />
+                <Loading />
             ) : (
                 <>
                     <div className='create-game__content'>

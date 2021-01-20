@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
+import copy from 'clipboard-copy';
 
 // Imports
 import Button from '../../UI/Buttons/Button/Button';
@@ -10,7 +11,7 @@ import './GameControls.scss';
 // Presentational Component
 const GameControls = (props) => {
     const copyJoinCode = async () => {
-        await navigator.clipboard.writeText(props.joinCode);
+        await copy(props.joinCode);
     };
 
     return useMemo(() => {
@@ -49,7 +50,13 @@ const GameControls = (props) => {
                                 function={() => props.selectTeam('red', props.playerTeam)}
                             />
                             {props.redTeam.map((player, i) => {
-                                return <p key={i}>{player.playerName}</p>;
+                                return (
+                                    <p key={i}>
+                                        {player.playerName}{' '}
+                                        {player.role === 'insider' ? <i className='far fa-comment-dots'></i> : null}
+                                        {player.role === 'agent' ? <i className='fas fa-search'></i> : null}
+                                    </p>
+                                );
                             })}
                         </div>
                         <div className='game-controls__teams__options__blue-team'>
@@ -59,15 +66,27 @@ const GameControls = (props) => {
                                 function={() => props.selectTeam('blue', props.playerTeam)}
                             />
                             {props.blueTeam.map((player, i) => {
-                                return <p key={i}>{player.playerName}</p>;
+                                return (
+                                    <p key={i}>
+                                        {player.playerName}{' '}
+                                        {player.role === 'insider' ? <i className='far fa-comment-dots'></i> : null}
+                                        {player.role === 'agent' ? <i className='fas fa-search'></i> : null}
+                                    </p>
+                                );
                             })}
                         </div>
-                        <p className='game-controls__teams__options__teamless'>
-                            TEAMLESS:
-                            {props.unassigned.map((player) => {
-                                return ' ' + player.playerName;
+                        <div className='game-controls__teams__options__teamless'>
+                            <p>TEAMLESS:</p>
+                            {props.unassigned.map((player, i) => {
+                                return (
+                                    <p key={i}>
+                                        {player.playerName}{' '}
+                                        {player.role === 'insider' ? <i className='far fa-comment-dots'></i> : null}
+                                        {player.role === 'agent' ? <i className='fas fa-search'></i> : null},
+                                    </p>
+                                );
                             })}
-                        </p>
+                        </div>
                     </div>
                 </div>
 

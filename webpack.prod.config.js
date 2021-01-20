@@ -94,7 +94,6 @@ module.exports = {
         }),
         new CopyPlugin({
             patterns: [
-                { from: './src/server/appdata', to: '../appdata' },
                 { from: './src/server/db', to: '../db' },
                 { from: './src/server/logs', to: '../logs' },
                 { from: './src/server/routes', to: '../routes' },

@@ -1,0 +1,221 @@
+@use '../../../styles/base';
+@import '../../../styles/partials/color-themes';
+@import '../../../styles/mixins/transition';
+@import '../../../styles/mixins/transform';
+@import '../../../styles/mixins/userSelect';
+
+.help {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    display: block;
+    height: 100vh;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 30px 16px;
+    overflow: auto;
+    z-index: 9;
+    @include themed() {
+        background-color: t($bg);
+    }
+    @include transition(background-color 0.3s ease);
+
+    &__close-btn {
+        position: fixed;
+        bottom: 30px;
+        right: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 50px;
+        width: 50px;
+        border-radius: 50%;
+        border: 1px solid;
+        box-shadow: base.$box--shadow--alt--2;
+        padding: 0px;
+        -moz-appearance: none;
+        -webkit-appearance: none;
+        -webkit-tap-highlight-color: transparent;
+        @include userSelect(none);
+        cursor: pointer;
+        z-index: 10;
+        @include themed() {
+            border-color: t($bg);
+            background-color: t($btn);
+        }
+        @include transition-theme(border-color 0.3s ease, background-color 0.3s ease);
+
+        &:focus {
+            outline: none;
+        }
+
+        div {
+            position: relative;
+            height: 30px;
+            width: 4px;
+            border-radius: 5px;
+            background-color: base.$remove;
+            @include transition(transform 0.25s ease);
+
+            &:nth-child(1) {
+                top: 0px;
+                left: 2px;
+                @include transform(rotate(-45deg));
+            }
+            &:nth-child(2) {
+                top: 0px;
+                right: 2px;
+                @include transform(rotate(45deg));
+            }
+        }
+
+        &:hover {
+            div {
+                &:nth-child(1) {
+                    @include transform(rotate(-90deg));
+                }
+                &:nth-child(2) {
+                    @include transform(rotate(90deg));
+                }
+            }
+        }
+    }
+
+    &__modal {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        height: auto;
+        border-radius: 5px;
+        box-shadow: base.$box--shadow--alt--2;
+        z-index: 2;
+        @include themed() {
+            background-color: t($bg-alt);
+        }
+        @include transition-theme(background-color 0.3s ease);
+
+        &__tab {
+            width: 100%;
+            overflow: hidden;
+            @include themed() {
+                color: t($text);
+            }
+            @include transition-theme(color 0.3s ease, height 0.25s ease);
+
+            &:first-child {
+                border-radius: 5px 5px 0px 0px;
+            }
+            &:last-child {
+                border-radius: 0px 0px 5px 5px;
+            }
+
+            &__title {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                border-top: 1px solid;
+                border-bottom: 1px solid;
+                box-sizing: border-box;
+                padding: 10px 14px;
+                cursor: pointer;
+
+                h1 {
+                    margin: 0px;
+                    font-size: 1.8rem;
+                    font-weight: 400;
+                }
+
+                h1,
+                .chevron {
+                    pointer-events: none;
+                    @include userSelect(none);
+                }
+
+                @include themed() {
+                    color: t($text);
+                    background-color: t($btn);
+                    border-color: t($bg);
+                }
+                @include transition-theme(color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease);
+            }
+
+            &__content {
+                display: flex;
+                flex-direction: column;
+                height: 0px;
+                width: 100%;
+                overflow: hidden;
+
+                @include themed() {
+                    background-color: t($bg-alt);
+                }
+                @include transition(height 0.3s ease, background-color 0.3s ease);
+
+                p,
+                ul {
+                    font-size: 1.1rem;
+                }
+
+                p {
+                    margin: 0px;
+                    box-sizing: border-box;
+                    padding: 10px 14px;
+                }
+
+                ul {
+                    margin: 0px;
+                    padding: 10px 14px 10px 34px;
+                }
+
+                li {
+                    margin-top: 4px;
+
+                    &:first-of-type {
+                        margin-top: 0px;
+                    }
+
+                    ul {
+                        padding: 10px 0px 10px 20px;
+                    }
+                }
+            }
+        }
+    }
+
+    @media screen and (min-width: 678px) {
+        position: absolute;
+        top: initial;
+        bottom: 80px;
+        right: 0px;
+        left: initial;
+        height: auto;
+        max-width: 500px;
+        padding: 0px 16px 15px 16px;
+        background-color: transparent !important;
+        pointer-events: initial;
+        overflow-y: auto;
+        overflow-x: visible;
+
+        &__close-btn {
+            position: relative;
+            top: 17px;
+            left: -15px;
+            height: 35px;
+            width: 35px;
+
+            div {
+                position: relative;
+                height: 20px;
+                width: 4px;
+                border-radius: 5px;
+                background-color: base.$remove;
+                @include transition(transform 0.25s ease);
+            }
+        }
+    }
+
+    @media screen and (min-width: 768px) {
+        bottom: 50px;
+        max-width: 600px;
+    }
+}

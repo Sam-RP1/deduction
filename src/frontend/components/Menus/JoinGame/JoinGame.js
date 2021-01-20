@@ -2,8 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 // Imports
-import LoadingIndicator from '../../UI/LoadingIndicator/LoadingIndicator';
-import Title from '../../UI/Title/Title';
+import Loading from '../../UI/Indicators/Loading/Loading';
 import Button from '../../UI/Buttons/Button/Button';
 
 // Styles
@@ -13,9 +12,8 @@ import './JoinGame.scss';
 const JoinGame = (props) => {
     return (
         <section className='join-game'>
-            <Title title='Deduction' />
             {props.isLoading ? (
-                <LoadingIndicator />
+                <Loading />
             ) : (
                 <>
                     <div className='join-game__content'>

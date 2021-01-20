@@ -16,7 +16,6 @@ CREATE TABLE if not exists deduction_DB.game_instances(
     last_query VARCHAR(1000) NOT NULL,
     PRIMARY KEY (game_id)
 ) ENGINE=INNODB;
-
 -- created: 19235235235
 -- lobby_id: 'warps room'
 -- players: { idNum: { name: nameHere } }
@@ -29,3 +28,17 @@ CREATE TABLE if not exists deduction_DB.game_instances(
 -- turn_timer: false
 -- game_timer: 0
 -- last_query: 132412346346
+
+CREATE TABLE if not exists deduction_DB.word_bundles(
+    bundle_id VARCHAR(50) NOT NULL,
+    category INT NOT NULL,
+    is_enabled BOOLEAN NOT NULL,
+    easy TEXT,
+    normal TEXT,
+    hard TEXT,
+    expert TEXT,
+    PRIMARY KEY (bundle_id)
+) ENGINE=INNODB;
+-- category 0: Language
+-- category 1: Themed
+-- category 2: Game

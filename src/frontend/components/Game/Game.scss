@@ -12,7 +12,6 @@
     @extend %flex-center-column;
     height: auto;
     width: 100%;
-    margin-top: 34px;
 
     &__board {
         display: flex;
@@ -42,7 +41,7 @@
 
             p {
                 margin: 0;
-                font-size: 1.5em;
+                font-size: 1.5rem;
 
                 &:nth-child(1) {
                     text-align: left;
@@ -67,6 +66,16 @@
                 }
             }
 
+            @media screen and (min-width: 576px) {
+                p {
+                    font-size: 1.6rem;
+                }
+            }
+            @media screen and (min-width: 768px) {
+                p {
+                    font-size: 1.7rem;
+                }
+            }
             @media screen and (min-width: 1092px) {
                 margin-bottom: 0px;
             }
