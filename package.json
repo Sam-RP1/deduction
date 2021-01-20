@@ -10,7 +10,8 @@
     "start": "node ./build/server.js",
     "setup-database": "mysql -u root -proot < src/server/db/sql/initdb.sql",
     "enter-database-languages": "mysql -u root -proot < src/server/db/sql/bundles/languages.sql",
-    "enter-database-games": "mysql -u root -proot < src/server/db/sql/bundles/games.sql"
+    "enter-database-games": "mysql -u root -proot < src/server/db/sql/bundles/games.sql",
+    "enter-database-themes": "mysql -u root -proot < src/server/db/sql/bundles/themes.sql"
   },
   "author": "Samuel Renshaw-Panting",
   "license": "",

@@ -4,7 +4,7 @@
 const mysql = require('mysql2/promise');
 const _ = require('underscore');
 const fs = require('fs');
-const wordGroups = require('./appdata/wordGroups.js');
+const e = require('cors');
 require('dotenv').config();
 
 const errorStream = fs.createWriteStream(__dirname + '/logs/error.txt', { flags: 'a+' });
@@ -21,20 +21,49 @@ module.exports.logError = (e) => {
     errorStream.write(newEntry);
 };
 
-module.exports.getWordBundles = () => {
-    const keys = Object.keys(wordGroups);
-    const idArray = [];
-    for (let i = 0; i < keys.length; i++) {
-        idArray.push(wordGroups[keys[i]].id);
+module.exports.getWordBundles = async () => {
+    const sql = await mysql.createConnection(dbData);
+    const [result] = await sql.query(sql.format('select bundle_id, category, is_enabled from word_bundles'));
+
+    const bundleArray = [];
+    for (let i = 0; i < result.length; i++) {
+        if (result[i].is_enabled === 1) {
+            bundleArray.push(result[i].bundle_id);
+        }
     }
-    return idArray;
+
+    return bundleArray;
 };
 
-module.exports.generateWords = (bundle, isCustom) => {
+module.exports.generateWords = async (bundle, isCustom) => {
     let bundleWords;
 
     if (isCustom === false) {
-        bundleWords = wordGroups[bundle].words;
+        const sql = await mysql.createConnection(dbData);
+        const [result] = await sql.query(
+            sql.format('select easy, normal, hard, expert from word_bundles where bundle_id = ?', [bundle])
+        );
+        const words = result[0];
+
+        words.easy = JSON.parse(words.easy);
+
+        // Exception languages use code 0 and only use easy difficulty
+        // Next ver will implement the use of word difficulty tiers by allowing multiple to be selected or just one as long as it has 25 words
+        if (words.expert !== null && words.hard !== null && words.normal !== null) {
+            words.expert = JSON.parse(words.expert);
+            words.hard = JSON.parse(words.hard);
+            words.normal = JSON.parse(words.normal);
+            bundleWords = words.easy.concat(words.normal, words.hard, words.expert);
+        } else if (words.hard !== null && words.normal !== null) {
+            words.hard = JSON.parse(words.hard);
+            words.normal = JSON.parse(words.normal);
+            bundleWords = words.easy.concat(words.normal, words.hard);
+        } else if (words.normal !== null) {
+            words.normal = JSON.parse(words.normal);
+            bundleWords = words.easy.concat(words.normal);
+        } else {
+            bundleWords = words.easy;
+        }
     } else {
         bundleWords = bundle;
     }

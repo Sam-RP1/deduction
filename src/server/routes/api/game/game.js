@@ -21,7 +21,7 @@ game.get('/:gameid/:gamepassword', async (req, res) => {
         const game = await dbGame.getGame(gameId, gamePassword);
 
         if (game.status === SUCCESS) {
-            const bundles = getWordBundles();
+            const bundles = await getWordBundles();
             game.data.wordGroups = bundles;
             res.status(200).json({ status: SUCCESS, data: game.data });
         } else {
@@ -51,7 +51,7 @@ game.post('/', async (req, res) => {
                 const game = await dbGame.createGame(newGame);
 
                 if (game.status === SUCCESS) {
-                    const bundles = getWordBundles();
+                    const bundles = await getWordBundles();
                     game.data.wordGroups = bundles;
                     res.status(201).json({ status: SUCCESS, data: game.data });
                 } else {

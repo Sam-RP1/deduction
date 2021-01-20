@@ -7,7 +7,7 @@ const _ = require('underscore');
 module.exports.updateWordBundle = async (gameId, bundleId) => {
     try {
         const sql = await sqlPromise;
-        const words = generateWords(bundleId, false);
+        const words = await generateWords(bundleId, false);
         const wordsStr = JSON.stringify(words);
 
         const score = { blue: 8, red: 9 };
@@ -97,7 +97,7 @@ module.exports.useCustomWords = async (gameId) => {
         const customWords = parsedData.customWords;
 
         if (customWords.length === 25) {
-            const words = generateWords(customWords, true);
+            const words = await generateWords(customWords, true);
             const wordsStr = JSON.stringify(words);
             const score = { blue: 8, red: 9 };
             const scoreStr = JSON.stringify(score);

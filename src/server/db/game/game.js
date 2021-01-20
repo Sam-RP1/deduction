@@ -114,7 +114,8 @@ module.exports.newGame = async (gameId) => {
         const customWords = JSON.parse(gameData.custom_words);
 
         if (wordBundleId !== '' || customWords.length === 25) {
-            const words = wordBundleId === '' ? generateWords(customWords, true) : generateWords(wordBundleId, false);
+            const words =
+                wordBundleId === '' ? await generateWords(customWords, true) : await generateWords(wordBundleId, false);
 
             const newGame = {
                 score: { blue: 8, red: 9 },
