@@ -35,20 +35,23 @@ module.exports.addCustomWord = async (gameId, word) => {
             sql.format('select custom_words from game_instances where game_id = ?', [gameId])
         );
         const customWords = JSON.parse(customWordsRes[0].custom_words);
+        if (customWords.length < 25) {
+            customWords.push(word);
+            const customWordsStr = JSON.stringify(customWords);
+            const lastQuery = Date.now();
 
-        customWords.push(word);
-        const customWordsStr = JSON.stringify(customWords);
-        const lastQuery = Date.now();
+            await sql.query(
+                sql.format('update game_instances set custom_words = ?, last_query = ? where game_id = ?', [
+                    customWordsStr,
+                    lastQuery,
+                    gameId,
+                ])
+            );
 
-        await sql.query(
-            sql.format('update game_instances set custom_words = ?, last_query = ? where game_id = ?', [
-                customWordsStr,
-                lastQuery,
-                gameId,
-            ])
-        );
-
-        return { status: SUCCESS, customWords: customWords };
+            return { status: SUCCESS, customWords: customWords };
+        } else {
+            return { status: FAIL, error: 'You cannot have more than 25 custom words.' };
+        }
     } catch (e) {
         logError(e);
         return { status: ERROR, error: 'Could not add custom word.' };
