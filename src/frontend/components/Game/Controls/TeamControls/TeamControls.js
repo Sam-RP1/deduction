@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import '../Controls.scss';
 
 // Imports
+import Chevron from '../../../UI/Indicators/Chevron/Chevron';
 import Button from '../../../UI/Buttons/Button/Button';
 
 /**
@@ -20,58 +21,85 @@ import Button from '../../../UI/Buttons/Button/Button';
  * @returns {JSX}
  */
 const TeamControls = (props) => {
+    const tabHandler = (evt) => {
+        const clickedTab = evt.target.parentElement;
+        const isCollapsed = clickedTab.getAttribute('data-collapsed') === 'false';
+
+        isCollapsed === true ? collapseTab(clickedTab) : expandTab(clickedTab);
+    };
+
+    const collapseTab = (elem) => {
+        const content = elem.childNodes[1];
+        content.style.height = 0 + 'px';
+
+        elem.setAttribute('data-collapsed', 'true');
+    };
+
+    const expandTab = (elem) => {
+        const content = elem.childNodes[1];
+        const contentHeight = content.scrollHeight;
+        content.style.height = contentHeight + 'px';
+
+        elem.setAttribute('data-collapsed', 'false');
+    };
+
     return (
-        <div className='game__controls__teams'>
-            <h3>Teams</h3>
-            <div className='game__controls__teams__options'>
-                <Button
-                    title={'Randomize'}
-                    opClasses={'game__controls__teams__options__randomize'}
-                    function={() => props.randomiseTeams()}
-                />
-                <div className='game__controls__teams__options__red-team'>
+        <div id='player-teams' className='game__controls__tab'>
+            <div className='game__controls__tab__title' onClick={(evt) => tabHandler(evt)}>
+                <h3>Teams</h3>
+                <Chevron />
+            </div>
+            <div className='game__controls__tab__content-container'>
+                <div className='game__controls__tab__content'>
                     <Button
-                        title={'Red'}
-                        opClasses={'btn__red' + (props.clientTeam === 'red' ? ' active' : '')}
-                        function={() => props.selectTeam('red', props.clientTeam)}
+                        title={'Randomize'}
+                        opClasses={'game__controls__tab__content__randomize'}
+                        function={() => props.randomiseTeams()}
                     />
-                    {props.redTeam.map((player, i) => {
-                        return (
-                            <p key={i}>
-                                {player.playerName}{' '}
-                                {player.role === 'insider' ? <i className='far fa-comment-dots'></i> : null}
-                                {player.role === 'agent' ? <i className='fas fa-search'></i> : null}
-                            </p>
-                        );
-                    })}
-                </div>
-                <div className='game__controls__teams__options__blue-team'>
-                    <Button
-                        title={'Blue'}
-                        opClasses={'btn__blue' + (props.clientTeam === 'blue' ? ' active' : '')}
-                        function={() => props.selectTeam('blue', props.clientTeam)}
-                    />
-                    {props.blueTeam.map((player, i) => {
-                        return (
-                            <p key={i}>
-                                {player.playerName}{' '}
-                                {player.role === 'insider' ? <i className='far fa-comment-dots'></i> : null}
-                                {player.role === 'agent' ? <i className='fas fa-search'></i> : null}
-                            </p>
-                        );
-                    })}
-                </div>
-                <div className='game__controls__teams__options__teamless'>
-                    <p>TEAMLESS:</p>
-                    {props.unassigned.map((player, i) => {
-                        return (
-                            <p key={i}>
-                                {player.playerName}{' '}
-                                {player.role === 'insider' ? <i className='far fa-comment-dots'></i> : null}
-                                {player.role === 'agent' ? <i className='fas fa-search'></i> : null},
-                            </p>
-                        );
-                    })}
+                    <div className='game__controls__tab__content__red-team'>
+                        <Button
+                            title={'Red'}
+                            opClasses={'btn__red' + (props.clientTeam === 'red' ? ' active' : '')}
+                            function={() => props.selectTeam('red', props.clientTeam)}
+                        />
+                        {props.redTeam.map((player, i) => {
+                            return (
+                                <p key={i}>
+                                    {player.playerName}{' '}
+                                    {player.role === 'insider' ? <i className='far fa-comment-dots'></i> : null}
+                                    {player.role === 'agent' ? <i className='fas fa-search'></i> : null}
+                                </p>
+                            );
+                        })}
+                    </div>
+                    <div className='game__controls__tab__content__blue-team'>
+                        <Button
+                            title={'Blue'}
+                            opClasses={'btn__blue' + (props.clientTeam === 'blue' ? ' active' : '')}
+                            function={() => props.selectTeam('blue', props.clientTeam)}
+                        />
+                        {props.blueTeam.map((player, i) => {
+                            return (
+                                <p key={i}>
+                                    {player.playerName}{' '}
+                                    {player.role === 'insider' ? <i className='far fa-comment-dots'></i> : null}
+                                    {player.role === 'agent' ? <i className='fas fa-search'></i> : null}
+                                </p>
+                            );
+                        })}
+                    </div>
+                    <div className='game__controls__tab__content__teamless'>
+                        <p>TEAMLESS:</p>
+                        {props.unassigned.map((player, i) => {
+                            return (
+                                <p key={i}>
+                                    {player.playerName}{' '}
+                                    {player.role === 'insider' ? <i className='far fa-comment-dots'></i> : null}
+                                    {player.role === 'agent' ? <i className='fas fa-search'></i> : null},
+                                </p>
+                            );
+                        })}
+                    </div>
                 </div>
             </div>
         </div>
