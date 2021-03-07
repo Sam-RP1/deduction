@@ -1,3 +1,10 @@
+# V1.0.2 [2021/03/07]
+
+Updates:
+
+-   Made y axis scrollbar visible on screen widths above 576px and only active when content exceeds the devices view height.
+-   Changed the games controls UI implementation to be collapsible/expandable tabs instead of always open boxes with titles. Slighlty more friendly to navigate and manage the controls for mobile or small display users.
+
 # V1.0.1 [2021/01/20]
 
 Updates:

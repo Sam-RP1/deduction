@@ -24,7 +24,7 @@ const App = () => {
     };
 
     return (
-        <div id='theme' className='theme theme--dark'>
+        <div id='theme' className='theme theme--dark' data-test='component-app'>
             <BrowserRouter>
                 <div className='base'>
                     <Route

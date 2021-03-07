@@ -16,7 +16,9 @@
   "author": "Samuel Renshaw-Panting",
   "license": "",
   "jest": {
-    "setupFilesAfterEnv": ["<rootdir>/test/setupTests.js"],
+    "setupFilesAfterEnv": [
+      "F:/SRP-Designs/deduction/deduction-web/test/setupTests.js"
+    ],
     "moduleFileExtensions": [
       "js",
       "jsx"
