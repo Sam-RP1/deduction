@@ -1,6 +1,7 @@
 @use '../../../styles/base';
 @import '../../../styles/partials/color-themes';
 @import '../../../styles/mixins/transition';
+@import '../../../styles/mixins/userSelect';
 
 .game__controls {
     &__btns-container {
@@ -37,8 +38,7 @@
     }
 
     &__teams,
-    &__roles,
-    &__bundles {
+    &__roles {
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -66,6 +66,251 @@
                 background-color: t($bg-alt);
             }
             @include transition-theme(color 0.3s ease, background-color 0.3s ease);
+
+            &__col {
+                display: flex;
+                flex-direction: column;
+                height: auto;
+                width: 100%;
+
+                &:nth-of-type(2) {
+                    margin-top: 10px;
+                }
+
+                button {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    cursor: pointer;
+                    height: auto;
+                    width: 100%;
+                    text-align: center;
+                    box-sizing: border-box;
+                    padding: 8px 25px;
+                    border-radius: 5px;
+                    box-shadow: base.$box--shadow;
+                    text-transform: uppercase;
+                    font-size: 1.2em;
+                    @include themed() {
+                        color: t($text);
+                        background-color: t($btn);
+                    }
+                    @include transition-theme(color 0.3s ease, background-color 0.3s ease);
+
+                    &:nth-of-type(n) {
+                        margin-top: 10px;
+                    }
+                    &:first-of-type {
+                        margin-top: 0px;
+                    }
+                    &:hover {
+                        @include themed() {
+                            color: t($text-secondary);
+                        }
+                        background-color: base.$selected;
+                    }
+                    &[aria-checked='true'] {
+                        @include themed() {
+                            color: t($text-secondary);
+                        }
+                        background-color: base.$selected;
+                        cursor: default;
+                    }
+                }
+
+                @media screen and (min-width: 576px) {
+                    width: calc(50% - 5px);
+                    &:nth-of-type(2) {
+                        margin-top: 0px;
+                    }
+                }
+            }
+
+            &__custom {
+                display: flex;
+                flex-direction: column;
+                width: 100%;
+                align-items: flex-start;
+                text-align: left;
+                margin-top: 10px;
+
+                &__info {
+                    p {
+                        font-size: 1.1rem;
+                        margin: 5px 0px;
+                    }
+                }
+
+                &__bricks {
+                    display: flex;
+                    flex-flow: row wrap;
+                    height: auto;
+                    width: 100%;
+                    margin-bottom: 10px;
+
+                    button {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        cursor: pointer;
+                        height: auto;
+                        width: auto;
+                        text-align: center;
+                        margin: 5px 10px 0px 0px;
+                        box-sizing: border-box;
+                        padding: 10px;
+                        border-radius: 5px;
+                        box-shadow: base.$box--shadow;
+                        font-size: 1em;
+                        @include themed() {
+                            color: t($text);
+                            background-color: t($btn);
+                        }
+                        @include transition-theme(color 0.3s ease, background-color 0.3s ease);
+
+                        p {
+                            font-size: 1rem;
+                            margin: 0px;
+                        }
+
+                        &:hover {
+                            @include themed() {
+                                color: t($text-secondary);
+                            }
+                            background-color: base.$remove;
+                        }
+                    }
+                }
+
+                @media screen and (min-width: 576px) {
+                    flex-direction: row;
+                    justify-content: space-between;
+                    &__info,
+                    &__bricks {
+                        width: calc(50% - 5px);
+                    }
+
+                    &__info {
+                        margin-bottom: 10px;
+                    }
+                }
+                @media screen and (min-width: 1092px) {
+                    flex-direction: column;
+                    justify-content: initial;
+                    &__info,
+                    &__bricks {
+                        width: 100%;
+                    }
+
+                    &__info {
+                        margin-bottom: 0px;
+                    }
+                }
+            }
+
+            &__submit-btn {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                cursor: pointer;
+                height: auto;
+                width: 100%;
+                text-align: center;
+                box-sizing: border-box;
+                padding: 8px 25px;
+                border-radius: 5px;
+                box-shadow: base.$box--shadow;
+                text-transform: uppercase;
+                font-size: 1.2em;
+                @include themed() {
+                    color: t($text);
+                    background-color: t($btn);
+                }
+                @include transition-theme(color 0.3s ease, background-color 0.3s ease, opacity 0.3s ease);
+                &:hover {
+                    @include themed() {
+                        color: t($text-secondary);
+                    }
+                    background-color: base.$selected;
+                }
+
+                @media screen and (min-width: 576px) {
+                    width: calc(50% - 5px);
+                }
+                @media screen and (min-width: 1092px) {
+                    width: 100%;
+                }
+            }
+        }
+    }
+
+    &__tab {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        height: auto;
+        width: 100%;
+        text-align: center;
+        margin-top: 25px;
+        box-shadow: base.$box--shadow;
+        border-radius: 5px;
+
+        &[data-collapsed='false'] {
+            .game__controls__tab__title {
+                border-radius: 5px 5px 0px 0px;
+            }
+        }
+
+        &__title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            border-radius: 5px;
+            border-bottom: 1px solid;
+            box-sizing: border-box;
+            padding: 10px 14px;
+            cursor: pointer;
+
+            h3 {
+                text-align: left;
+            }
+
+            h3,
+            .chevron {
+                pointer-events: none;
+                @include userSelect(none);
+            }
+
+            @include themed() {
+                color: t($text);
+                background-color: t($btn);
+                border-color: t($bg);
+            }
+            @include transition-theme(color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease);
+        }
+
+        &__content-container {
+            height: 0px;
+            width: 100%;
+            border-radius: 0px 0px 5px 5px;
+            overflow: hidden;
+
+            @include themed() {
+                color: t($text);
+                background-color: t($bg-alt);
+            }
+            @include transition-theme(height 0.3s ease-out, color 0.3s ease, background-color 0.3s ease);
+        }
+
+        &__content {
+            display: flex;
+            flex-flow: row wrap;
+            justify-content: space-between;
+            height: auto;
+            width: 100%;
+            box-sizing: border-box;
+            padding: 15px;
 
             &__randomize {
                 width: 100%;
@@ -289,6 +534,12 @@
                     width: 100%;
                 }
             }
+        }
+    }
+
+    @media screen and (min-width: 1092px) {
+        .chevron {
+            height: auto;
         }
     }
 }
