@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 
 // Styles
@@ -21,6 +21,9 @@ import Button from '../../../UI/Buttons/Button/Button';
  * @returns {JSX}
  */
 const TeamControls = (props) => {
+    const [timeOpened, setTimeOpened] = useState(0);
+    const changeToAuto = useRef();
+
     const tabHandler = (evt) => {
         const clickedTab = evt.target.parentElement;
         const isCollapsed = clickedTab.getAttribute('data-collapsed') === 'false';
@@ -30,15 +33,28 @@ const TeamControls = (props) => {
 
     const collapseTab = (elem) => {
         const content = elem.childNodes[1];
-        content.style.height = 0 + 'px';
+        content.style.height = content.scrollHeight + 'px';
+
+        if (Date.now() - 310 < timeOpened) {
+            clearTimeout(changeToAuto.current);
+        }
+
+        setTimeout(() => {
+            content.style.height = '0px';
+        }, 10);
 
         elem.setAttribute('data-collapsed', 'true');
     };
 
     const expandTab = (elem) => {
         const content = elem.childNodes[1];
-        const contentHeight = content.scrollHeight;
-        content.style.height = contentHeight + 'px';
+        content.style.height = content.scrollHeight + 'px';
+
+        setTimeOpened(Date.now());
+
+        changeToAuto.current = setTimeout(() => {
+            content.style.height = 'auto';
+        }, 310);
 
         elem.setAttribute('data-collapsed', 'false');
     };

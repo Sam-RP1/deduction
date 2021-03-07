@@ -30,30 +30,30 @@ const RoleControls = (props) => {
 
     const collapseTab = (elem) => {
         const content = elem.childNodes[1];
-        const contentHeight = content.scrollHeight;
-        content.style.height = contentHeight + 'px';
+        content.style.height = content.scrollHeight + 'px';
+
         if (Date.now() - 310 < timeOpened) {
             clearTimeout(changeToAuto.current);
         }
 
-        content.style.height = 10 + 'px';
+        setTimeout(() => {
+            content.style.height = '0px';
+        }, 10);
 
         elem.setAttribute('data-collapsed', 'true');
     };
 
     const expandTab = (elem) => {
         const content = elem.childNodes[1];
-        const contentHeight = content.scrollHeight;
-        content.style.height = contentHeight + 'px';
+        content.style.height = content.scrollHeight + 'px';
 
         setTimeOpened(Date.now());
-        elem.setAttribute('data-collapsed', 'false');
 
-        // eslint-disable-next-line
         changeToAuto.current = setTimeout(() => {
             content.style.height = 'auto';
-            console.log('CHANGED TO AUTO');
         }, 310);
+
+        elem.setAttribute('data-collapsed', 'false');
     };
 
     return (

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 
 // Styles
@@ -23,8 +23,7 @@ import Chevron from '../../../UI/Indicators/Chevron/Chevron';
  */
 const BundleControls = (props) => {
     const [timeOpened, setTimeOpened] = useState(0);
-
-    let changeToAuto;
+    const changeToAuto = useRef();
 
     const tabHandler = (evt) => {
         const clickedTab = evt.target.parentElement;
@@ -35,31 +34,30 @@ const BundleControls = (props) => {
 
     const collapseTab = (elem) => {
         const content = elem.childNodes[1];
-        const contentHeight = content.scrollHeight;
+        content.style.height = content.scrollHeight + 'px';
 
-        if (Date.now() - 300 < timeOpened) {
-            clearTimeout(changeToAuto);
-        } else {
-            content.style.height = contentHeight + 'px';
+        if (Date.now() - 310 < timeOpened) {
+            clearTimeout(changeToAuto.current);
         }
 
-        content.style.height = 0 + 'px';
+        setTimeout(() => {
+            content.style.height = '0px';
+        }, 10);
 
         elem.setAttribute('data-collapsed', 'true');
     };
 
     const expandTab = (elem) => {
         const content = elem.childNodes[1];
-        const contentHeight = content.scrollHeight;
-        content.style.height = contentHeight + 'px';
+        content.style.height = content.scrollHeight + 'px';
 
         setTimeOpened(Date.now());
-        elem.setAttribute('data-collapsed', 'false');
 
-        // eslint-disable-next-line
-        changeToAuto = setTimeout(() => {
+        changeToAuto.current = setTimeout(() => {
             content.style.height = 'auto';
-        }, 301);
+        }, 310);
+
+        elem.setAttribute('data-collapsed', 'false');
     };
 
     return (
