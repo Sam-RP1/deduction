@@ -2,6 +2,10 @@
 @import './partials/color-themes';
 @import './mixins/transition';
 
+html {
+    overflow-y: scroll;
+}
+
 body {
     font-family: 'Share Tech', sans-serif;
     height: auto;
@@ -125,10 +129,4 @@ input {
     opacity: 0.5;
     cursor: default;
     pointer-events: none;
-}
-
-@media screen and (min-width: 576px) {
-    html {
-        overflow-y: scroll;
-    }
 }
