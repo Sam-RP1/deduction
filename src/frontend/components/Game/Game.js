@@ -10,7 +10,7 @@ import Gameboard from './Gameboard/Gameboard';
 import GameControls from './Controls/GameControls/GameControls';
 import TeamControls from './Controls/TeamControls/TeamControls';
 import RoleControls from './Controls/RoleControls/RoleControls';
-import BundleControls from './Controls/BundleControls/BundleControls';
+import WordControls from './Controls/WordControls/WordControls';
 
 /**
  * Presentational component for the Game container (Page / View).
@@ -99,7 +99,7 @@ const Game = (props) => {
                     clientRole={props.playerRole}
                 />
 
-                <BundleControls
+                <WordControls
                     wordBundles={props.wordBundles}
                     wordBundle={props.wordBundle}
                     selectWordBundle={props.selectWordBundle}
