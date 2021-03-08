@@ -8,8 +8,8 @@ import '../Controls.scss';
 import Chevron from '../../../UI/Indicators/Chevron/Chevron';
 
 /**
- * Component containing the word bundle controls.
- * @function BundleControls
+ * Component containing the word controls.
+ * @function WordControls
  * @param {object}  props - React props.
  * @prop {function} props.addCustomWordHandler - Function allowing client to add a custom word.
  * @prop {object}   props.customWordError - Error to be displayed if one exists.
@@ -21,7 +21,7 @@ import Chevron from '../../../UI/Indicators/Chevron/Chevron';
  * @prop {array}    props.wordBundles - The currently selectable word bundles as strings.
  * @returns {JSX}
  */
-const BundleControls = (props) => {
+const WordControls = (props) => {
     const [timeOpened, setTimeOpened] = useState(0);
     const changeToAuto = useRef();
 
@@ -122,8 +122,8 @@ const BundleControls = (props) => {
                                 }}
                                 maxLength={40}
                             />
-                            <p>{props.customWords.length} / 25</p>
                             {props.customWordError}
+                            <p>{props.customWords.length} / 25</p>
                         </div>
                         <div className='game__controls__tab__content__custom__bricks'>
                             {props.customWords.map((word) => {
@@ -155,7 +155,7 @@ const BundleControls = (props) => {
     );
 };
 
-BundleControls.propTypes = {
+WordControls.propTypes = {
     addCustomWordHandler: PropTypes.func,
     customWordError: PropTypes.object,
     customWords: PropTypes.arrayOf(PropTypes.string),
@@ -166,6 +166,6 @@ BundleControls.propTypes = {
     wordBundles: PropTypes.arrayOf(PropTypes.string),
 };
 
-BundleControls.defaultProps = {};
+WordControls.defaultProps = {};
 
-export default React.memo(BundleControls);
+export default React.memo(WordControls);
