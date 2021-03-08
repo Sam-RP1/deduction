@@ -111,7 +111,8 @@ const TeamControls = (props) => {
                                 <p key={i}>
                                     {player.playerName}{' '}
                                     {player.role === 'insider' ? <i className='far fa-comment-dots'></i> : null}
-                                    {player.role === 'agent' ? <i className='fas fa-search'></i> : null},
+                                    {player.role === 'agent' ? <i className='fas fa-search'></i> : null}
+                                    {i + 1 === props.unassigned.length ? '' : ','}
                                 </p>
                             );
                         })}
