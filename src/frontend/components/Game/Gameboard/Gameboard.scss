@@ -15,7 +15,7 @@
         width: calc(100% / 5 - 4px);
         font-size: 1rem;
         margin: 2px 0px;
-        padding-top: calc(75% / 5 - 4px);
+        padding-top: calc(75% / 4 - 4px);
         box-sizing: border-box;
         border-radius: 5px;
         box-shadow: base.$box--shadow--alt;
@@ -44,6 +44,7 @@
         &.blue p {
             cursor: none;
             pointer-events: none;
+            @include userSelect(none);
         }
 
         &.blank {
@@ -120,6 +121,7 @@
         }
         @media screen and(min-width: 678px) {
             font-size: 1.2rem;
+            padding-top: calc(75% / 5 - 4px);
         }
         @media screen and(min-width: 768px) {
             font-size: 1.25rem;
@@ -141,6 +143,7 @@
             background-color: t($word-cell);
         }
         @include transition-theme(color 0.3s ease, background-color 0.3s ease);
+        @include userSelect(none);
 
         h2 {
             font-size: 1.3rem;

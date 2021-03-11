@@ -1,5 +1,4 @@
 @use '../../../styles/base';
-@import '../../../styles/partials/color-themes';
 @import '../../../styles/mixins/transform';
 @import '../../../styles/mixins/transition';
 
@@ -20,7 +19,7 @@
         border: 2px solid #fff;
         border-radius: 14px;
         background-color: #c7c7c7;
-        @include transition(color 0.35s ease);
+        @include transition(color 0.32s ease);
     }
 
     span:before {
@@ -32,7 +31,7 @@
         left: 1px;
         border-radius: 50%;
         background-color: white;
-        @include transition(0.4s ease);
+        @include transition(0.32s ease);
     }
 
     &.active {

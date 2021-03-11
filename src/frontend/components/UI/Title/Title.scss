@@ -1,11 +1,14 @@
 @import '../../../styles/partials/color-themes';
 @import '../../../styles/mixins/transition';
+@import '../../../styles/mixins/userSelect';
 
 .title {
     height: 90px;
     margin: 0px;
     font-size: 5rem;
     font-weight: 400;
+    pointer-events: none;
+    @include userSelect(none);
     @include themed() {
         color: t($text);
     }

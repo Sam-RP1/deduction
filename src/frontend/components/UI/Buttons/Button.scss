@@ -1,7 +1,6 @@
 @use '../../../styles/base';
 @import '../../../styles/partials/color-themes';
 @import '../../../styles/mixins/transition';
-@import '../../../styles/mixins/transform';
 @import '../../../styles/mixins/userSelect';
 
 .btn {
@@ -24,7 +23,6 @@
     -moz-appearance: none;
     -webkit-appearance: none;
     -webkit-tap-highlight-color: transparent;
-    @include userSelect(none);
     @include themed() {
         color: t($text);
         background-color: t($btn);

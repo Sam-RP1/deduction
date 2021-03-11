@@ -1,6 +1,6 @@
 @import '../../../../styles/partials/color-themes';
 @import '../../../../styles/mixins/transition';
-@import '../../../../styles/mixins/transform';
+@import '../../../../styles/mixins/userSelect';
 
 .back-btn {
     display: flex;
@@ -13,6 +13,7 @@
         color: t($text);
     }
     @include transition(color 0.3s ease);
+    @include userSelect(none);
 
     p {
         margin: 0px 0px 0px 10px;
