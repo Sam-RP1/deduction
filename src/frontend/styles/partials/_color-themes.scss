@@ -1,16 +1,25 @@
 @use '../base';
 
+// Backgrounds
 $bg: 'bg';
 $bg-alt: 'bg-alt';
+
+// Text
 $text: 'text';
 $text-secondary: 'text-secondary';
 $light-text: 'light-text';
+
+// Colors
 $red-main: 'red-main';
 $blue-main: 'blue-main';
 $orange-main: 'orange-main';
+
+// Buttons
 $btn: 'btn';
 $btn-active: 'btn-active';
 $hover: 'hover';
+
+// Word Cells
 $word-cell: 'word-cell';
 $word-cell-red: 'word-cell-red';
 $word-cell-blue: 'word-cell-blue';
@@ -21,6 +30,7 @@ $word-cell-red-guessed: 'word-cell-red-guessed';
 $word-cell-blue-guessed: 'word-cell-blue-guessed';
 $word-cell-orange-guessed: 'word-cell-orange-guessed';
 
+// Themes
 $themes: (
     default: (
         bg: base.$bg--light,
@@ -68,6 +78,7 @@ $themes: (
     ),
 );
 
+// Mixin
 @mixin themed() {
     @each $theme, $map in $themes {
         .theme--#{$theme} & {
@@ -87,6 +98,7 @@ $themes: (
     }
 }
 
+// Function
 @function t($key) {
     @return map-get($theme-map, $key);
 }
