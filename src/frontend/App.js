@@ -9,8 +9,8 @@ import Home from './containers/Home/Home';
 import CreateGame from './containers/CreateGame/CreateGame';
 import JoinGame from './containers/JoinGame/JoinGame';
 import Game from './containers/Game/Game';
-
 import Footer from './components/Footer/Footer';
+import Alerts from './components/Alerts/Alerts';
 
 import './styles/root.scss';
 
@@ -52,6 +52,7 @@ const App = () => {
                         <Route path='/' exact component={Home} />
                     </Container>
                     <Footer themeToggle={() => themeToggle()} />
+                    <Alerts />
                 </div>
             </BrowserRouter>
         </div>

@@ -13,6 +13,7 @@ $light-text: 'light-text';
 $red-main: 'red-main';
 $blue-main: 'blue-main';
 $orange-main: 'orange-main';
+$green-main: 'green-main';
 
 // Buttons
 $btn: 'btn';
@@ -41,6 +42,7 @@ $themes: (
         red-main: base.$red--light,
         blue-main: base.$blue--light,
         orange-main: base.$orange--light,
+        green-main: base.$green--light,
         btn: base.$btn--light,
         btn-active: base.$btn--light--active,
         hover: base.$hover--light,
@@ -63,6 +65,7 @@ $themes: (
         red-main: base.$red--dark,
         blue-main: base.$blue--dark,
         orange-main: base.$orange--dark,
+        green-main: base.$green--dark,
         btn: base.$btn--dark,
         btn-active: base.$btn--dark--active,
         hover: base.$hover--dark,
