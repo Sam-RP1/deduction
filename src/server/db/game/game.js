@@ -245,12 +245,12 @@ module.exports.updateTurn = async (gameId) => {
 module.exports.prune = async () => {
     try {
         const sql = await sqlPromise;
-        const [allGames] = await sql.query(sql.format('select game_id, last_query from game_instances'));
+        const [allGames] = await sql.query(sql.format('select game_id, players, last_query from game_instances'));
 
         const lastHour = Date.now() - 3600000;
 
         for (let i = 0; i < allGames.length; i++) {
-            if (allGames[i].last_query < lastHour) {
+            if (allGames[i].last_query < lastHour && allGames[i].players.length === 0) {
                 await sql.query(sql.format('delete from game_instances where game_id = ?', [allGames[i].game_id]));
             }
         }
