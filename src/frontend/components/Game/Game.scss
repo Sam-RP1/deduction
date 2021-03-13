@@ -46,12 +46,14 @@
                 @include themed() {
                     color: t($blue-main);
                 }
+                @include transition(color 0.3s ease);
             }
 
             .red-txt {
                 @include themed() {
                     color: t($red-main);
                 }
+                @include transition(color 0.3s ease);
             }
 
             @media screen and (min-width: 576px) {

@@ -37,6 +37,6 @@ http.listen(PORT, () => {
 
 sockets.init(http);
 
-const stageChecker = schedule.scheduleJob('48 * * * *', function () {
+const stageChecker = schedule.scheduleJob('30 * * * *', function () {
     prune();
 });

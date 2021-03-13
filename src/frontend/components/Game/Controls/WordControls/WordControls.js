@@ -63,7 +63,7 @@ const WordControls = (props) => {
     return (
         <div id='word-bundles' className='game__controls__tab' data-collapsed='true'>
             <div className='game__controls__tab__title' onClick={(evt) => tabHandler(evt)}>
-                <h3>Word Bundles</h3>
+                <h3>Words</h3>
                 <Chevron />
             </div>
             <div className='game__controls__tab__content-container'>
