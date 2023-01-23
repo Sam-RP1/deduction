@@ -12,7 +12,7 @@ const useSocket = () => {
 
     // Vars & Refs
     const socketRef = useRef();
-    const SOCKET_SERVER_URL = 'http://localhost:4000';
+    const SOCKET_SERVER_URL = window.location.origin;
 
     useEffect(() => {
         socketRef.current = socketIOClient(SOCKET_SERVER_URL, {});

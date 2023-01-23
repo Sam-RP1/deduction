@@ -10,22 +10,22 @@
     height: auto;
     width: 100%;
 
-    &__word-block {
+    &__grid-block {
         position: relative;
         width: calc(100% / 5 - 4px);
         font-size: 1rem;
         margin: 2px 0px;
-        padding-top: calc(75% / 5 - 4px);
+        padding-top: calc(75% / 4 - 4px);
         box-sizing: border-box;
         border-radius: 5px;
         box-shadow: base.$box--shadow--alt;
+        cursor: pointer;
+        overflow: hidden;
         @include userSelect(none);
         @include themed() {
             background-color: t($word-cell);
         }
         @include transition-theme(color 0.3s ease, background-color 0.3s ease);
-        cursor: pointer;
-        overflow: hidden;
 
         &:hover {
             @include themed() {
@@ -44,6 +44,7 @@
         &.blue p {
             cursor: none;
             pointer-events: none;
+            @include userSelect(none);
         }
 
         &.blank {
@@ -112,12 +113,6 @@
                 height: auto;
                 margin: 0px;
                 width: 100%;
-                // @media screen and (min-width: 576px) {
-                //     font-size: 1.15rem;
-                // }
-                // @media screen and (min-width: 1376px) {
-                //     font-size: 1.2rem;
-                // }
             }
         }
 
@@ -126,6 +121,7 @@
         }
         @media screen and(min-width: 678px) {
             font-size: 1.2rem;
+            padding-top: calc(75% / 5 - 4px);
         }
         @media screen and(min-width: 768px) {
             font-size: 1.25rem;
@@ -142,17 +138,20 @@
         box-sizing: border-box;
         border-radius: 5px;
         box-shadow: base.$box--shadow;
+        overflow: hidden;
         @include themed() {
             background-color: t($word-cell);
         }
         @include transition-theme(color 0.3s ease, background-color 0.3s ease);
-        overflow: hidden;
-        @media screen and (min-width: 1092px) {
-            margin-top: 2px;
-        }
+        @include userSelect(none);
 
         h2 {
             font-size: 1.3rem;
+            font-weight: 400;
+        }
+
+        @media screen and (min-width: 1092px) {
+            margin-top: 2px;
         }
     }
 }

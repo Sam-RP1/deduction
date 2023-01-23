@@ -1,13 +1,12 @@
 %flex-center-column {
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
 }
 
 .home {
     @extend %flex-center-column;
-    height: 100%;
+    height: auto;
     width: 100%;
 
     &__content {

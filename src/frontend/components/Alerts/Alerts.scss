@@ -1,0 +1,100 @@
+@use '../../styles/base';
+@import '../../styles/partials/color-themes';
+@import '../../styles/mixins/transform';
+@import '../../styles/mixins/transition';
+@import '../../styles/mixins/userSelect';
+
+.alerts {
+    position: fixed;
+    top: 0px;
+    right: 0px;
+    height: auto;
+    max-height: 100vh;
+    padding: 16px;
+
+    &__notification {
+        position: relative;
+        display: block;
+        height: auto;
+        width: 250px;
+        box-shadow: base.$box--shadow;
+        box-sizing: border-box;
+        border-radius: 5px;
+        padding: 7px;
+        font-size: 1.05rem;
+        margin: 0px 0px 10px 0px;
+        cursor: pointer;
+        overflow: hidden;
+        @include transition(color 0.3s ease, transform 0.12s ease-out);
+        @include userSelect(none);
+
+        &__content {
+            display: flex;
+            flex: 1;
+            flex-direction: column;
+            height: auto;
+            width: 100%;
+            margin-bottom: 2px;
+        }
+
+        &__timer {
+            position: absolute;
+            bottom: 0px;
+            height: 4px;
+            width: 100%;
+            margin-left: -7px;
+        }
+
+        &__close {
+            position: absolute;
+            top: 3px;
+            right: 7px;
+            color: rgba($color: #000000, $alpha: 0.6);
+        }
+
+        &--error {
+            @extend .alerts__notification;
+            background-color: base.$bg--error;
+
+            .alerts__notification__timer {
+                @include themed() {
+                    background-color: t($red-main);
+                }
+            }
+
+            h4,
+            p {
+                @include themed() {
+                    color: t($red-main);
+                }
+            }
+        }
+
+        &--success {
+            @extend .alerts__notification;
+            background-color: base.$bg--success;
+
+            .alerts__notification__timer {
+                @include themed() {
+                    background-color: t($green-main);
+                }
+            }
+
+            h4,
+            p {
+                @include themed() {
+                    color: t($green-main);
+                }
+            }
+        }
+
+        h4 {
+            text-transform: uppercase;
+            margin: 0px 0px 5px 0px;
+        }
+
+        p {
+            margin: 0px;
+        }
+    }
+}

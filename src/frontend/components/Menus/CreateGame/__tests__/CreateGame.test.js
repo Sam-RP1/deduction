@@ -14,47 +14,52 @@ import NavButton from '../../../UI/Buttons/NavButton/NavButton';
 // Enzyme configuration
 configure({ adapter: new Adapter() });
 
+/**
+ * Factory function to create a shallow wrapper for the App component.
+ * @function setup
+ * @param {object} props - React props.
+ * @returns {ShallowWrapper}
+ */
+const setup = (props = {}) => {
+    return shallow(<CreateGameMenu {...props} />);
+};
+
 // Test cases
 describe('<CreateGameMenu /> | Component', () => {
+    // should be wrapper not component
+    let component;
+    // trying before each
+    beforeEach(() => {
+        component = setup();
+    });
+
+    // trying test over it
+    test('should render <Title />', () => {
+        expect(component.find(<Title />));
+    });
+
+    it('should render <ToggleSwitch />', () => {
+        expect(component.find(<ToggleSwitch />));
+    });
+
+    it('should render <NavButton />', () => {
+        expect(component.find(<NavButton />));
+    });
+});
+
+describe('<CreateGameMenu {...props} /> | Component', () => {
     const dummyData = [
         { id: 'eng-standard', title: 'english' },
         { id: 'test', title: 'test' },
     ];
 
-    it('should render <Title />', () => {
-        const wrapper = shallow(<CreateGameMenu />);
-        expect(wrapper.find(<Title />));
-    });
-
-    it('should render <ToggleSwitch />', () => {
-        const wrapper = shallow(<CreateGameMenu />);
-        expect(wrapper.find(<ToggleSwitch />));
-    });
-
-    it('should render <NavButton />', () => {
-        const wrapper = shallow(<CreateGameMenu />);
-        expect(wrapper.find(<NavButton />));
-    });
-
-    it('should render <Title />, <ToggleSwitch /> and <NavButton />', () => {
-        const wrapper = shallow(<CreateGameMenu />);
-        expect(wrapper.find(<Title />));
-        expect(wrapper.find(<ToggleSwitch />));
-        expect(wrapper.find(<NavButton />));
-    });
-
     it('should render one selection brick', () => {
-        const wrapper = shallow(<CreateGameMenu wordGroups={[dummyData[0]]} />);
-        expect(wrapper.find('.setup-menu__option__selection__container').children().length).toEqual(1);
+        const component = setup({ wordGroups: [dummyData[0]] });
+        expect(component.find('.setup-menu__option__selection__container').children().length).toEqual(1);
     });
 
     it('should render two selection bricks', () => {
-        const wrapper = shallow(<CreateGameMenu wordGroups={dummyData} />);
-        expect(wrapper.find('.setup-menu__option__selection__container').children().length).toEqual(2);
-    });
-
-    it('should render correctly', () => {
-        const wrapper = shallow(<CreateGameMenu />);
-        expect(toJson(wrapper)).toMatchSnapshot();
+        const component = setup({ wordGroups: { dummyData } });
+        expect(component.find('.setup-menu__option__selection__container').children().length).toEqual(2);
     });
 });

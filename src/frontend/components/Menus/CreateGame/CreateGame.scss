@@ -1,17 +1,17 @@
 @use '../../../styles/base';
 @import '../../../styles/partials/color-themes';
 @import '../../../styles/mixins/transition';
+@import '../../../styles/mixins/userSelect';
 
 %flex-center-column {
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
 }
 
 .create-game {
     @extend %flex-center-column;
-    height: 100%;
+    height: auto;
     width: 100%;
     @include themed() {
         color: t($text);
@@ -23,13 +23,14 @@
         height: auto;
         width: 100%;
         max-width: 300px;
-        text-align: left;
         margin-bottom: 15px;
 
         h3 {
             font-size: 1.6rem;
             font-weight: 400;
-            margin-bottom: 5px;
+            margin-bottom: 10px;
+            pointer-events: none;
+            @include userSelect(none);
         }
     }
 }

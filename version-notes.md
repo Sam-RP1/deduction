@@ -1,3 +1,26 @@
+# V1.0.2 [2021/03/07]
+
+Updates:
+
+[Major]
+
+-   Game lobbies will now not be "pruned" (deleted) as long as a player is present in the lobby. This was an issue that arose when player(s) were still present in a game lobby and had not carried out any actions in the last hour, which lead to the game lobby being "pruned" by the server. This in turn made player(s) on the client side think they were still in an active lobby that was playable, when in reality it had been "pruned" and no longer functioned.
+
+[UI/UX]
+
+-   Made y axis scrollbar visible at all times and only active when content exceeds the devices view height.
+-   Changed the games controls UI implementation to be collapsible/expandable tabs instead of always open boxes with titles. Slighlty more friendly to navigate and manage the controls for mobile or small display users.
+-   A comma is now only placed after a players name in the 'TEAMLESS' section of the teams controls in the Game UI if there is another player name proceeding it.
+-   Increased the height of the gameboards word 'blocks' from 75% / 5 - 4px ---> 75% / 4 - 4px until the display width reaches 678px where the height returns to 75% / 5 - 4px. Future changes may result in the gameboard word 'blocks' grid being 4 or 3 in a row for smaller sized devices to make the text content more easily readable.
+-   Added 'user-select: none' to a number of text components and buttons to make Deduction feel less like a website and more like a game. User cursor should only change where interaction can occur, like buttons.
+
+[Source]
+
+-   Separated GameControls.js into four separate js files, one for each individual control component. GameControls.js is now GameControls.js, RoleControls.js, TeamControls.js and WordControls.js.
+-   All files inside the src/frontend/components/Game have JsDocs and proptypes completed.
+-   All components inside the src/frontend/components/Game are now utilising React.memo.
+-   Cleaned up some SCSS and removed unused imports.
+
 # V1.0.1 [2021/01/20]
 
 Updates:

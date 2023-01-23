@@ -12,7 +12,7 @@ const Footer = (props) => {
     return (
         <footer className='footer'>
             {isHelpOpen === true ? <Help close={() => setIsHelpOpen(false)} /> : null}
-            <div className='footer__settings footer__settings--row'>
+            <div className='footer__settings footer__settings--row noselect'>
                 <div className='footer__settings__help-wrapper' onClick={() => setIsHelpOpen(!isHelpOpen)}>
                     <p>Help & More</p>
                     <i className='fas fa-question-circle'></i>
@@ -23,7 +23,7 @@ const Footer = (props) => {
                     <i className='fas fa-sun'></i>
                 </div>
             </div>
-            <div className='footer__info footer__info--row'>
+            <div className='footer__info footer__info--row noselect'>
                 <p>
                     Developed by{' '}
                     <a target='_blank' rel='noreferrer' href='http://srenshawpanting.co.uk/'>

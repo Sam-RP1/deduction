@@ -1,11 +1,12 @@
 @import '../../styles/partials/color-themes';
 @import '../../styles/mixins/transition';
-@import '../../styles/mixins/transform';
+@import '../../styles/mixins/userSelect';
 
 .header {
     position: relative;
     top: 0px;
     left: 0px;
+    right: 0px;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -23,5 +24,6 @@
         font-weight: 400;
         font-size: 2rem;
         margin: 0px;
+        @include userSelect(none);
     }
 }

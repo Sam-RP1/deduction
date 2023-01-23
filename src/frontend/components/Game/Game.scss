@@ -1,31 +1,18 @@
 @import '../../styles/partials/color-themes';
 @import '../../styles/mixins/transition';
-
-%flex-center-column {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
+@import '../../styles/mixins/userSelect';
 
 .game {
-    @extend %flex-center-column;
-    height: auto;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
     width: 100%;
 
     &__board {
         display: flex;
         flex-direction: column;
-        height: auto;
-        width: 100%;
-    }
-
-    &__board-container {
-        display: flex;
-        flex-direction: column;
         align-items: center;
         height: auto;
-        flex: 1;
 
         &__information {
             display: flex;
@@ -38,6 +25,7 @@
                 color: t($text);
             }
             @include transition(color 0.3s ease);
+            @include userSelect(none);
 
             p {
                 margin: 0;
@@ -58,12 +46,14 @@
                 @include themed() {
                     color: t($blue-main);
                 }
+                @include transition(color 0.3s ease);
             }
 
             .red-txt {
                 @include themed() {
                     color: t($red-main);
                 }
+                @include transition(color 0.3s ease);
             }
 
             @media screen and (min-width: 576px) {
@@ -118,14 +108,29 @@
         }
     }
 
+    &__controls {
+        display: flex;
+        flex-direction: column;
+        height: auto;
+        width: 100%;
+        margin-top: 25px;
+    }
+
     @media screen and (min-width: 1092px) {
+        flex-direction: row-reverse;
+        justify-content: center;
+
         &__board {
-            justify-content: center;
-            flex-direction: row-reverse;
+            flex: 1;
+            max-width: 925px;
         }
 
-        &__board-container {
-            max-width: 925px;
+        &__controls {
+            width: 30%;
+            max-width: 525px;
+            margin-top: 32px;
+            box-sizing: border-box;
+            padding-right: 16px;
         }
     }
 }

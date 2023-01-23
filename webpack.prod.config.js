@@ -103,6 +103,7 @@ module.exports = {
                 { from: './src/server/server-prod.js', to: '../server.js' },
                 { from: './src/server/package.json', to: '../package.json' },
                 { from: './.env', to: '../' },
+                { from: './misc/screenshot.png', to: '../public/screenshot.png' },
             ],
         }),
     ],

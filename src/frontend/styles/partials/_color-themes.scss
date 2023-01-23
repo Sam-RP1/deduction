@@ -1,16 +1,26 @@
 @use '../base';
 
+// Backgrounds
 $bg: 'bg';
 $bg-alt: 'bg-alt';
+
+// Text
 $text: 'text';
 $text-secondary: 'text-secondary';
 $light-text: 'light-text';
+
+// Colors
 $red-main: 'red-main';
 $blue-main: 'blue-main';
 $orange-main: 'orange-main';
+$green-main: 'green-main';
+
+// Buttons
 $btn: 'btn';
 $btn-active: 'btn-active';
 $hover: 'hover';
+
+// Word Cells
 $word-cell: 'word-cell';
 $word-cell-red: 'word-cell-red';
 $word-cell-blue: 'word-cell-blue';
@@ -21,6 +31,7 @@ $word-cell-red-guessed: 'word-cell-red-guessed';
 $word-cell-blue-guessed: 'word-cell-blue-guessed';
 $word-cell-orange-guessed: 'word-cell-orange-guessed';
 
+// Themes
 $themes: (
     default: (
         bg: base.$bg--light,
@@ -31,6 +42,7 @@ $themes: (
         red-main: base.$red--light,
         blue-main: base.$blue--light,
         orange-main: base.$orange--light,
+        green-main: base.$green--light,
         btn: base.$btn--light,
         btn-active: base.$btn--light--active,
         hover: base.$hover--light,
@@ -53,6 +65,7 @@ $themes: (
         red-main: base.$red--dark,
         blue-main: base.$blue--dark,
         orange-main: base.$orange--dark,
+        green-main: base.$green--dark,
         btn: base.$btn--dark,
         btn-active: base.$btn--dark--active,
         hover: base.$hover--dark,
@@ -68,6 +81,7 @@ $themes: (
     ),
 );
 
+// Mixin
 @mixin themed() {
     @each $theme, $map in $themes {
         .theme--#{$theme} & {
@@ -87,6 +101,7 @@ $themes: (
     }
 }
 
+// Function
 @function t($key) {
     @return map-get($theme-map, $key);
 }

@@ -75,45 +75,48 @@ const Game = (props) => {
     }, [gameErrorStr]);
 
     // Functions
-    const addCustomWordHandler = useCallback((evt) => {
-        const enteredString = evt.target.value;
-        const pattern = new RegExp('[^A-Za-z0-9]');
-        const exists = customWords.indexOf(enteredString);
-        let stringFail = false;
+    const addCustomWordHandler = useCallback(
+        (evt) => {
+            const enteredString = evt.target.value;
+            const pattern = new RegExp('[^A-Za-z0-9]');
+            const exists = customWords.indexOf(enteredString);
+            let stringFail = false;
 
-        if (enteredString.search(pattern) > -1) {
-            stringFail = true;
-        }
+            if (enteredString.search(pattern) > -1) {
+                stringFail = true;
+            }
 
-        if (
-            enteredString.length > 1 &&
-            enteredString.length < 41 &&
-            customWords.length < 25 &&
-            exists === -1 &&
-            stringFail === false
-        ) {
-            addCustomWord(enteredString);
-            document.querySelector('#text-input').value = '';
-        } else {
-            const errors = [];
-            if (stringFail === true) {
-                errors.push('Entered word cannot contain any special characters or spaces');
+            if (
+                enteredString.length > 1 &&
+                enteredString.length < 41 &&
+                customWords.length < 25 &&
+                exists === -1 &&
+                stringFail === false
+            ) {
+                addCustomWord(enteredString);
+                document.querySelector('#text-input').value = '';
+            } else {
+                const errors = [];
+                if (stringFail === true) {
+                    errors.push('Entered word cannot contain any special characters or spaces');
+                }
+                if (enteredString.length <= 1) {
+                    errors.push('Entered word is too short! Needs to be two characters or more');
+                }
+                if (enteredString.length >= 41) {
+                    errors.push('Entered word is too long! Needs to be forty characters or less');
+                }
+                if (customWords.length === 25) {
+                    errors.push('25 words have been entered! To delete entered words you can click on them');
+                }
+                if (exists > -1) {
+                    errors.push('No duplicates allowed here! This word has already been entered');
+                }
+                setCustomWordError(generateError(errors, null, setCustomWordError));
             }
-            if (enteredString.length <= 1) {
-                errors.push('Entered word is too short! Needs to be two characters or more');
-            }
-            if (enteredString.length >= 41) {
-                errors.push('Entered word is too long! Needs to be forty characters or less');
-            }
-            if (customWords.length === 25) {
-                errors.push('25 words have been entered! To delete entered words you can click on them');
-            }
-            if (exists > -1) {
-                errors.push('No duplicates allowed here! This word has already been entered');
-            }
-            setCustomWordError(generateError(errors, null, setCustomWordError));
-        }
-    }, []);
+        },
+        [customWords]
+    );
 
     // Render
     return (
