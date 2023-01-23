@@ -4,6 +4,8 @@ Updates:
 
 [Major]
 
+-   Game lobbies will now not be "pruned" (deleted) as long as a player is present in the lobby. This was an issue that arose when player(s) were still present in a game lobby and had not carried out any actions in the last hour, which lead to the game lobby being "pruned" by the server. This in turn made player(s) on the client side think they were still in an active lobby that was playable, when in reality it had been "pruned" and no longer functioned.
+
 [UI/UX]
 
 -   Made y axis scrollbar visible at all times and only active when content exceeds the devices view height.
@@ -14,7 +16,9 @@ Updates:
 
 [Source]
 
--   Renamed 'BundleControls' to more appropriate 'WordControls'.
+-   Separated GameControls.js into four separate js files, one for each individual control component. GameControls.js is now GameControls.js, RoleControls.js, TeamControls.js and WordControls.js.
+-   All files inside the src/frontend/components/Game have JsDocs and proptypes completed.
+-   All components inside the src/frontend/components/Game are now utilising React.memo.
 -   Cleaned up some SCSS and removed unused imports.
 
 # V1.0.1 [2021/01/20]
